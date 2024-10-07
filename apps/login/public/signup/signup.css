@@ -1,0 +1,16 @@
+.formField {
+    width: 260px !important;
+}
+
+.togglePassword {
+    position: absolute; 
+    right: 10px; 
+    top: 10px;
+    cursor: pointer;
+    color: rgb(184, 184, 184);
+    visibility: hidden;
+}
+
+.togglePassword:hover {
+    color: rgb(128, 128, 128);
+}

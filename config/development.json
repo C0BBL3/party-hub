@@ -1,0 +1,16 @@
+{
+    "http": {
+        "port": 3333,
+        "baseUrl": "http://localhost:3333",
+        "devUrl": "http://localhost:3333"
+    },
+    "database": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "partyhub",
+        "connectionLimit": 100,
+        "waitForConnections": true,
+        "queueLimit": 0
+    }
+}
