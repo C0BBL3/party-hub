@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const Formatter = require('../lib/formatter');
 
-const categories = ['layout'];
+const categories = ['main'];
 
 module.exports.register = (app) => {
     addCategoryRoutes(app, categories);

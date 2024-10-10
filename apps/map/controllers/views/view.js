@@ -4,7 +4,7 @@ class ViewController {
     static async render(req, res) {
         const user = req.session.user;
 
-        res.render('view', {
+        res.render('view/view', {
             user
         });
     }
