@@ -2,7 +2,7 @@ class PasswordController {
     static async render(req, res) {     
         const user = req.session.user;
       
-        res.render('password', {
+        res.render('password/password', {
             section: 'password',
             user
         });

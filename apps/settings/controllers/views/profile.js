@@ -5,7 +5,7 @@ class ProfileController {
         const user = req.session.user;
         const pictureBase64 = await ProfileService.getPictureBase64(user.id);
       
-        res.render('profile', {
+        res.render('profile/profile', {
             section: 'profile',
             user,
             pictureBase64

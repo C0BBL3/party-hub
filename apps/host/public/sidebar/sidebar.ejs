@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="../sidebar/sidebar.css">
+<script type="text/javascript" src="../sidebar/sidebar.js"></script>
+
+<div id="sidebar">
+    <div class="sidebarFrame">
+        <% if (section === 'create') { %>
+            <div class="hostCategory selected">Create</div>    
+        <% } else { %>
+            <div class="hostCategory" onmousedown="Core.navigate('/host/create');">Create</div>    
+        <% } %>
+        
+        <% if (section === 'edit') { %>
+            <div class="hostCategory selected">Edit</div>    
+        <% } else { %>
+            <div class="hostCategory" onmousedown="Core.navigate('/host/edit');">Edit</div>    
+        <% } %>      
+
+        <% if (section === 'list') { %>
+            <div class="hostCategory selected">list</div>    
+        <% } else { %>
+            <div class="hostCategory" onmousedown="Core.navigate('/host/list');">list</div>    
+        <% } %>      
+                 
+            
+    </div>
+</div>

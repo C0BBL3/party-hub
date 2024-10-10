@@ -25,6 +25,29 @@ class LoginService {
         return null;
     }
 
+    static async getUserById(id) {
+        const result = await db.execute(`
+            SELECT 
+                *
+            FROM 
+                user                  
+            WHERE                
+                id = [id];`,
+            {
+                id
+            }
+        );
+
+        if (result.rows.length === 1) {
+            const row = result.rows[0];
+            const user = row.user;
+
+            return user;
+        }
+
+        return null;
+    }
+
     static async verifyPassword(password, salt, savedHash) {
         const options = {
             logN: 11,

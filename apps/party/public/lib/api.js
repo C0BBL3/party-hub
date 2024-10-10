@@ -1,4 +1,4 @@
-var API_BASE_URL = '/settings/api/';
+var API_BASE_URL = '/api/';
 
 var api = {
     get: async (url) => {

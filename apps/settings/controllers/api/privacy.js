@@ -1,7 +1,6 @@
-const APIController = require("../../lib/controllers/api-controller");
 const PrivacyService = require("../../services/privacy");
 
-class PrivacyAPIController extends APIController {
+class PrivacyAPIController {
     static async update(req, res) {
         const userId = req.session.user.id;
 

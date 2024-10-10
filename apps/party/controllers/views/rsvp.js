@@ -4,7 +4,7 @@ class RSVPController {
     static async render(req, res) {
         const user = req.session.user;
 
-        res.render('rsvp', {
+        res.render('rsvp/rsvp', {
             section: 'rsvp',
             user
         });

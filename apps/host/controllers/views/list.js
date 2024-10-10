@@ -4,7 +4,7 @@ class ListController {
     static async render(req, res) {
         const user = req.session.user;
 
-        res.render('edit', {
+        res.render('list/list', {
             user
         });
     }

@@ -1,7 +1,6 @@
-const APIController = require("../../lib/controllers/api-controller");
 const ProfileService = require("../../services/profile");
 
-class ProfileAPIController extends APIController {
+class ProfileAPIController {
     static async updatePicture(req, res) {
         const userId = req.session.user.id;
 

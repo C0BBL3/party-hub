@@ -4,7 +4,7 @@ class CreateController {
     static async render(req, res) {
         const user = req.session.user;
 
-        res.render('create', {
+        res.render('create/create', {
             user
         });
     }

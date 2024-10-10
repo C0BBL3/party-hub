@@ -88,22 +88,28 @@ function initApp(app) {
         dumpExceptions: true,
         showStack: true
     }));
-    
+
+    app.use((req, res, next)=>{
+        request = req;
+        next();
+    });
+
+    app.use(expressLayouts);
+
     app.set('view engine', 'ejs');
 
-    app.use(require('./apps/main/routes/routes.js'));
 
-    let apps = ['admin', 'host', 'login', 'main', 'map', 'party', 'settings'];
+    let screens = ['host', 'login', 'main', 'map', 'party', 'settings'];
 
-    let viewDirectories = [];
+    let viewDirectories = [ path.join(__dirname, 'public') ];
 
-    for (let app of apps) { 
-        const baseRoute = `./apps/${app}`;
+    for (let screen of screens) { 
+        const baseRoute = `./apps/${screen}`;
+        const publicRoute = `${baseRoute}/public/`;
+        const viewDirectory = path.join(__dirname, publicRoute);
 
-        const publicRoute = `${baseRoute}/public`;
-
-        viewDirectories.push(path.join(__dirname, publicRoute));
-        app.use('/', express.static(__dirname + publicRoute));
+        viewDirectories.push(viewDirectory);
+        app.use(express.static(viewDirectory));
 
         const routes = require(`${baseRoute}/routes/index.js`);
         routes.register(app);
@@ -111,15 +117,8 @@ function initApp(app) {
 
     app.set('views', viewDirectories);
 
-    app.set('layout', 'layout'); // defaults to 'layout'
+    app.set('layout', 'layout/layout'); // defaults to 'layout'
 
-    app.use((req, res, next)=>{
-        request = req;
-        next();
-    });
-    
-    app.use(expressLayouts);
-    
     process.on('uncaughtException', (error) => {
         console.error('Uncaught Exception');
         console.log(error);

@@ -1,28 +1,24 @@
-<link rel="stylesheet" href="./sidebar.css">
-<script type="text/javascript" src="./sidebar.js"></script>
-
-<% 
-    let urlPrefix = account.id !== user.id ? `/students/${account.id}` : ''; 
-%>
+<link rel="stylesheet" href="../sidebar/sidebar.css">
+<script type="text/javascript" src="../sidebar/sidebar.js"></script>
 
 <div id="sidebar">
     <div class="sidebarFrame">
-        <% if (section === 'profile') { %>
-            <div class="settingsCategory selected">Profile</div>    
+        <% if (section === 'feed') { %>
+            <div class="partyCategory selected">Feed</div>    
         <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/profile');">Profile</div>    
+            <div class="partyCategory" onmousedown="Core.navigate('/party/feed');">Feed</div>    
         <% } %>
         
-        <% if (section === 'privacy') { %>
-            <div class="settingsCategory selected">Privacy</div>    
+        <% if (section === 'friends') { %>
+            <div class="partyCategory selected">Friends</div>    
         <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/privacy');">Privacy</div>    
+            <div class="partyCategory" onmousedown="Core.navigate('/party/friends');">Friends</div>    
         <% } %>      
 
-        <% if (section === 'password') { %>
-            <div class="settingsCategory selected">Password</div>    
+        <% if (section === 'rsvp') { %>
+            <div class="partyCategory selected">RSVP</div>    
         <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/password');">Password</div>    
+            <div class="partyCategory" onmousedown="Core.navigate('/party/rsvp');">RSVP</div>    
         <% } %>      
                  
             

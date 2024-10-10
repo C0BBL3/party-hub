@@ -4,7 +4,7 @@ class APIMiddleware {
             res.send({
                 sessionExpired: true
             });
-        }else if (req.session.user && req.session.user.isAdmin) {
+        } else if (req.session.user && req.session.user.isAdmin) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -16,7 +16,7 @@ class APIMiddleware {
             res.send({
                 sessionExpired: true
             });
-        }else if (req.session.user && (req.session.user.isAdmin || req.session.user.isSupervisorMode)) {
+        } else if (req.session.user && (req.session.user.isAdmin || req.session.user.isSupervisorMode)) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -24,7 +24,7 @@ class APIMiddleware {
     }
 
     static checkIsPatron(req, res, next) {
-        if (req.session.user && (req.session.user.isAdmin || req.session.user.isPatron)) {
+        if (req.session.user && (req.session.user.isPatron || req.session.user.isAdmin)) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -32,7 +32,7 @@ class APIMiddleware {
     }
 
     static checkIsHost(req, res, next) {
-        if (req.session.user && (req.session.user.isAdmin || req.session.user.isHost)) {
+        if (req.session.user && (req.session.user.isHost || req.session.user.isAdmin)) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -45,7 +45,7 @@ class APIMiddleware {
                 sessionExpired: true
             });
         } else {
-            if (req.session.user.isAdmin || req.session.user.isHost || req.session.user.isPatron) {
+            if (req.session.user.isHost || req.session.user.isPatron || req.session.user.isAdmin) {
                 next();
             } else {
                 res.redirect('/unauthorized-access');

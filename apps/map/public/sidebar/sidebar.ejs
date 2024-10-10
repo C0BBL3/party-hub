@@ -1,30 +1,8 @@
-<link rel="stylesheet" href="./sidebar.css">
-<script type="text/javascript" src="./sidebar.js"></script>
-
-<% 
-    let urlPrefix = account.id !== user.id ? `/students/${account.id}` : ''; 
-%>
+<link rel="stylesheet" href="../sidebar/sidebar.css">
+<script type="text/javascript" src="../sidebar/sidebar.js"></script>
 
 <div id="sidebar">
     <div class="sidebarFrame">
-        <% if (section === 'profile') { %>
-            <div class="settingsCategory selected">Profile</div>    
-        <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/profile');">Profile</div>    
-        <% } %>
-        
-        <% if (section === 'privacy') { %>
-            <div class="settingsCategory selected">Privacy</div>    
-        <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/privacy');">Privacy</div>    
-        <% } %>      
-
-        <% if (section === 'password') { %>
-            <div class="settingsCategory selected">Password</div>    
-        <% } else { %>
-            <div class="settingsCategory" onmousedown="Core.navigate('<%= urlPrefix %>/settings/password');">Password</div>    
-        <% } %>      
-                 
             
     </div>
 </div>

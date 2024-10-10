@@ -4,7 +4,7 @@ class FeedController {
     static async render(req, res) {
         const user = req.session.user;
 
-        res.render('feed', {
+        res.render('feed/feed', {
             section: 'feed',
             user
         });

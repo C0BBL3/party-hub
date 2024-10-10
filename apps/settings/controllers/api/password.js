@@ -1,7 +1,6 @@
-const APIController = require("../../lib/controllers/api-controller");
 const PasswordService = require('../../services/password');
 
-class PasswordAPIController extends APIController {
+class PasswordAPIController  {
     static async update(req, res) {
         const userId = req.session.user.id;
 

@@ -5,6 +5,6 @@ const Middleware = require('../../../../middleware/views/main');
 
 const BASE_PATH = '/host/edit';
 
-router.post(`${BASE_PATH}`, Middleware.checkIsHost, Controller.render);
+router.get(BASE_PATH, Middleware.checkIsHost, Controller.render);
 
 module.exports = router;
