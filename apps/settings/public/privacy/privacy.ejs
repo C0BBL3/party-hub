@@ -1,9 +1,10 @@
 <link rel="stylesheet" href="../privacy/privacy.css">
 <script type="text/javascript" src="../privacy/privacy.js"></script>
 
+<%- include('../sidebar/sidebar.ejs') %>
 
-<div id="container">
-    <%- include('../sidebar/sidebar.ejs') %>
+
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
 
     <div id="formFrame">
 

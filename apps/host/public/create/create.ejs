@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="../create/create.css">
 <script type="text/javascript" src="../create/create.js"></script>
 
-<div id="container">
+<%- include('../sidebar/sidebar.ejs') %>
+
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+    
     <div id="formFrame">
 
         <div class="formHeader">Create</div>

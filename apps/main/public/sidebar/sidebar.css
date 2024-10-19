@@ -2,13 +2,9 @@ div#sidebar {
     position: absolute;
     left: 0px;
     top: 60px;
-    width: 240px;
+    width: var(--sidebar-width);
     height: fit-content;
-    padding-left: 15px;
-    padding-top: 25px;
-    overflow-y: auto;
-    box-sizing: border-box;
-    text-align: left;
+    padding: 25px 15px;
     font-size: 14px;
 }
 
@@ -22,7 +18,6 @@ div.sidebarItem:hover {
 
 div.sidebarItem {
     display: flex;
-    width: 200px;
     margin-top: 2px;
     padding-left: 10px;
     padding-top: 8px;
@@ -31,4 +26,12 @@ div.sidebarItem {
     text-align: left;
     border-radius: 6px;
     cursor: pointer;
+}
+
+div.sidebarItemSelected svg {
+    fill: var(--pink-color);
+}
+
+div.sidebarItemSelected a {
+    color: var(--pink-color);
 }

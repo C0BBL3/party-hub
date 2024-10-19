@@ -5,7 +5,8 @@ class EditController {
         const user = req.session.user;
 
         res.render('edit/edit', {
-            user
+            user,
+            section: 'edit'
         });
     }
 }

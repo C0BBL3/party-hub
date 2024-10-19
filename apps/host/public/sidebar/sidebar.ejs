@@ -2,24 +2,65 @@
 <script type="text/javascript" src="../sidebar/sidebar.js"></script>
 
 <div id="sidebar">
-    <div class="sidebarFrame">
-        <% if (section === 'create') { %>
-            <div class="hostCategory selected">Create</div>    
-        <% } else { %>
-            <div class="hostCategory" onmousedown="Core.navigate('/host/create');">Create</div>    
-        <% } %>
-        
-        <% if (section === 'edit') { %>
-            <div class="hostCategory selected">Edit</div>    
-        <% } else { %>
-            <div class="hostCategory" onmousedown="Core.navigate('/host/edit');">Edit</div>    
-        <% } %>      
+    <div class="sidebarSection">
+        <% 
+            let class1 = 'sidebarItem';
+            if (section === 'list') { 
+                class1 = 'sidebarItem sidebarItemSelected'
+            } 
+        %>
 
-        <% if (section === 'list') { %>
-            <div class="hostCategory selected">list</div>    
-        <% } else { %>
-            <div class="hostCategory" onmousedown="Core.navigate('/host/list');">list</div>    
-        <% } %>      
+        <div class="<%= class1 %>" onmousedown="window.location.href = '/host/';">
+            <% 
+            let menuBurger = true;
+            if (menuBurger) { %>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                <rect y="11" width="24" height="2" rx="1"/>
+                <rect y="4" width="24" height="2" rx="1"/>
+                <rect y="18" width="24" height="2" rx="1"/>
+            </svg>
+            <% } else { %>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M7,6H23a1,1,0,0,0,0-2H7A1,1,0,0,0,7,6Z"/>
+                    <path d="M23,11H7a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/>
+                    <path d="M23,18H7a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/>
+                    <circle cx="2" cy="5" r="2"/>
+                    <circle cx="2" cy="12" r="2"/>
+                    <circle cx="2" cy="19" r="2"/>
+                </svg>
+            <% } %>
+            <a href="/host/" style="margin-left: 10px;">List</a>
+        </div>    
+
+        <% 
+            let class2 = 'sidebarItem';
+            if (section === 'create') { 
+                class2 = 'sidebarItem sidebarItemSelected'
+            } 
+        %>
+        <div class="<%= class2 %>"onmousedown="window.location.href = '/host/create';">
+            <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                <path d="m12 0a12 12 0 1 0 12 12 12.013 12.013 0 0 0 -12-12zm0 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1 -10 10zm5-10a1 1 0 0 1 -1 1h-3v3a1 1 0 0 1 -2 0v-3h-3a1 1 0 0 1 0-2h3v-3a1 1 0 0 1 2 0v3h3a1 1 0 0 1 1 1z"/>
+            </svg>
+            <a href="/host/create" style="margin-left: 10px;">Create</a>
+        </div>    
+
+        <% 
+            let class3 = 'sidebarItem';
+            if (section === 'edit') { 
+                class3 = 'sidebarItem sidebarItemSelected'
+            } 
+        %>
+        
+        <div class="<%= class3 %>" onmousedown="window.location.href = '/host/edit';">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                <path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z"/>
+                <path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z"/>
+            </svg>
+            <a href="/host/edit" style="margin-left: 10px;">Edit</a>
+        </div>    
+
+        
                  
             
     </div>

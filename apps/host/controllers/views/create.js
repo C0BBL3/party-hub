@@ -5,7 +5,8 @@ class CreateController {
         const user = req.session.user;
 
         res.render('create/create', {
-            user
+            user,
+            section: 'create'
         });
     }
 }

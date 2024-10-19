@@ -1,8 +1,10 @@
 <link rel="stylesheet" href="../friends/friends.css">
 <script type="text/javascript" src="../friends/friends.js"></script>
 
-<div id="container">
+<%- include('../sidebar/sidebar.ejs') %>
 
-    <%- include('../sidebar/sidebar.ejs') %>
+
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+
     
 </div>

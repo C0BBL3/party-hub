@@ -4,20 +4,217 @@
     --transparent-black-color: #000000bd; /* good for shadows and gradients going from black to transparent */
     --black-color: #2F3136; /* a good title font color */
 	--grey-color: #505050; /* a good main body font color */
-	--lighter-grey-color: #696969; /* good for subtitle font color */
-	--light-color: #99AAB5; /* good for dividing lines/borders */
-    --white-color: #e1e1e1; 
-    --blue-color: #308CEA;
-	--green-color: #0a0;
-	--success-color: #5cb85c; /* green color a bit too green so need lower contrast green for a success color */
+	--lighter-grey-color: #e1e1e1; /* good for subtitle font color */
+	--lightest-grey-color: #f8f8f8; /* good for dividing lines/borders */
+    --white-color: #ffffff; 
+    --success-color: #5cb85c; /* green color a bit too green so need lower contrast green for a success color */
     --red-color: #9c0000; /* also viable for error colors */
+    --blue-color: #308CEA;
+    --cyan-color: #00ffff;
+	--green-color: #0a0;
     --orange-color: #CC7621;
-    --purple-color: #909;
     --gold-color: #d4af37;
+    --purple-color: #909;
+    --pink-color: #ff76ff;
+    --sidebar-width: 170px;
 }
 
 body {
+    margin: 0;
+    padding: 0;
     background-color: var(--white-color);
     color: var(--grey-color);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    fill: var(--grey-color);
+    font-family: "Futura Light", "Trebuchet MS", Arial, sans-serif;
+    user-select: none;
+}
+
+div#wrap {
+    width: 100%;
+}
+
+div#topRibbon {
+    position: fixed;
+    top: 0px;
+    height: 50px;
+    width: 100%;
+    opacity: 100%;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid var(--lighter-grey-color);
+}
+
+div#topBarContainer {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    height: 50px;
+    justify-content: center;
+}
+
+div#topBarContainer div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a#logoContainer {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    height: 50px;
+}
+
+a#logoContainer img {
+    height: 40px;
+    padding: 5px;
+}
+
+div#headerLinks {
+    font-size: 14px;
+}
+
+a.headerLink {
+    color: var(--grey-color);
+    font-size: 14px;
+    margin: 0px 20px;
+    padding: 17px 10px;
+    cursor: pointer;
+}
+
+a.headerLink:hover {
+    color: var(--pink-color);
+    border-bottom: 3px solid var(--pink-color);
+    padding-bottom: 14px;
+}
+
+a#adminHeaderLink:hover {
+    color: var(--black-color);
+    border-bottom: none;
+    cursor: not-allowed;
+    padding-bottom: 17px;
+
+}
+
+a {
+    color: var(--grey-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+
+div#topMenu {
+    position: absolute;
+    right: 20px;
+}
+
+div#userHeader {
+    display: block !important;
+    margin-top: 0px;
+    text-transform: uppercase;
+    background-color: var(--lightest-grey-color);
+    color: var(--black-color);
+    font-size: 15px;
+    height: 38px !important;
+    width: 38px;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 19px;
+    cursor: default;
+}
+
+div#userMenu {
+    display: block !important;
+    position: absolute;
+    right: 0px;
+    top: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    visibility: hidden;
+    z-index: 1000;
+    background: white;
+    border: 1px solid var(--lighter-grey-color);
+    box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+
+div#userMenu-info {
+    display: block !important;
+    padding: 10px;
+    padding-left: 35px;
+    padding-right: 80px;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--lighter-grey-color);
+    padding-bottom: 15px;
+}
+
+div#userMenu-info div {
+    margin: 5px 0px;
+    justify-content: flex-start;
+}
+
+div.headerMenuItem {
+    padding: 10px;
+    padding-left: 35px;
+    padding-right: 120px;
+    font-size: 15px;
+    background: white;
+    color: rgb(64, 64, 64);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    justify-content: flex-start !important;
+}
+
+div.headerMenuItem:hover {
+    background-color: var(--lightest-grey-color);
+}
+
+div#content {
+    position: relative;
+    top: 70px;
+}
+
+div#topNavRight {
+    float: right;
+}
+
+a#loginLink {
+    float: left;
+}
+
+.topNavLink {
+    height: 50px;
+    line-height: 50px;
+    float: left;
+    display: block;
+    color: var(--grey-color);
+    text-align: center;
+    padding: 0 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+span#signUpButton {
+    float: left;
+    padding: 10px 12px 10px 12px;
+    line-height: 15px;
+    height: fit-content;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+    background: var(--pink-color);
+    color: white;
+    cursor: pointer;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+span#signUpButton:hover {
+    opacity: 0.9;
+}
+
+div#container {
+    width: 100%
 }

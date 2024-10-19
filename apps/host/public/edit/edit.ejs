@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="../edit/edit.css">
 <script type="text/javascript" src="../edit/edit.js"></script>
 
-<div id="container">
+<%- include('../sidebar/sidebar.ejs') %>
+
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+    
     <div id="formFrame">
 
         <div class="formHeader">Edit</div>

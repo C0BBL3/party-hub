@@ -5,7 +5,8 @@ class ListController {
         const user = req.session.user;
 
         res.render('list/list', {
-            user
+            user,
+            section: 'list'
         });
     }
 }

@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="../feed/feed.css">
 <script type="text/javascript" src="../feed/feed.js"></script>
 
-<div id="container">
+<%- include('../sidebar/sidebar.ejs') %>
+
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
     
-    <%- include('../sidebar/sidebar.ejs') %>
     
 </div>

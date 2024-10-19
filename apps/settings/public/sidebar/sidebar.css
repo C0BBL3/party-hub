@@ -1,0 +1,17 @@
+div#sidebar {
+    position: absolute;
+    left: 0px;
+    top: 60px;
+    width: 240px;
+    height: 100%;
+    padding-left: 15px;
+    padding-top: 25px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 14px;
+}
+
+div.sidebarSection {
+    margin-bottom: 30px;
+}
