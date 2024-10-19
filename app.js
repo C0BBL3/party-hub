@@ -99,7 +99,7 @@ function initApp(app) {
     app.set('view engine', 'ejs');
 
 
-    let screens = ['host', 'login', 'main', 'map', 'party', 'settings'];
+    let screens = ['main', 'host', 'login', 'map', 'party', 'settings'];
 
     let viewDirectories = [ path.join(__dirname, 'public') ];
 
