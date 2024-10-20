@@ -10,12 +10,12 @@
     --success-color: #5cb85c; /* green color a bit too green so need lower contrast green for a success color */
     --red-color: #9c0000; /* also viable for error colors */
     --blue-color: #308CEA;
-    --cyan-color: #00ffff;
+    --dark-blue-color: #287daf;
 	--green-color: #0a0;
     --orange-color: #CC7621;
     --gold-color: #d4af37;
     --purple-color: #909;
-    --pink-color: #ff76ff;
+    --pink-color: #e65aaa; /* #ff76ff; */
     --sidebar-width: 170px;
 }
 
@@ -25,7 +25,7 @@ body {
     background-color: var(--white-color);
     color: var(--grey-color);
     fill: var(--grey-color);
-    font-family: "Futura Light", "Trebuchet MS", Arial, sans-serif;
+    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;;
     user-select: none;
 }
 
@@ -68,9 +68,23 @@ a#logoContainer {
     height: 50px;
 }
 
-a#logoContainer img {
-    height: 40px;
-    padding: 5px;
+a#logoContainer span {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 35px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+a#logoContainer span#logo-p {
+    color: var(--black-color);
+}
+
+a#logoContainer span#logo-h {
+    padding: 2.5px;
+    background-color: var(--pink-color);
+    color: var(--white-color);
+    border-radius: 5px;
 }
 
 div#headerLinks {
@@ -116,6 +130,7 @@ div#userHeader {
     text-transform: uppercase;
     background-color: var(--lightest-grey-color);
     color: var(--black-color);
+    border: 1px solid var(--transparent-black-color);
     font-size: 15px;
     height: 38px !important;
     width: 38px;
@@ -173,7 +188,7 @@ div.headerMenuItem:hover {
 
 div#content {
     position: relative;
-    top: 70px;
+    top: 50px;
 }
 
 div#topNavRight {
