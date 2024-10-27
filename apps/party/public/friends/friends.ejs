@@ -3,8 +3,19 @@
 
 <%- include('../sidebar/sidebar.ejs') %>
 
+<input id="userId" type="hidden" value="<%= user.id %>" /> 
 
 <div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
-
-    
+    <!-- remove the paragraph and ejs elements below when finished with them -->
+    <!-- dont save the object into html itll just say "[Object object]" save specific values you need -->
+    <p id="userData"><%= user.firstName %></p>    
+    <p id="friendsData"><%= friends.length %></p>
+    <p id="requestsData"><%= requests.length %></p>
+    <!-- below is example on how to iterate and create html elements w/ ejs -->
+    <!-- "open angle bracket percent sign" is to indictate js code -->
+    <!-- "open angle bracket percent sign equals sign" is to embed js variable values as text -->
+    <!--always close the ejs with "percent sign close angle bracket" -->
+    <% for (let friend of friends) { %>
+        <p id="friend-<%= friend.id %>"><%= friend.id %></p>
+    <% } %>
 </div>
