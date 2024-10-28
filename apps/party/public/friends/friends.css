@@ -11,5 +11,32 @@
 
 .button {
     float: right;
+    border-style: solid;
     margin-inline: 4px;
+    background-color: white;
+    text-decoration: none;
+}
+
+.accept { 
+    color: seagreen; 
+    border-color: seagreen;
+}
+.decline {
+    color: red; 
+    border-color: red;
+}
+
+.accept:hover {
+    color: white;
+    background-color: seagreen;
+}
+
+.decline:hover {
+    color: white;
+    background-color: red;
+}
+
+.accept:onclick {
+    background-color: darkgreen;
+    color: white;
 }

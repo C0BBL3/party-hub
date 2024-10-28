@@ -30,8 +30,8 @@
             <% for (let request of requests) { %>
                 <p id="request-<%= request.userId %>">
                     <%= request.username %>
-                    <button class="button">decline</button>
-                    <button class="button">accept</button>
+                    <button class="button decline">decline</button>
+                    <button class="button accept">accept</button>
                 </p>
             <% } %>
         </div>
