@@ -214,3 +214,22 @@ class Password {
 }
 
 password = new Password();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const saveButton = document.getElementById('saveButton');
+    const currentPassword = document.getElementById('currentPassword');
+    const newPassword = document.getElementById('newPassword');
+
+    function enableSaveButton() {
+        saveButton.disabled = !(currentPassword.value && newPassword.value);
+    }
+
+    currentPassword.addEventListener('input', enableSaveButton);
+    newPassword.addEventListener('input', enableSaveButton);
+
+    saveButton.addEventListener('click', () => {
+        console.log('Changes saved (non-functional example)');
+        saveButton.disabled = true; // Disable after "saving"
+    });
+});

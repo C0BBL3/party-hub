@@ -3,10 +3,18 @@
 
 <%- include('../sidebar/sidebar.ejs') %>
 
-
 <div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+    <div class="privacy-container">
+        <h2>Privacy Settings</h2>
 
-    <div id="formFrame">
-
+        <div class="privacy-option">
+            <label for="privacySwitch">Account Privacy:</label>
+            <div class="switch">
+                <input type="checkbox" id="privacySwitch" class="switch-input">
+                <label class="switch-label" for="privacySwitch"></label>
+            </div>
+            <!-- Privacy Status Label -->
+            <span id="privacyStatus" class="privacy-status">Public</span>
+        </div>
     </div>
 </div>
