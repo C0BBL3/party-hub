@@ -15,6 +15,7 @@
     margin-inline: 4px;
     background-color: white;
     text-decoration: none;
+    border-radius: 4px;
 }
 
 .accept { 
@@ -36,7 +37,12 @@
     background-color: red;
 }
 
-.accept:onclick {
+.accept:active {
     background-color: darkgreen;
-    color: white;
+    border-color: darkgreen;
+}
+
+.decline:active {
+    background-color: darkred;
+    border-color: darkred;
 }
