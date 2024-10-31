@@ -5,6 +5,6 @@ const Middleware = require('../../../../middleware/views/main');
 
 const BASE_PATH = '/party';
 
-router.get(`${BASE_PATH}/rsvp`, Middleware.checkIsHost, Controller.render);
+router.get(`${BASE_PATH}/rsvp`, Middleware.checkIsHostOrPatron, Controller.render);
 
 module.exports = router;

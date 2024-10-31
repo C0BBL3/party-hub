@@ -1,5 +1,8 @@
 const db = require('../../../utils/database');
 
+const crypto = require('crypto');
+const scryptAsync = require('scrypt-async');
+
 class SignupService {
     static generatePassword(length = 8) {
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -31,18 +34,73 @@ class SignupService {
         });
     }  
 
+    static async createPatronAccount(patron) {
+        patron.isPatron = 1;
+        let result = await db.insert('user', patron);
+
+        return result.rows.insertId;
+    }
+
     static async getUserById(id) {
+        const result = await db.execute(`
+            SELECT 
+                *
+            FROM 
+                user                  
+            WHERE                
+                id = [id];`,
+            {
+                id
+            }
+        );
+
+        if (result.rows.length === 1) {
+            const row = result.rows[0];
+            const user = row.user;
+
+            return user;
+        }
+
+        return null;
+    }
+
+    static async getUserByUsername(username) {
         let result = await db.execute(`
             SELECT
-                user.*,
+                *
             
             FROM
                 user 
 
             WHERE
-                user.id = [id];`, 
+                username = [username];`, 
             { 
-                id 
+                username
+            }
+        );
+
+        if (result.rows.length === 1) {
+            const row = result.rows[0];
+            const user = row.user;
+
+            return user;
+        }
+
+        return null;
+    }
+
+    static async getUserByEmail(email) {
+        let result = await db.execute(`
+            SELECT
+                *
+            
+            FROM
+                user 
+
+            WHERE
+                email = [email];`, 
+            { 
+                email
             }
         );
 

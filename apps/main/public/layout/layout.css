@@ -233,3 +233,22 @@ span#signUpButton:hover {
 div#container {
     width: 100%
 }
+
+.inputBox {
+    text-align: left;
+    font-size: 14px;
+    padding: 10px 15px;
+    border: 0;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    border-radius: 5px;
+    background-color: var(--whiite-color);
+    color: var(--black-color);
+    border: 1px solid var(--grey-color);
+}
+
+.inputBox-error {
+    border-color: var(--pink-color) !important;
+    border-width: 2px !important;
+    padding: 9px 14px !important;
+}

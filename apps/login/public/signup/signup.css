@@ -1,3 +1,7 @@
+
+body::-webkit-scrollbar { display: none; }
+body::-moz-scrollbar { width: 0; }
+
 .formField {
     width: 260px !important;
 }
@@ -13,4 +17,227 @@
 
 .togglePassword:hover {
     color: rgb(128, 128, 128);
+}
+
+#title-card {
+    margin: 0px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    z-index: 3;
+}
+
+#title-card h2 {
+    width: fit-content;
+    margin: auto;
+}
+
+#errorMessage {
+    color: var(--pink-color);
+    height: 35px;
+    width: fit-content;
+    margin: auto;
+}
+
+.screen {
+    width: 400px;
+    margin: auto;
+    transition: transform 0.3s ease-in-out;
+    transform: translate3d(0vw, 0, 0);
+
+}
+
+.enter, .enterLeft, .leaveLeft, .enterRight, .leaveRight {
+    position: absolute;
+    top: 90px;
+    left: calc(50% - 200px);
+}
+
+.enterLeft, .leaveLeft {
+    transform: translate3d(-100vw, 0, 0);
+}
+
+.enterRight, .leaveRight {
+    transform: translate3d(100vw, 0, 0);
+}
+
+#whoAreYou-inputBoxes-text {
+    font-size: 16px;
+    color: var(--black-color);
+}
+
+#enterAccountInformation-buttons {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 20px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+#enterAccountInformation-nextButton {
+    width: 90%;
+    background: var(--pink-color);
+    color: var(--white-color);
+    font-weight: bold;
+}
+
+.backButton {
+    display: block;
+    width: calc(90% - 4px);;
+    max-width: 358px;
+	padding: 2px 0px 4px 0px;
+    background: #00000000;
+	color: var(--black-color);
+    border: 1px solid var(--grey-color);
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
+}
+
+#forgotPassword {
+    color: var(--pink-color);
+    font-size: 12px;
+}
+
+form div {
+    margin: auto;
+}
+
+.smallText {
+    color: var(--black-color);
+    font-size: 12px;
+    text-align: justify;
+    margin: auto;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    width: 360px;
+}
+
+.smallText p {
+    margin: 0;
+    text-align: justify;
+}
+
+div.buttons {
+    max-width: 360px;
+    margin: auto;
+    margin-top: 20px;
+    height: 75px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+div.button {
+    width: 47.5%;
+    display: block;
+    padding: 4px 0px 7px 0px;
+    background: #00000000;
+    color: var(--black-color);
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.disabled {
+    background-color: #e65aaaaa !important;
+    cursor: default !important;
+}
+
+div.buttons div.nextButton {
+    background-color: var(--pink-color);
+    color: var(--white-color);
+    font-weight: bold;
+}
+
+#tellUsAboutYourself-description-input {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--grey-color);
+    min-height: 50px;
+    height: 200px;
+    max-height: 400px;
+    width: 328px;
+    resize: vertical;
+    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;
+    text-align: justify;
+}
+
+div.requirements {
+    font-size: 12px;
+}
+
+div.check, div.cross { 
+    display: inline;
+}
+
+div.check svg, div.cross svg { 
+    margin-left: 3px;
+    transform: translate(0px, 2px);
+    height: 12px; 
+}
+
+div.check path {
+    fill: #0b0;
+}
+
+div.cross path {
+    fill: red;
+}
+
+.loading-GIF-outer {
+    margin: 0;
+    width: 20px;
+    height: 10px;
+    display: inline-block;
+    overflow: visible;
+    background: none;
+}
+
+.loading-GIF-inner {
+    margin-top: -5px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateZ(0) scale(0.2);
+    backface-visibility: hidden;
+    transform-origin: 0 0;
+}
+
+@keyframes loading-GIF-inner {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.loading-GIF-inner div {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 10px solid rgb(64, 64, 64);
+    /* var(--black-color); */
+    border-top-color: transparent;
+    border-radius: 50%;
+}
+
+.loading-GIF-inner div {
+    animation: loading-GIF-inner 1s linear infinite;
+    top: 50px;
+    left: 50px
+}
+
+.loading-GIF-inner div {
+    box-sizing: content-box;
 }

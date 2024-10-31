@@ -14,3 +14,79 @@
 .togglePassword:hover {
     color: rgb(128, 128, 128);
 }
+
+#title-card {
+    margin: 0px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    z-index: 3;
+}
+
+#title-card h2 {
+    width: fit-content;
+    margin: auto;
+}
+
+#errorMessage {
+    color: var(--pink-color);
+    height: 35px;
+    width: fit-content;
+    margin: auto;
+}
+
+#inputBoxes {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    height: 135px;
+    margin: auto;
+    flex-direction: column;
+}
+
+#buttons {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 20px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+#loginButton {
+    display: block;
+    width: 90%;
+    padding: 4px 0px 7px 0px;
+    background: var(--pink-color);
+    color: var(--white-color);
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+#signUpButton2 {
+    display: block;
+    width: calc(90% - 4px);;
+    max-width: 358px;
+	padding: 2px 0px 4px 0px;
+    background: #00000000;
+	color: var(--black-color);
+    border: 1px solid var(--grey-color);
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
+}
+
+#forgotPassword {
+    color: var(--pink-color);
+    font-size: 12.5px;
+}
+
+form div {
+    margin: auto;
+}

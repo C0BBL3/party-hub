@@ -1,216 +1,46 @@
-class Password {
+class LoginProcess {
     constructor() {
-        document.body.onload = this.init.bind(this);      
+        document.body.onload = this.init.bind(this);
     }
-    
-    init() {        
-        this.userId = parseInt($('userId').value);
 
-
-        this.currentPasswordTextbox = $('currentPasswordTextbox');
-        this.currentPasswordErrorMessage = $('currentPasswordErrorMessage');
-
-        this.toggleCurrentPassword = $('toggleCurrentPassword');
-
-        if (this.toggleCurrentPassword) {
-            this.toggleCurrentPassword.onclick = this.onToggleCurrentPassword.bind(this);
-        }
-
-        this.requireCurrentPassword = this.currentPasswordTextbox ? true : false;
-
-
-        this.newPasswordTextbox = $('newPasswordTextbox');
+    init() {
+        this.errorMessage = $('errorMessage');
         
-        this.toggleNewPassword = $('toggleNewPassword');
-        this.toggleNewPassword.onclick = this.onToggleNewPassword.bind(this);
+        this.usernameOrEmailInput = $('usernameOrEmail-input');
+        this.usernameOrEmailInput.onkeyup = () => { $('usernameOrEmail-input').classList.remove('inputBox-error'); }
+
+        this.passwordInput = $('password-input');
+        this.passwordInput.onkeyup = () => { $('password-input').classList.remove('inputBox-error'); }
 
 
-        this.newPasswordErrorMessage = $('newPasswordErrorMessage');
-
-        this.saveButton = $('saveButton');
-        this.saveButton.onclick = this.onMouseDownSaveButton.bind(this);
-
-        this.disableSaveButton();
-
-        if (this.requireCurrentPassword) {
-            this.monitorForUpdates(this.currentPasswordTextbox);
-        }
-
-        this.monitorForUpdates(this.newPasswordTextbox);
+        this.loginButton = $('loginButton');
+        this.loginButton.onmousedown = this.onClickLoginButton.bind(this);
     }
 
-    onToggleCurrentPassword(event) {
-        const type = this.currentPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.currentPasswordTextbox.setAttribute('type', type);
+    async onClickLoginButton(event) {
+        this.errorMessage.innerHTML = '';
 
-        this.toggleCurrentPassword.classList.toggle('fa-eye-slash');
-    }
-
-    onToggleNewPassword(event) {
-        const type = this.newPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.newPasswordTextbox.setAttribute('type', type);
-
-        this.toggleNewPassword.classList.toggle('fa-eye-slash');
-    }
-
-    monitorForUpdates(input) {
-        input.onchange = this.processUpdates.bind(this);
-        input.onkeyup = this.processUpdates.bind(this); 
-        input.onpaste = this.processUpdates.bind(this); 
-    }
-
-    processUpdates(evt) {
-        let data = this.getUpdatedData();
-
-        if (this.requireCurrentPassword) {            
-            if (data.currentPassword.length === 0) {
-                this.toggleCurrentPassword.style.visibility = 'hidden';
-                this.disableSaveButton();
-                return;
-            } else {
-                this.toggleCurrentPassword.style.visibility = 'visible';
-            }
-        }
+        $('wrap').style.cursor = 'progress';
         
-        if (data.newPassword.length === 0) {
-            this.toggleNewPassword.style.visibility = 'hidden';
-            this.disableSaveButton();            
-            return;
+        let process = await api.login.process(this.usernameOrEmailInput.value, this.passwordInput.value);
+
+        if (process.result) {
+            setTimeout(() => { $('wrap').style.cursor = 'auto'; window.location.href = '/party/feed'; }, 750);
         } else {
-            this.toggleNewPassword.style.visibility = 'visible';
-        }
- 
-        let numChanges = Object.keys(data).length;
+            this.errorMessage.innerHTML = process.errorMessage;
 
-        if (numChanges > 0) {
-            this.enableSaveButton();
-        } else {
-            this.hideFieldError('currentPassword');
-            this.hideFieldError('newPassword');
-
-            this.disableSaveButton();
+            this.usernameOrEmailInput.classList.add('inputBox-error');
+            this.passwordInput.classList.add('inputBox-error');
         }
     }
 
-    async onMouseDownSaveButton(evt) {
-        if (this.saveButton.enabled) {
-            let data = this.getUpdatedData();
-
-            if (this.validateData(data)) {
-                this.hideFieldErrors();
-
-                this.saveButton.innerHTML = 'Saving Changes...';  
-
-                data.userId = this.userId;
-
-                let response = await APISync.updatePassword(data);
-
-                if (!response.error) {
-                    this.disableSaveButton('Changes Saved');      
-
-                    if (this.requireCurrentPassword) {
-                        this.updateValue(data, 'currentPassword');
-                    }
-
-                    this.updateValue(data, 'newPassword');
-                } else {
-
-                    this.disableSaveButton();
-
-                    let error = response.error;
-                    this.showFieldError(error.fieldName, error.message);
-                }
-            } else {
-                this.disableSaveButton();
-            }
-        }
-    }
-
-    updateValue(data, fieldName) {
-        this[fieldName] = data[fieldName] && data[fieldName] !== this[fieldName] ? data[fieldName] : this[fieldName];
-    }
-
-    getUpdatedData() {
-        let data = {};
-
-        if (this.requireCurrentPassword) {
-            let currentPassword = this.currentPasswordTextbox.value.trim();
-            if (currentPassword !== this.currentPassword) {
-                data.currentPassword = currentPassword;
-            }
-        }
-
-        let newPassword = this.newPasswordTextbox.value.trim();
-        if (newPassword !== this.newPassword) {
-            data.newPassword = newPassword;
-        }
-
-        return data;
-    }
-
-    enableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = true;
-        this.saveButton.classList.add('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
-    }
-
-    disableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = false;
-        this.saveButton.classList.remove('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
-    }
-
-    validateData(data) {
-        let valid = true;
-
-        if (this.requireCurrentPassword) {
-            if (!this.validatePasswordField(data, 'currentPassword')) { valid = false; }
-        }
-
-        if (!this.validatePasswordField(data, 'newPassword')) { valid = false; }
-
-        return valid;
-    }
-
-    validatePasswordField(fieldName, data) {
-        if (!data.hasOwnProperty(fieldName)) { return true; }
-
-        if (!this.validatePassword(data[fieldName])) {
-            let errorMessage = 'Passwords must be between 8 and 30 characters';
-            this.showFieldError(fieldName, errorMessage);
-            return false 
-        } else {
-            this.hideFieldError(fieldName);
-            return true;
-        }
-    }
-
-    validatePassword(password) {
-        if (password.length < 8 || password.length > 30) {  
-            return false;
-        }
-
-        return true;
-    }
-    
-    showFieldError(fieldName, errorMessage) {
-        this[`${fieldName}Textbox`].classList.add('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = errorMessage;
-        this[`${fieldName}ErrorMessage`].style.display = 'block';
-    }
-
-    hideFieldError(fieldName) {
-        this[`${fieldName}Textbox`].classList.remove('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = '';
-        this[`${fieldName}ErrorMessage`].style.display = 'none';
-    }
-
-    hideFieldErrors() {
-        if (this.requireCurrentPassword) {
-            this.hideFieldError('currentPassword');
-        }
-        this.hideFieldError('newPassword');
+    async delay(timeMS) {
+        return new Promise((resolve, reject) => {
+            setTimeout((evt) => {
+                resolve(null);
+            }, timeMS);
+        });
     }
 }
 
-password = new Password();
+loginProcess = new LoginProcess();

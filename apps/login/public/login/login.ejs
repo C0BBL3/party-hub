@@ -1,15 +1,30 @@
 
     
 <link rel="stylesheet" href="../login/login.css">
-<script type="text/javascript" src="../login/login.js"></script>
+<script type="text/javascript" src="login.js"></script>
+<script type="text/javascript" src="login-api.js"></script>
 
 <div id="container">
-    <div id="formFrame">
-
-        <div class="formHeader">Login</div>
-
-        <div id="buttonBar">
-            <a id="loginButton" class="button" href="#">Login</a>
+    <header id="title-card" class="title-card">
+        <h2>LOG IN</h2>
+    </header>
+    <div id="errorMessage" class="errorMessage"></div>
+    <form id="inputBoxes">
+        <div style="text-align: left; width: 90%">
+            <div id="inputBoxes-text">ACCOUNT INFORMATION</div>
         </div>
+        <div style="width: 90%">
+            <input id="usernameOrEmail-input" class="inputBox" type="text" name="username" autocomplete="username" required="" placeholder="Username or Email">
+        </div>
+        <div style="width: 90%">
+            <input id="password-input" class="inputBox" type="password" name="password" autocomplete="current-password" required="" placeholder="Password">
+        </div>
+        <div style="text-align: left; width: 90%; visibility: hidden;">
+            <div id="forgotPassword">Forgot your password?</div>
+        </div>
+    </form>
+    <div id="buttons">
+        <div id="loginButton" class="mediumButton">Log in</div>
+        <div id="signUpButton2" class="intermediateButton" onmousedown="window.location.href = '/signup';">Create an account</div>
     </div>
 </div>

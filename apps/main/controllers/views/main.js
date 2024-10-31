@@ -1,6 +1,7 @@
 class MainController {
     static sessionExpired(req, res) {
         res.render('session-expired/session-expired', {
+            user: null,
             hideHeaderComplete: true
         });
     }

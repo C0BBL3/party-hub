@@ -1,14 +1,182 @@
 <link rel="stylesheet" href="../signup/signup.css">
-<script type="text/javascript" src="../signup/signup.js"></script>
+<script type="text/javascript" src="signup.js"></script>
+<script type="text/javascript" src="signup-api.js"></script>
 
 <div id="container">
-    <div id="formFrame">
+    <header id="title-card" class="title-card">
+        <h2>SIGN UP</h2>
+    </header>
+    <div id="errorMessage" class="errorMessage"></div>
+    <div id="enterAccountInformation" class="screen">
+        <form id="enterAccountInformation-inputBoxes">
+            <div style="text-align: left; width: 90%; margin-bottom: 5px;">
+                <div id="enterAccountInformation-inputBoxes-text">ENTER ACCOUNT INFORMATION</div>
+            </div>
+            <div style="width: 90%">
+                <input id="enterAccountInformation-username-input" class="inputBox" type="text" name="username" placeholder="Username" maxlength="64" onkeypress="return event.charCode != 32" required>
+            </div>
+            <div class="smallText">
+                <p>You can always change it later!</p>
+            </div>
+            <div class="requirements" id="usernameRequirements" style="display: none;">
+                <ul>
+                    <li id="usernameNotUniqueLoading" style="display: none;">
+                        Username must be unique. 
+                        <div class="loading-GIF-outer">
+                            <div class="loading-GIF-inner">
+                                <div></div>
+                            </div>
+                        </div> 
+                    </li>
+    
+                    <li id="usernameNotUnique" style="color: red; display: none;">
+                        Username must be unique
+                        <div id="usernameNotUniqueSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="usernameUnique" style="color: #0b0; display: none;">
+                        Username must be unique
+                        <div id="usernameUniqueSVG" class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="usernameBad" style="color: red; display: none;">
+                        Username must be at least 3 characters
+                        <div id="usernameNotUniqueSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="usernameGood" style="color: #0b0; display: none;">
+                        Username must be at least 3 characters
+                        <div id="usernameUniqueSVG"class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div style="width: 90%">
+                <input id="enterAccountInformation-password-input" class="inputBox" type="password" name="password" placeholder="Password" maxlength="128" onkeypress="return event.charCode != 32" required>
+            </div>
+            <!-- <div class="smallText">
+                <p>Password must be at least 6 characters, and have at least one non-alpha character.</p>
+            </div> -->
+            <div class="requirements" id="passwordRequirements" style="display: none;">
+                <ul>
+                    <li id="passwordBad" style="color: red; display: none;">
+                        Password at least 6 characters
+                        <div id="usernameBadSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="passwordGood" style="color: #0b0; display: none;">
+                        Password at least 6 characters
+                        <div id="passwordGoodSVG" class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="passwordAlphaBad" style="color: red; display: none;">
+                        Password contains at least one non-alpha character
+                        <div id="passwordBadSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="passwordAlphaGood" style="color: #0b0; display: none;">
+                        Password contains at least one non-alpha character
+                        <div id="passwordGoodSVG" class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>        
+        <div id="enterAccountInformation-buttons">
+            <div class="button" id="enterAccountInformation-nextButton">NEXT</div>
+        </div>
+    </div>
+    <div id="whoAreYou" class="screen" style="display: none;">
+        <form id="whoAreYou-inputBoxes">
+            <div style="text-align: left; width: 90%">
+                <div id="whoAreYou-inputBoxes-text">WHO ARE YOU</div>
+            </div>
+            <div style="width: 90%">
+                <input id="whoAreYou-firstName-input" class="inputBox" type="text" name="firstName" placeholder="First Name" maxlength="128" style="margin-bottom: 5px;">
+                <input id="whoAreYou-lastName-input" class="inputBox" type="text" name="lastName" placeholder="Last Name" maxlength="128">
+            </div>
+            <div class="smallText">
+                <p>Entering your name is optional!</p>
+            </div>
+            <div style="width: 90%">
+                <input id="whoAreYou-email-input" class="inputBox" type="email" name="email" placeholder="Email" maxlength="128" onkeypress="return event.charCode != 32" required>
+            </div>
+            <div class="smallText">
+                <p>Although your email is required!</p>
+            </div>
+            <div class="requirements" id="emailRequirements" style="display: none;">
+                <ul>
+                    <li id="emailNotUniqueLoading" style="display: none;">
+                        Email available
+                        <div class="loading-GIF-outer">
+                            <div class="loading-GIF-inner">
+                                <div></div>
+                            </div>
+                        </div> 
+                    </li>
+    
+                    <li id="emailNotUnique" style="color: red; display: none;">
+                        Email available
+                        <div id="emailNotUniqueSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="emailUnique" style="color: #0b0; display: none;">
+                        Email available
+                        <div id="emailUniqueSVG" class="check">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>
+                        </div>
+                    </li>
+    
+                    <li id="emailBad" style="color: red; display: none;">
+                        Must be valid email
+                        <div id="emailNotUniqueSVG" class="cross">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="buttons" style="margin-top: 5px;">
+            <div class="button nextButton" id="whoAreYou-nextButton">NEXT</div>
+            <div class="button backButton" id="whoAreYou-backButton">BACK</div>
+        </div>
+    </div>
+    
+    <div id="tellUsAboutYourself" class="screen" style="display: none;">
+        <form id="tellUsAboutYourself-inputBoxes">
+            <div style="text-align: left; width: 90%; margin-bottom: 5px;">
+                <div id="tellUsAboutYourself-inputBoxes-text">TELL US ABOUT YOURSELF</div>
+            </div>
+            <div style="width: 90%">
+                <input id="tellUsAboutYourself-vibes-input" class="inputBox" type="text" name="vibes" placeholder="What kind of vibes do you give off? (Optional)" >
+            </div>
+            <div class="smallText">
+                <p>You can always add more later!</p>
+            </div>
+            <div style="width: 90%">
+                <textarea id="tellUsAboutYourself-description-input" placeholder="Describe yourself... (Optional)" wrap="soft"></textarea>
+            </div>
+        </form>
 
-        <div class="formHeader">Login</div>
-        
-
-        <div id="buttonBar">
-            <a id="saveButton" class="button" href="#">Continue</a>
+        <div class="buttons">
+            <div class="button nextButton" id="tellUsAboutYourself-finishButton">FINISH</div>
+            <div class="button backButton" id="tellUsAboutYourself-backButton">BACK</div>
         </div>
     </div>
 </div>
