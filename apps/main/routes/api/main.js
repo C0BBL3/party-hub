@@ -5,6 +5,6 @@ const MainAPIController = require('../../controllers/api/main');
 
 router.post('/api/switch-user-account', APIMiddleware.checkIsAdminOrSupervisorMode, MainAPIController.switchUserAccount);
 
-router.post('/api/*', MainAPIController.unauthorizedAccess); // wildcard: must be at the end of the file
+// router.post('/api/*', MainAPIController.unauthorizedAccess); // wildcard: must be at the end of the file
 
 module.exports = router;

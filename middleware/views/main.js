@@ -12,7 +12,7 @@ class Middleware {
     static checkIsPatron(req, res, next) {
         if (!req.session.user) {
             res.redirect('/session-expired');
-        } else if (req.session.user && (req.session.user.isPatron || res.session.user.isAdmin)) {
+        } else if (req.session.user && (req.session.user.isPatron || req.session.user.isAdmin)) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -22,7 +22,7 @@ class Middleware {
     static checkIsHost(req, res, next) {
         if (!req.session.user) {
             res.redirect('/session-expired');
-        } else if (req.session.user && (req.session.user.isHost || res.session.user.isAdmin)) {
+        } else if (req.session.user && (req.session.user.isHost || req.session.user.isAdmin)) {
             next();
         } else {
             res.redirect('/unauthorized-access');
@@ -32,7 +32,7 @@ class Middleware {
     static checkIsHostOrPatron(req, res, next) {
         if (!req.session.user) {
             res.redirect('/session-expired');
-        } else if (req.session.user && (req.session.user.isHost || req.session.user.isPatron || res.session.user.isAdmin)) {
+        } else if (req.session.user && (req.session.user.isHost || req.session.user.isPatron || req.session.user.isAdmin)) {
             next();
         } else {
             res.redirect('/unauthorized-access');

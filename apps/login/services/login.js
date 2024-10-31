@@ -1,5 +1,8 @@
 const db = require('../../../utils/database');
 
+const crypto = require('crypto');
+const scryptAsync = require('scrypt-async');
+
 class LoginService {
     static async getUserByUsernameOrEmail(usernameOrEmail) {
         const result = await db.execute(`

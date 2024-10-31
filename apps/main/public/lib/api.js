@@ -1,28 +1,6 @@
-var API_BASE_URL = '/api/';
+const API_BASE_URL = '/api';
 
-var api = {
-    get: async (url) => {
-        return new Promise((resolve, reject) => {
-            this._get(url, (error, response) => {
-                if (error) {
-                    resolve(null);
-                } else {
-                    resolve(response);
-                }
-            });
-        });
-    },
-    post: async (url, data) => {
-        return new Promise((resolve, reject) => {
-            this._post(url, data, (error, response) => {
-                if (error) {
-                    resolve(null);
-                } else {
-                    resolve(response);
-                }
-            });
-        });
-    },
+let api = {
     _get: (url, callback) => {
         Core.get(url, (error, response) => {
             callback(error, response);
@@ -38,6 +16,30 @@ var api = {
         });
     },    
 };
+api.get = async (url) => {
+    return new Promise((resolve, reject) => {
+        api._get(url, (error, response) => {
+            if (error) {
+                resolve(null);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+};
+
+api.post = async (url, data) => {
+    return new Promise((resolve, reject) => {
+        api._post(url, data, (error, response) => {
+            if (error) {
+                resolve(null);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+};
+
 
 
  

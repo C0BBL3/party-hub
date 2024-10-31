@@ -6,6 +6,6 @@ const Middleware = require('../../../../middleware/views/main');
 const BASE_PATH = '/logout';
 
 // POST 
-router.get(BASE_PATH, Middleware.checkIsHostOrPatron, Controller.render);
+router.get(BASE_PATH, Middleware.checkAuth, Controller.render);
 
 module.exports = router;

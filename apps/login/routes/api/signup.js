@@ -10,4 +10,8 @@ router.post(`${BASE_PATH}/admin`, APIMiddleware.checkIsAdminOrSupervisorMode, Co
 router.post(`${BASE_PATH}/host`, Controller.createHostAccount);
 router.post(`${BASE_PATH}/patron`, Controller.createPatronAccount);
 
+// GET
+router.get(`${BASE_PATH}/check-if-unique-username/:username`, Controller.checkIfUniqueUsername);
+router.get(`${BASE_PATH}/check-if-unique-email/:email`, Controller.checkIfUniqueEmail);
+
 module.exports = router;

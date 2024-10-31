@@ -1,66 +1,7 @@
-const SignupService = require("../../services/user");
+const SignupService = require("../../services/signup");
+const capitalizer = require("../../../../utils/capitilzer");
 
 class SignupAPIController {
-    static async createAdminAccount(req, res) {
-        const admin = await this.parseAccountData(req.body.data);
-        admin.isAdmin = 1;
-        
-        const userId = await SignupService.createAdminAccount(admin);   
-
-        if (userId) {
-            this.loginUser(req, userId);
-
-            res.send({
-                result: true,
-                userId
-            });
-        } else {
-            res.send({
-                result: false
-            });
-        }
-    }
-
-    static async createHostAccount(req, res) {
-        const host = await this.parseAccountData(req.body.data);
-        host.isHost = 1;
-
-        const userId = await SignupService.createHostAccount(host);   
-
-        if (userId) {
-            this.loginUser(req, userId);
-            
-            res.send({
-                result: true,
-                userId
-            });
-        } else {
-            res.send({
-                result: false
-            });
-        }
-    }
-
-    static async createPatronAccount(req, res) {
-        const patron = await this.parseAccountData(req.body.data);
-        patron.isPatron = 1;
-        
-        const userId = await SignupService.createPatronAccount(patron);   
-
-        if (userId) {
-            this.loginUser(req, userId);
-
-            res.send({
-                result: true,
-                userId
-            });
-        } else {
-            res.send({
-                result: false
-            });
-        }
-    }
-
     static async parseAccountData(data) {
         const account = {
             firstName: capitalizer.fixCapitalization(data.firstName),
@@ -86,10 +27,88 @@ class SignupAPIController {
         return account;
     }
 
-    static async loginUser(req, userId) {
-        const user = await SignupService.getUserById(userId);
-        req.session.user = user;
-        return user;
+    static async createAdminAccount(req, res) {
+        const admin = await SignupAPIController.parseAccountData(req.body);
+        admin.isAdmin = 1;
+        
+        const userId = await SignupService.createAdminAccount(admin);   
+
+        if (userId) {
+            const user = await SignupService.getUserById(userId);
+       
+            req.session.user = user;
+
+            res.send({
+                result: true,
+                userId
+            });
+        } else {
+            res.send({
+                result: false
+            });
+        }
+    }
+
+    static async createHostAccount(req, res) {
+        const host = await SignupAPIController.parseAccountData(req.body);
+        host.isHost = 1;
+
+        const userId = await SignupService.createHostAccount(host);   
+
+        if (userId) {
+            const user = await SignupService.getUserById(userId);
+            
+            req.session.user = user;
+            
+            res.send({
+                result: true,
+                userId
+            });
+        } else {
+            res.send({
+                result: false
+            });
+        }
+    }
+
+    static async createPatronAccount(req, res) {
+        let patron = await SignupAPIController.parseAccountData(req.body);
+        patron.isPatron = 1;
+        
+        const userId = await SignupService.createPatronAccount(patron);   
+
+        if (userId) {
+            const user = await SignupService.getUserById(userId);
+
+            req.session.user = user;
+
+            res.send({
+                result: true,
+                userId
+            });
+        } else {
+            res.send({
+                result: false
+            });
+        }
+    }
+
+    static async checkIfUniqueUsername(req, res) {
+        const username = req.params.username;
+        const user = await SignupService.getUserByUsername(username);
+
+        res.send({
+            result: !user
+        });
+    }
+
+    static async checkIfUniqueEmail(req, res) {
+        const email = req.params.email;
+        const user = await SignupService.getUserByEmail(email);
+
+        res.send({
+            result: !user
+        });
     }
 }
 

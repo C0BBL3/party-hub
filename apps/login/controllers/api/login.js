@@ -9,23 +9,15 @@ class LoginAPIController {
         if (user && user.password === password) { // if user enters correct temp password
             req.session.user = user;
 
-            await SessionService.insertSession({
-                userId: user.id,
-                userAgent: req.headers['user-agent']
-            });
-
             return res.send({
                 result: true
             });
         } else if (user) { // if user exists
             const result = await LoginService.verifyPassword(password, user.salt, user.hash);
 
-            if (result) {
-                await SessionService.insertSession({
-                    userId: user.id,
-                    userAgent: req.headers['user-agent']
-                });
+            req.session.user = user;
 
+            if (result) {
                 return res.send({
                     result: true
                 });
