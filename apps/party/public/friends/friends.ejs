@@ -5,7 +5,7 @@
 
 <input id="userId" type="hidden" value="<%= user.id %>" /> 
 
-<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px) - 30px); margin-left: calc(var(--sidebar-width) + 30px);">
+<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
     <!-- remove the paragraph and ejs elements below when finished with them -->
     <!-- dont save the object into html itll just say "[Object object]" save specific values you need -->
     <!-- <p id="userData">USERNAME: <%= user.firstName %></p>    
@@ -21,8 +21,14 @@
     <div class="row">
         <div class="column">
             <h3>Friends</h3>
+            <form>
+                <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search">
+            </form>
             <% for (let friend of friends) { %>
-                <p id="friend-<%= friend.userId %>"><%= friend.username %></p>
+                <p id="friend-<%= friend.userId %>">
+                    <%= friend.username %>
+                    <button class="button message">message</button>
+                </p>
             <% } %>
         </div>
         <div class="column">

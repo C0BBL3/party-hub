@@ -1,6 +1,7 @@
 .column {
     float: left;
-    width: 50%;
+    width: calc(50% - 30px);
+    margin-right: 30px;
 }
 
 .row::after {
@@ -27,6 +28,11 @@
     border-color: red;
 }
 
+.message {
+    color: orchid;
+    border-color: orchid;
+}
+
 .accept:hover {
     color: white;
     background-color: seagreen;
@@ -37,6 +43,11 @@
     background-color: red;
 }
 
+.message:hover {
+    color: white;
+    background-color: orchid;
+}
+
 .accept:active {
     background-color: darkgreen;
     border-color: darkgreen;
@@ -45,4 +56,17 @@
 .decline:active {
     background-color: darkred;
     border-color: darkred;
+}
+
+.message:active {
+    background-color: darkorchid;
+    border-color: darkorchid;
+}
+
+.search {
+    border: none;
+    background-color: lightgray;
+    border-radius: 4px;
+    width: calc(100% - 12px);
+    padding: 4px;
 }
