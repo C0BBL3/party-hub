@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../friends/friends.css">
 <script type="text/javascript" src="../friends/friends.js"></script>
+<script type="text/javascript" src="../friends/friends-api.js"></script>
 
 <%- include('../sidebar/sidebar.ejs') %>
 
@@ -24,22 +25,26 @@
             <form>
                 <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search">
             </form>
-            <% for (let friend of friends) { %>
-                <p id="friend-<%= friend.userId %>">
-                    <%= friend.username %>
-                    <button class="button message">message</button>
-                </p>
-            <% } %>
+            <div id="friendsContainer">
+                <% for (let friend of friends) { %>
+                    <p id="friend-<%= friend.userId %>">
+                        <%= friend.username %>
+                        <button id="friend-<%= friend.userId %>-messageButton" class="button message">message</button>
+                    </p>
+                <% } %>
+            </div>
         </div>
         <div class="column">
             <h3>Requests</h3>
-            <% for (let request of requests) { %>
-                <p id="request-<%= request.userId %>">
-                    <%= request.username %>
-                    <button class="button decline">decline</button>
-                    <button class="button accept">accept</button>
-                </p>
-            <% } %>
+            <div id="requestsContainer">
+                <% for (let request of requests) { %>
+                    <p id="request-<%= request.userId %>">
+                        <%= request.username %>
+                        <button id="request-<%= request.userId %>-declineButton" class="button decline">decline</button>
+                        <button id="request-<%= request.userId %>-acceptButton" class="button accept">accept</button>
+                    </p>
+                <% } %>
+            </div>
         </div>
     </div>
 </div>

@@ -143,6 +143,75 @@ class FriendsService {
 
         return !result.error;
     }
+
+    static async searchFriends(userId, search) {
+        let result = await db.execute(`
+            SELECT 
+                userOne.id,
+                userOne.username,
+                userTwo.id,
+                userTwo.username,
+                friend.status
+                
+            FROM 
+                friend 
+
+                INNER JOIN user userOne ON
+                    userOne.id = friend.userOneId
+
+                INNER JOIN user userTwo ON
+                    userTwo.id = friend.userTwoId
+            
+            WHERE 
+                friend.status = 'accepted' AND
+                (
+                    friend.userOneId = [userId] OR
+                    friend.userTwoId = [userId]
+                ) 
+                    AND
+                (
+                    userOne.username like [search1] OR
+                    userOne.username like [search2] OR
+                    userOne.firstName like [search3] OR
+                    userOne.firstName like [search4] OR
+                    userTwo.username like [search5] OR
+                    userTwo.username like [search6] OR
+                    userTwo.firstName like [search7] OR
+                    userTwo.firstName like [search8]
+                );`,
+            {
+                userId,
+                search1: search + '%',
+                search2: '%' + search + '%',
+                search3: search + '%',
+                search4: '%' + search + '%',
+                search5: search + '%',
+                search6: '%' + search + '%',
+                search7: search + '%',
+                search8: '%' + search + '%'
+            }
+        );
+
+        if (!result.rows.length) {
+            return [];
+        }
+
+        return result.rows.map(row => {
+            if (row.userTwo.id != userId) {
+                row.userTwo.status = row.friend.status;
+                return {
+                    userId: row.userTwo.id,
+                    username: row.userTwo.username
+                };
+            } else {
+                row.userOne.status = row.friend.status;
+                return {
+                    userId: row.userOne.id,
+                    username: row.userOne.username
+                };
+            }
+        });
+    }
 }
 
 module.exports = FriendsService;
