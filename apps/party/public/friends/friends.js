@@ -10,6 +10,36 @@ class Friends {
         this.searchBar = $('friendsearch');
         this.searchBar.onkeyup = this.onKeyUpSearchBar.bind(this);
         this.searchBarTimeout = null;
+
+        this.userId = document.getElementById("userId").value
+
+        const request_acceptButtons = document.getElementsByClassName("request-acceptButton");
+        for (let acceptButton of request_acceptButtons) {
+            let buttonId = acceptButton.innerHTML;
+            let id = Number(buttonId.split("-")[1]);
+            document.getElementById(buttonId).onmousedown = this.onAccept.bind(this, id);
+        }
+
+        const request_declineButtons = document.getElementsByClassName("request-declineButton");
+        for (let declineButton of request_declineButtons) {
+            let buttonId = declineButton.innerHTML;
+            let id = Number(buttonId.split("-")[1]);
+            document.getElementById(buttonId).onmousedown = this.onDecline.bind(this, id);
+        }
+    }
+
+    onAccept(friendId) {
+        api.friends.accept(this.userId, friendId);
+        /*let reqContents = this.requestsContainer.innerHTML;
+        let friendContents = this.friendsContainer.innerHTML;
+        this.requestsContainer.innerHTML = reqContents;
+        this.friendsContainer.innerHTML = friendContents;*/
+        //document.location.reload()
+    }
+
+    onDecline(friendId) {
+        api.friends.reject(this.userId, friendId);
+        //document.location.reload()
     }
 
     onKeyUpSearchBar() {

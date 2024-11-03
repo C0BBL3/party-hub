@@ -38,6 +38,8 @@
             <h3>Requests</h3>
             <div id="requestsContainer">
                 <% for (let request of requests) { %>
+                    <div class="request-acceptButton" hidden>request-<%= request.userId %>-acceptButton</div>
+                    <div class="request-declineButton" hidden>request-<%= request.userId %>-declineButton</div>
                     <p id="request-<%= request.userId %>">
                         <%= request.username %>
                         <button id="request-<%= request.userId %>-declineButton" class="button decline">decline</button>
