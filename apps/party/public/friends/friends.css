@@ -33,6 +33,11 @@
     border-color: orchid;
 }
 
+.profile { 
+    color: blue; 
+    border-color: blue;
+}
+
 .accept:hover {
     color: white;
     background-color: seagreen;
@@ -46,6 +51,11 @@
 .request:hover {
     color: white;
     background-color: orchid;
+}
+
+.profile:hover { 
+    color: white; 
+    background-color: blue;
 }
 
 .accept:active {
@@ -63,6 +73,11 @@
     border-color: darkorchid;
 }
 
+.profile:active { 
+    background-color: darkblue;
+    border-color: darkblue;
+}
+
 .search {
     border: none;
     background-color: lightgray;
@@ -72,7 +87,8 @@
 }
 
 #resultsContainer {
-    border-bottom: 2px lightgray solid;
+    visibility: hidden;
+    border-top: 2px lightgray solid;
 }
 
 .loading-GIF-outer {

@@ -7,6 +7,7 @@ class Friends {
         this.friendsContainer = $('friendsContainer');
         this.requestsContainer = $('requestsContainer');
         this.resultsContainer = $('resultsContainer');
+        this.defaultFriendsContainerHTML = this.friendsContainer.innerHTML;
 
         this.searchBar = $('friendsearch');
         this.searchBar.onkeyup = this.onKeyUpSearchBar.bind(this);
@@ -43,8 +44,12 @@ class Friends {
         document.location.reload()
     }
 
+    async onRequest(friendId) {
+        await api.friends.request(this.userId, friendId);
+    }
+
     onKeyUpSearchBar() {
-        this.createLoadingGIFDiv(this.resultsContainer);
+        this.createLoadingGIFDiv(this.friendsContainer);
 
         clearTimeout(this.searchBarTimeout);
         this.searchBarTimeout = setTimeout(this._onKeyUpSearchBar.bind(this), 250);
@@ -52,29 +57,47 @@ class Friends {
 
     async _onKeyUpSearchBar() {
         let query = this.searchBar.value.trim();
-        console.log(query);
         let search = await api.friends.search(query);
 
         this.removeLoadingGIFDiv();
 
         if (search.result) {
             if (search.friends.length == 0) {
-                this.resultsContainer.innerHTML = '<p>Oops... it appears no one goes by that name!</p>';
+                this.friendsContainer.innerHTML = '<p>Oops... it appears no one goes by that name!</p>';
+                this.resultsContainer.style.visibility = "hidden";
             } else {
+                // code for creating layout for requesting friendship from other users
+                this.resultsContainer.innerHTML = '';
+                this.resultsContainer.style.visibility = "visible";
+                let addFriendHeader = document.createElement("h4");
+                addFriendHeader.innerText = "Add Friends";
+                this.resultsContainer.appendChild(addFriendHeader);
                 for (let friend of search.friends) {
                     let friendPara = document.createElement("p");
                     friendPara.innerText = `${friend.username}`;
                     let friendButton = document.createElement("button");
                     friendButton.className = "button request";
                     friendButton.innerText = "request";
+                    friendButton.onmousedown = this.onRequest(friend.userId);
                     friendPara.appendChild(friendButton);
                     this.resultsContainer.appendChild(friendPara);
                 }
+                for (let friend of search.friends) {
+                    let friendPara = document.createElement("p");
+                    friendPara.innerText = `${friend.username}`;
+                    let friendButton = document.createElement("button");
+                    friendButton.className = "button profile";
+                    friendButton.innerText = "profile";
+                    friendPara.appendChild(friendButton);
+                    this.friendsContainer.appendChild(friendPara);
+                }
             }
         } else if (query == '') {
-            this.resultsContainer.innerHTML = '';
+            this.friendsContainer.innerHTML = this.defaultFriendsContainerHTML;
+            this.resultsContainer.style.visibility = "hidden";
         } else {
-            this.resultsContainer.innerHTML = '<p>Oops... there appears to be an error with this query, please try again later!</p>';
+            this.friendsContainer.innerHTML = '<p>Oops... there appears to be an error with this query, please try again later!</p>';
+            this.resultsContainer.style.visibility = "hidden";
         }
     }
 

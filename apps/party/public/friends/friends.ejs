@@ -25,15 +25,15 @@
             <form>
                 <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search" autocomplete="off">
             </form>
-            <div id="resultsContainer"></div>
             <div id="friendsContainer">
                 <% for (let friend of friends) { %>
                     <p id="friend-<%= friend.userId %>">
                         <%= friend.username %>
-                        <!-- <button id="friend-<%= friend.userId %>-messageButton" class="button message">message</button> -->
+                        <button id="friend-<%= friend.userId %>-profileButton" class="button profile">profile</button>
                     </p>
                 <% } %>
             </div>
+            <div id="resultsContainer"></div>
         </div>
         <div class="column">
             <h3>Requests</h3>
