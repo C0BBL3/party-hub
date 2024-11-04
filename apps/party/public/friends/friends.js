@@ -52,6 +52,7 @@ class Friends {
 
     async _onKeyUpSearchBar() {
         let query = this.searchBar.value.trim();
+        console.log(query);
         let search = await api.friends.search(query);
 
         this.removeLoadingGIFDiv();
@@ -70,6 +71,8 @@ class Friends {
                     this.resultsContainer.appendChild(friendPara);
                 }
             }
+        } else if (query == '') {
+            this.resultsContainer.innerHTML = '';
         } else {
             this.resultsContainer.innerHTML = '<p>Oops... there appears to be an error with this query, please try again later!</p>';
         }
