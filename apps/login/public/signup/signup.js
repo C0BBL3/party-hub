@@ -232,6 +232,8 @@ class SignUpProcess {
             email: '',
             vibes: '',
             description: '',
+            isHost: 0,
+            isPatron: 0
         };
 
         this.errorMessage = $('errorMessage');
@@ -265,11 +267,20 @@ class SignUpProcess {
 
         this.onKeyUpEmailTimeout = null;
         
+        // CAT: Choose Account Type
         // EAI: Enter Account Information
         // WAY: Who Are You
         // TUAY: Tell Us About Yourself
         
-        this.screen = 'EAI';
+        this.screen = 'CAT';
+
+        this.cat = $('chooseAccountType');
+
+        this.hostButton = $('chooseAccountType-host');
+        this.hostButton.onclick = this.onClickHostButton.bind(this);
+
+        this.patronButton = $('chooseAccountType-patron');
+        this.patronButton.onclick = this.onClickPatronButton.bind(this);
         
         this.eai = $('enterAccountInformation');
 
@@ -281,6 +292,9 @@ class SignUpProcess {
 
         this.eai_nextButton = $('enterAccountInformation-nextButton');
         this.eai_nextButton.onmousedown = this.onClickEAINextButton.bind(this);
+
+        this.eai_backButton = $('enterAccountInformation-backButton');
+        this.eai_backButton.onmousedown = this.onClickEAIBackButton.bind(this);
 
         this.way = $('whoAreYou');
 
@@ -546,6 +560,54 @@ class SignUpProcess {
         this.eai_nextButton.classList.remove('disabled');
     }
 
+    onClickHostButton(event) {
+        this.data.isHost = 1;
+        this.data.isPatron = 0;
+
+        this.onClickHostOrPatronButton(event);
+    }
+
+    onClickPatronButton(event) {
+        this.data.isHost = 0;
+        this.data.isPatron = 1;
+
+        this.onClickHostOrPatronButton(event);
+    }
+
+    onClickHostOrPatronButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.screen = 'EAI';
+
+        this.eai.classList.add('enterRight');
+        this.eai.style.display = 'block';
+
+        this.cat.classList.add('leaveLeft');
+        
+        let timeout1;
+        timeout1 = setTimeout(this.hideCAT.bind(this, timeout1), transitionTime);
+
+        let timeout2;
+        timeout2 = setTimeout(this.showEAI.bind(this, timeout2), 0); // needs to be async via timeout idk why silly js and css interation ig
+    }
+
+    onClickEAIBackButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.screen = 'CAT';
+
+        this.cat.classList.add('enterLeft');
+        this.cat.style.display = 'block';
+
+        this.eai.classList.add('leaveRight');
+        
+        let timeout1;
+        timeout1 = setTimeout(this.hideEAI.bind(this, timeout1), transitionTime);
+
+        let timeout2;
+        timeout2 = setTimeout(this.showCAT.bind(this, timeout2), 0);// needs to be async via timeout idk why silly js and css interation ig
+    }
+
     onClickEAINextButton(event) {
         this.errorMessage.innerHTML = '';
 
@@ -588,7 +650,6 @@ class SignUpProcess {
         let timeout2;
         timeout2 = setTimeout(this.showWAY.bind(this, timeout2), 0); // needs to be async via timeout idk why silly js and css interation ig
     }
-
 
     onClickWAYNextButton(event) {
         this.errorMessage.innerHTML = '';
@@ -684,6 +745,23 @@ class SignUpProcess {
         }
 
         return data;
+    }
+
+    showCAT(timeout) {
+        clearTimeout(timeout);
+        this.cat.style.display = 'block';
+        this.cat.className = 'screen enter';
+        setTimeout(this.resetCAT.bind(this), transitionTime);
+    }
+
+    hideCAT(timeout) {
+        clearTimeout(timeout);
+        this.cat.style.display = 'none';
+        this.resetEAI();
+    }
+
+    resetCAT() {
+        this.cat.className = 'screen';
     }
 
     showEAI(timeout) {

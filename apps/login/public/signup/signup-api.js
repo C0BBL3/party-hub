@@ -6,6 +6,7 @@ api.signup = {
         return await api.get(`${API_BASE_URL}/signup/check-if-unique-email/${email}`);
     },
     process: async (data) => {
-        return await api.post(`${API_BASE_URL}/signup/patron`, data);
+        const type = (data.isHost && !data.isPatron) ? 'host' : 'patron';
+        return await api.post(`${API_BASE_URL}/signup/${type}`, data);
     }
 };

@@ -68,6 +68,10 @@
     cursor: pointer;
 }
 
+#loginButton:hover {
+    opacity: 0.9;
+}
+
 #signUpButton2 {
     display: block;
     width: calc(90% - 4px);;
@@ -80,6 +84,10 @@
     font-size: 12px;
     margin: 0;
     cursor: pointer;
+}
+
+#signUpButton2:hover {
+    background-color: var(--lightest-grey-color);
 }
 
 #forgotPassword {

@@ -7,7 +7,35 @@
         <h2>SIGN UP</h2>
     </header>
     <div id="errorMessage" class="errorMessage"></div>
-    <div id="enterAccountInformation" class="screen">
+    <div id="chooseAccountType" class="screen">
+        <div id="chooseAccountType-buttons">
+            <div style="text-align: left; width: 90%; margin-bottom: 5px;">
+                <div id="chooseAccountType-buttons-text">START PARTYING</div>
+            </div>
+            <div class="smallText" style="text-align: center;">
+                <p>How will you use PartyHub?</p>
+            </div>
+            <div class="smallText2">
+                <p>Host parties?</p>
+            </div>
+            <div style="width: 90%">
+                <button id="chooseAccountType-host">HOST</button>
+            </div>
+            <div class="smallText2">
+                <p>Attend parties?</p>
+            </div>
+            <div style="width: 90%">
+                <button id="chooseAccountType-patron">PATRON</button>
+            </div>
+        </div>
+        <div class="smallText2" style="text-align: center;">
+            <p style="text-align: center; width: 100%;">Already have an account?</p>
+            <div style="width: 100%;margin: 0;margin-top: 15px;">
+                <a id="chooseAccountType-login" href="/login">LOGIN</a>
+            </div>
+        </div>
+    </div>
+    <div id="enterAccountInformation" class="screen" style="display: none;">
         <form id="enterAccountInformation-inputBoxes">
             <div style="text-align: left; width: 90%; margin-bottom: 5px;">
                 <div id="enterAccountInformation-inputBoxes-text">ENTER ACCOUNT INFORMATION</div>
@@ -96,8 +124,9 @@
                 </ul>
             </div>
         </form>        
-        <div id="enterAccountInformation-buttons">
-            <div class="button" id="enterAccountInformation-nextButton">NEXT</div>
+        <div class="buttons" style="margin-top: 5px;">
+            <div class="button nextButton" id="enterAccountInformation-nextButton">NEXT</div>
+            <div class="button backButton" id="enterAccountInformation-backButton">BACK</div>
         </div>
     </div>
     <div id="whoAreYou" class="screen" style="display: none;">

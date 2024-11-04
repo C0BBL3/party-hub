@@ -61,6 +61,50 @@ body::-moz-scrollbar { width: 0; }
     transform: translate3d(100vw, 0, 0);
 }
 
+.smallText2 {
+    color: var(--black-color);
+    font-size: 12px;
+    text-align: justify;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    width: 360px; 
+}
+
+#chooseAccountType-host, #chooseAccountType-patron {
+    border: none;
+    padding: 12.5px;
+    border-radius: 5px;
+    width: 100%;
+    color: var(--white-color);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#chooseAccountType-host:hover, #chooseAccountType-patron:hover {
+    opacity: 0.9;
+}
+
+#chooseAccountType-host {
+    background-color: var(--pink-color);
+}
+
+#chooseAccountType-patron {
+    background-color: var(--blue-color);
+}
+
+#chooseAccountType-login {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin: auto;
+    cursor: pointer;
+}
+
+#chooseAccountType-login:hover {
+    background-color: var(--lighter-grey-color);
+}
+
 #whoAreYou-inputBoxes-text {
     font-size: 16px;
     color: var(--black-color);
@@ -76,13 +120,6 @@ body::-moz-scrollbar { width: 0; }
     justify-content: space-around;
     align-items: center;
     text-align: center;
-}
-
-#enterAccountInformation-nextButton {
-    width: 90%;
-    background: var(--pink-color);
-    color: var(--white-color);
-    font-weight: bold;
 }
 
 .backButton {
@@ -104,7 +141,7 @@ body::-moz-scrollbar { width: 0; }
     font-size: 12px;
 }
 
-form div {
+div, form div {
     margin: auto;
 }
 
@@ -156,6 +193,14 @@ div.buttons div.nextButton {
     background-color: var(--pink-color);
     color: var(--white-color);
     font-weight: bold;
+}
+
+div.backButton:hover {
+    background-color: var(--lightest-grey-color);
+}
+
+div.nextButton:hover {
+    opacity: 0.9;
 }
 
 #tellUsAboutYourself-description-input {

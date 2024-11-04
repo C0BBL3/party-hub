@@ -15,6 +15,6 @@ api.friends = {
         return await api.post(`${API_BASE_URL}/party/friends/reject`, { userId, friendId });
     },
     request: async (userId, friendId) => {
-        return await api.post (`${API_BASE_URL}/party/friends/request`, { userId, friendId});
+        return await api.post(`${API_BASE_URL}/party/friends/request`, { userId, friendId});
     }
 };
