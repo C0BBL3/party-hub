@@ -28,18 +28,18 @@ class Friends {
         }
     }
 
-    onAccept(friendId) {
-        api.friends.accept(this.userId, friendId);
+    async onAccept(friendId) {
+        await api.friends.accept(this.userId, friendId);
         /*let reqContents = this.requestsContainer.innerHTML;
         let friendContents = this.friendsContainer.innerHTML;
         this.requestsContainer.innerHTML = reqContents;
         this.friendsContainer.innerHTML = friendContents;*/
-        //document.location.reload()
+        document.location.reload()
     }
 
-    onDecline(friendId) {
-        api.friends.reject(this.userId, friendId);
-        //document.location.reload()
+    async onDecline(friendId) {
+        await api.friends.reject(this.userId, friendId);
+        document.location.reload()
     }
 
     onKeyUpSearchBar() {
