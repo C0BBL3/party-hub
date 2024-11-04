@@ -6,6 +6,7 @@ class Friends {
     init() {
         this.friendsContainer = $('friendsContainer');
         this.requestsContainer = $('requestsContainer');
+        this.resultsContainer = $('resultsContainer');
 
         this.searchBar = $('friendsearch');
         this.searchBar.onkeyup = this.onKeyUpSearchBar.bind(this);
@@ -43,7 +44,7 @@ class Friends {
     }
 
     onKeyUpSearchBar() {
-        this.createLoadingGIFDiv(this.friendsContainer);
+        this.createLoadingGIFDiv(this.resultsContainer);
 
         clearTimeout(this.searchBarTimeout);
         this.searchBarTimeout = setTimeout(this._onKeyUpSearchBar.bind(this), 250);
@@ -57,15 +58,20 @@ class Friends {
 
         if (search.result) {
             if (search.friends.length == 0) {
-                this.friendsContainer.innerHTML = 'Oops... it appears no one goes by that name!';
+                this.resultsContainer.innerHTML = '<p>Oops... it appears no one goes by that name!</p>';
             } else {
                 for (let friend of search.friends) {
-                    let friendP = Core.createElement(this.friendsContainer, 'p', `friend-${friend.userId}`);
-                    let friendButton = Core.createElement(friendP, 'button', `friend-${friend.userId}-messageButton`, 'button message');
+                    let friendPara = document.createElement("p");
+                    friendPara.innerText = `${friend.username}`;
+                    let friendButton = document.createElement("button");
+                    friendButton.className = "button request";
+                    friendButton.innerText = "request";
+                    friendPara.appendChild(friendButton);
+                    this.resultsContainer.appendChild(friendPara);
                 }
             }
         } else {
-            this.friendsContainer.innerHTML = 'Oops... there appears to be an error with this query, please try again later!';
+            this.resultsContainer.innerHTML = '<p>Oops... there appears to be an error with this query, please try again later!</p>';
         }
     }
 

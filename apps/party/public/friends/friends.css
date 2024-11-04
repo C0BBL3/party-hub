@@ -28,7 +28,7 @@
     border-color: red;
 }
 
-.message {
+.request {
     color: orchid;
     border-color: orchid;
 }
@@ -43,7 +43,7 @@
     background-color: red;
 }
 
-.message:hover {
+.request:hover {
     color: white;
     background-color: orchid;
 }
@@ -58,7 +58,7 @@
     border-color: darkred;
 }
 
-.message:active {
+.request:active {
     background-color: darkorchid;
     border-color: darkorchid;
 }
@@ -69,6 +69,10 @@
     border-radius: 4px;
     width: calc(100% - 12px);
     padding: 4px;
+}
+
+#resultsContainer {
+    border-bottom: 2px lightgray solid;
 }
 
 .loading-GIF-outer {

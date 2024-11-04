@@ -23,13 +23,14 @@
         <div class="column">
             <h3>Friends</h3>
             <form>
-                <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search">
+                <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search" autocomplete="off">
             </form>
+            <div id="resultsContainer"></div>
             <div id="friendsContainer">
                 <% for (let friend of friends) { %>
                     <p id="friend-<%= friend.userId %>">
                         <%= friend.username %>
-                        <button id="friend-<%= friend.userId %>-messageButton" class="button message">message</button>
+                        <!-- <button id="friend-<%= friend.userId %>-messageButton" class="button message">message</button> -->
                     </p>
                 <% } %>
             </div>
