@@ -741,7 +741,11 @@ class SignUpProcess {
         let data = {};
 
         for (let key in this.data) {
-            data[key] = this.data[key].trim();
+            try {
+                data[key] = this.data[key].trim();
+            } catch {
+                data[key] = this.data[key];
+            }
         }
 
         return data;
