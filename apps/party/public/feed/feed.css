@@ -1,0 +1,54 @@
+#container {
+    display: flex;
+    padding: 20px;
+}
+
+.feed {
+    flex: 3;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.feed h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.party-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.party-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.party-item h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.sidebar-filters {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-filters h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.sidebar-filters select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

@@ -1,9 +1,74 @@
-<link rel="stylesheet" href="../feed/feed.css">
-<script type="text/javascript" src="../feed/feed.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party Feed</title>
+    <link rel="stylesheet" href="../feed/feed.css">
+    <script type="text/javascript" src="../feed/feed.js" defer></script>
+</head>
+<body>
+    <%- include('../sidebar/sidebar.ejs') %>
 
-<%- include('../sidebar/sidebar.ejs') %>
+    <div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+        <!-- Main Feed Section -->
+        <div class="feed">
+            <h2>Available Parties</h2>
+            <div class="party-list">
+                <div class="party-item">
+                    <h3>Party Name 1</h3>
+                    <p>Theme: Beach</p>
+                    <p>Rating: 4.5 ⭐</p>
+                    <p>Venue: Bar</p>
+                </div>
+                <div class="party-item">
+                    <h3>Party Name 2</h3>
+                    <p>Theme: Halloween</p>
+                    <p>Rating: 4.8 ⭐</p>
+                    <p>Venue: House</p>
+                </div>
+                <div class="party-item">
+                    <h3>Party Name 3</h3>
+                    <p>Theme: Formal</p>
+                    <p>Rating: 3.9 ⭐</p>
+                    <p>Venue: House</p>
+                </div>
+                <!-- more static party items here if needed -->
+            </div>
+        </div>
 
-<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
-    
-    
-</div>
+        <!-- Sidebar Filters -->
+        <div class="sidebar-filters">
+            <h3>Filter Parties</h3>
+            <select id="filter-rating">
+                <option>Average Rating</option>
+                <option>5 Stars</option>
+                <option>4 Stars</option>
+                <option>3 Stars</option>
+                <option>2 Stars</option>
+                <option>1 Star</option>
+            </select>
+            <select id="filter-following">
+                <option>Following Only</option>
+                <option>Yes</option>
+            </select>
+            <select id="filter-friends">
+                <option>Friends Only</option>
+                <option>Yes</option>
+            </select>
+            <select id="filter-theme">
+                <option>Theme</option>
+                <option>Halloween</option>
+                <option>Beach</option>
+                <option>Formal</option>
+                <!-- could add more themes as needed -->
+            </select>
+            <select id="filter-venue">
+                <option>Venue</option>
+                <option>Bar</option>
+                <option>House</option>
+            </select>
+        </div>
+    </div>
+</body>
+</html>
