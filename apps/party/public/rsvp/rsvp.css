@@ -1,0 +1,43 @@
+#container {
+    display: flex;
+    padding: 20px;
+}
+
+.rsvp-feed {
+    flex: 1;
+    padding: 20px;
+}
+
+.rsvp-feed h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.scrollable {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px 0;
+    max-width: calc(3 * 220px + 30px); 
+    white-space: nowrap; 
+}
+
+.event-list {
+    display: flex;
+    gap: 15px;
+}
+
+.event-item {
+    width: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    flex-shrink: 0;
+}
+
+.event-item h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}

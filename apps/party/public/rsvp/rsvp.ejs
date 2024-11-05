@@ -1,9 +1,87 @@
-<link rel="stylesheet" href="../rsvp/rsvp.css">
-<script type="text/javascript" src="../rsvp/rsvp.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP</title>
+    <link rel="stylesheet" href="../rsvp/rsvp.css">
+    <script type="text/javascript" src="../rsvp/rsvp.js" defer></script>
+</head>
+<body>
+    <%- include('../sidebar/sidebar.ejs') %>
 
-<%- include('../sidebar/sidebar.ejs') %>
+    <div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
+        <div class="rsvp-feed">
+            <h2>Upcoming Events</h2>
+            <div class="event-list scrollable">
+                <!-- Upcoming event items -->
+                <div class="event-item">
+                    <h3>Event Name 1</h3>
+                    <p>Date: December 25, 2024</p>
+                    <p>Location: Downtown Bar</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name 2</h3>
+                    <p>Date: January 1, 2025</p>
+                    <p>Location: City Plaza</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name 3</h3>
+                    <p>Date: February 14, 2025</p>
+                    <p>Location: The Beach House</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name 4</h3>
+                    <p>Date: March 17, 2025</p>
+                    <p>Location: Irish Pub</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name 5</h3>
+                    <p>Date: April 22, 2025</p>
+                    <p>Location: Green Garden</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name 6</h3>
+                    <p>Date: May 5, 2025</p>
+                    <p>Location: Fiesta Hall</p>
+                </div>
+            </div>
 
-<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
-
-    
-</div>
+            <h2>Past Events</h2>
+            <div class="event-list scrollable">
+                <!-- Past event items -->
+                <div class="event-item">
+                    <h3>Event Name A</h3>
+                    <p>Date: October 31, 2024</p>
+                    <p>Location: Haunted Mansion</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name B</h3>
+                    <p>Date: September 17, 2024</p>
+                    <p>Location: Riverside Park</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name C</h3>
+                    <p>Date: August 12, 2024</p>
+                    <p>Location: Mountain Retreat</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name D</h3>
+                    <p>Date: July 4, 2024</p>
+                    <p>Location: Freedom Square</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name E</h3>
+                    <p>Date: June 15, 2024</p>
+                    <p>Location: Lakeview Park</p>
+                </div>
+                <div class="event-item">
+                    <h3>Event Name F</h3>
+                    <p>Date: May 1, 2024</p>
+                    <p>Location: Spring Meadows</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
