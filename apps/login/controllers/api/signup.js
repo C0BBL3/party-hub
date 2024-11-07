@@ -12,7 +12,9 @@ class SignupAPIController {
             hash: '',
             isPatron: 0,
             isHost: 0,
-            isAdmin: 0
+            isAdmin: 0,
+            description: data.description,
+            tags: data.tags
         };
 
         if (data.password) {

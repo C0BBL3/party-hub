@@ -230,7 +230,7 @@ class SignUpProcess {
             firstName: '',
             lastName: '',
             email: '',
-            vibes: '',
+            tags: '',
             description: '',
             isHost: 0,
             isPatron: 0
@@ -720,7 +720,7 @@ class SignUpProcess {
 
         this.resetTUAY();
 
-        this.data.vibes = this.tuay_vibesInput.value;
+        this.data.tags = this.tuay_vibesInput.value;
         this.data.description = this.tuay_descriptionInput.value;
 
         let data = this.trimData();
