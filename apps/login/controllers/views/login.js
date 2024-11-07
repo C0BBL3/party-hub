@@ -14,7 +14,9 @@ class LoginController {
 
         const user = await LoginService.getUserById(id);
 
-        user.isSupervisorMode = 1;
+        if (user.isAdmin) {
+            user.isSupervisorMode = 1;
+        }
 
         req.session.user = user;
 

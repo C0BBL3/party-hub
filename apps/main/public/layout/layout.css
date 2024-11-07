@@ -243,7 +243,7 @@ div#container {
     width: -webkit-fill-available;
     width: -moz-available;
     border-radius: 5px;
-    background-color: var(--whiite-color);
+    background-color: var(--white-color);
     color: var(--black-color);
     border: 1px solid var(--grey-color);
 }
@@ -252,4 +252,73 @@ div#container {
     border-color: var(--pink-color) !important;
     border-width: 2px !important;
     padding: 9px 14px !important;
+}
+
+#screen-cover {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--transparent-black-color);
+    z-index: 10;
+}
+
+#context-menu {
+    display: none;
+    width: 450px;
+    height: 300px;
+    position: absolute;
+    top: calc(50% - 300px);
+    left: calc(50% - 250px);
+    background: var(--white-color);
+    border: 1px solid var(--grey-color);
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    z-index: 11;
+}
+
+#context-menu-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#context-menu-message-container {
+    margin-top: 15px;
+}
+
+#context-menu-buttons-container {
+    position: absolute;
+    bottom: 25px;
+    width: calc(100% - 50px);
+    display: flex;
+    justify-content: center;
+}
+
+.context-menu-button {
+    width: 100px;
+    padding: 15px;
+    margin: 0 15px;
+    border-radius: 5px;
+}
+
+#context-menu-cancel {
+    border: 1px solid var(--grey-color);
+}
+
+#context-menu-cancel:hover {
+    background-color: var(--lightest-grey-color);
+    cursor: pointer;
+}
+
+#context-menu-confirm {
+    color: var(--white-color);
+    background-color: var(--blue-color);
+}
+
+#context-menu-confirm:hover {
+    opacity: 0.9;
+    cursor: pointer;
 }

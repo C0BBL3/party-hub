@@ -4,7 +4,7 @@ class UserService {
     static async getUserById(id) {
         let result = await db.execute(`
             SELECT
-                user.*,
+                user.*
             
             FROM
                 user 

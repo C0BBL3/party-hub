@@ -36,3 +36,18 @@ function setMenuTimer() {
 function clearMenuTimer() {
    clearTimeout(menuTimer);
 }
+
+async function showSwitchUserDialog() {
+   let title = 'Switch User';
+   let placeholder = 'Enter User Email or Enter User ID with the prefix "id=" or "id:"';
+
+   const contextMenu = new ContextMenu(title);
+   contextMenu.createInput(placeholder);
+   contextMenu.setHeight('175');
+
+   const userIdentifier = await contextMenu.showSync();
+
+   await api.main.switchUser(userIdentifier);
+
+   window.location.href = '/party/feed';
+}
