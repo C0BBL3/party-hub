@@ -9,21 +9,25 @@ class ContextMenu {
         this.messageContainer = Core.createDiv(this.div, 'context-menu-message-container');
 
         if (message.length > 0) {
-            messageText = Core.createText(this.messageContainer, message);
+            let messageText = Core.createText(this.messageContainer, message);
         }
 
         this.buttonsContainer = Core.createDiv(this.div, 'context-menu-buttons-container');
 
-        this.cancel = Core.createDiv(this.buttonsContainer, 'context-menu-cancel', 'context-menu-button', cancel);
-        this.cancel.onmousedown = this.hide.bind(this);
+        if (cancel) {
+            this.cancel = Core.createDiv(this.buttonsContainer, 'context-menu-cancel', 'context-menu-button', cancel);
+            this.cancel.onmousedown = this.hide.bind(this);
+        }
 
-        this.confirm = Core.createDiv(this.buttonsContainer, 'context-menu-confirm', 'context-menu-button', confirm);
-        this.confirm.onmousedown = (evt) => {            
-            this.hide();
-            if (this.callback) {       
-                this.callback(true);
-            }
-        };
+        if (confirm) {
+            this.confirm = Core.createDiv(this.buttonsContainer, 'context-menu-confirm', 'context-menu-button', confirm);
+            this.confirm.onmousedown = (evt) => {            
+                this.hide();
+                if (this.callback) {       
+                    this.callback(true);
+                }
+            };
+        }
     }
 
     async show(callback) {

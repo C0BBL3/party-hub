@@ -34,6 +34,13 @@ class SignupService {
         });
     }  
 
+    static async createHostAccount(host) {
+        host.isHost = 1;
+        let result = await db.insert('user', host);
+
+        return result.rows.insertId;
+    }
+
     static async createPatronAccount(patron) {
         patron.isPatron = 1;
         let result = await db.insert('user', patron);

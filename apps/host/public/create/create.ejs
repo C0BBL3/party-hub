@@ -1,16 +1,110 @@
 <link rel="stylesheet" href="../create/create.css">
 <script type="text/javascript" src="../create/create.js"></script>
+<script type="text/javascript" src="../create/create-api.js"></script>
 
 <%- include('../sidebar/sidebar.ejs') %>
 
-<div id="container" style="width: calc(100% - calc(var(--sidebar-width) + 30px)); margin-left: calc(var(--sidebar-width) + 30px);">
-    
-    <div id="formFrame">
-
-        <div class="formHeader">Create</div>
-
-        <div id="buttonBar">
-            <a id="createButton" class="button" href="#">Create</a>
+<div id="container" style="width: calc(100% - calc(2 * calc(var(--sidebar-width) + 70px))); margin-left: calc(var(--sidebar-width) + 30px); margin-top: 50px;">    
+    <div class="enterTitleContainer">
+        <div class="enterContainerInfo">
+            <p>What would you like to name your party?</p>
+            <textarea id="title" type="text" placeholder="Party Title" maxlength="128"></textarea>
         </div>
+        <div class="requirements" id="titleRequirements" style="display: none;">
+            <ul>
+                <li id="titleNotUniqueLoading" style="display: none;">
+                    Party Title must be unique. 
+                    <div class="loading-GIF-outer">
+                        <div class="loading-GIF-inner">
+                            <div></div>
+                        </div>
+                    </div>
+                </li>
+
+                <li id="titleNotUnique" style="color: red; display: none;">
+                    Party Title must be unique. 
+                    <div id="titleNotUniqueSVG" class="cross">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>    
+                    </div>
+                </li>
+                
+                <li id="titleUnique" style="color: #0b0; display: none;">
+                    Party Title must be unique.
+                    <div id="titleUniqueSVG" class="check">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>    
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="enterAddressContainer">
+        <div class="enterContainerInfo">
+            <p>Where would you like to host your party?</p>
+        </div>
+        <div class="enterContainerInfo">
+            <input type="text" id="streetAddress" name="street-address" autocomplete="street-address" required placeholder="Street Address" maxlength="32"></input>
+        </div>
+        <div class="enterContainerInfo">
+            <input type="text" id="postalCode" name="postal-code" autocomplete="postal-code" required placeholder="Postal Code" maxlength="5"  onkeypress="return isNumberKey(event)" ></input>
+            <input type="text" id="city" name="city" autocomplete="address-level2" required placeholder="City" maxlength="32"></input>
+            <input type="text" id="state" name="state" autocomplete="address-level1" required placeholder="State" maxlength="2"></input>
+        </div>
+    </div>
+    <div class="enterPrivacyContainer">
+        <div class="enterContainerInfo">
+            <p>What would you like to set your party's privacy to?</p>
+            <select id="privacy">
+                <option>Discoverable</option>
+                <option>Public</option>
+                <option>Private</option>
+            </select>
+        </div>
+        <p id="privacyInfo">Your party will be discoverable on the party home page and anyone can RSVP!</p>
+    </div>
+    <div class="enterStartTimeContainer">
+        <div class="enterContainerInfo">
+            <p>When does your party start this week?</p>
+            <select id="startDate">
+                <option id="thursday">Thursday</option>
+                <option id="friday" selected>Friday</option>
+                <option id="saturday">Saturday</option>
+                <option id="sunday">Sunday</option>
+            </select>
+            <select id="startTime">
+                <option id="eight">8:00 PM</option>
+                <option id="eightthirty">8:30 PM</option>
+                <option id="nine" selected>9:00 PM</option>
+                <option id="ninethirty">9:30 PM</option>
+                <option id="ten">10:00 PM</option>
+                <option id="tenthirty">10:30 PM</option>
+                <option id="eleven">11:00 PM</option>
+            </select>
+        </div>
+    </div>
+    <div class="enterVibesContainer">
+        <div class="enterContainerInfo" id="enterVibesInfo">
+            <p>What kind of vibes do you want your party to have?</p>
+            <textarea id="vibes" type="text" placeholder="Enter Vibes"></textarea>
+        </div>
+        <div class="requirements" id="vibesRequirements" style="display: none;">
+            <ul>
+                <li id="vibesBad" style="color: red; display: none;">Please enter the vibes your party will have.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="enterDescriptionContainer" >
+        <div class="enterContainerInfo" id="enterDescriptionInfo">
+            <p>How would you describe your party?</p>
+            <textarea id="description" type="text" placeholder="Enter Description"></textarea>
+        </div>
+        <div class="requirements" id="descriptionRequirements" style="display: none;">
+            <ul>
+                <li id="descriptionBad" style="color: red; display: none;">Please enter a description for your group.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="buttonBar">
+        <button id="createButton" class="createButton">Create</button>
     </div>
 </div>

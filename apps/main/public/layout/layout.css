@@ -4,7 +4,7 @@
     --transparent-black-color: #000000bd; /* good for shadows and gradients going from black to transparent */
     --black-color: #2F3136; /* a good title font color */
 	--grey-color: #505050; /* a good main body font color */
-	--lighter-grey-color: #e1e1e1; /* good for subtitle font color */
+	--lighter-grey-color: #c0c0c0; /* good for subtitle font color */
 	--lightest-grey-color: #f8f8f8; /* good for dividing lines/borders */
     --white-color: #ffffff; 
     --success-color: #5cb85c; /* green color a bit too green so need lower contrast green for a success color */
@@ -18,6 +18,7 @@
     --purple-color: #909;
     --pink-color: #e65aaa; /* #ff76ff; */
     --sidebar-width: 170px;
+    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;;
 }
 
 body {
@@ -26,7 +27,6 @@ body {
     background-color: var(--white-color);
     color: var(--grey-color);
     fill: var(--grey-color);
-    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;;
     user-select: none;
 }
 
