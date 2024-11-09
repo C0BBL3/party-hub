@@ -1,7 +1,7 @@
 div#sidebar {
     position: absolute;
     left: 0px;
-    top: 60px;
+    top: 0px;
     width: var(--sidebar-width);
     height: fit-content;
     padding: 25px 15px;
