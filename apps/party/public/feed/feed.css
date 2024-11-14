@@ -1,11 +1,19 @@
-#container {
+
+.feed-container {
     display: flex;
+    flex-direction: row; 
+    justify-content: flex-start; 
+    gap: 20px; 
     padding: 20px;
+    margin-left: calc(var(--sidebar-width) + 20px); 
+    margin-right: 20px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
 }
 
 .feed {
     flex: 3;
-    overflow-y: auto;
+    max-width: 1000px; 
     padding: 20px;
 }
 
@@ -17,38 +25,54 @@
 .party-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; 
+    max-height: 600px;
+    overflow-y: auto; 
 }
 
 .party-item {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.party-item:hover {
+    transform: translateY(-5px);
 }
 
 .party-item h3 {
     font-size: 20px;
-    margin-bottom: 5px;
+    margin: 0;
+}
+
+.party-item p {
+    margin: 5px 0;
 }
 
 .sidebar-filters {
     flex: 1;
-    padding: 20px;
+    max-width: 250px; 
+    background-color: #f5f5f5;
     border-left: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
-
 .sidebar-filters h3 {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .sidebar-filters select {
+    width: 100%;
     padding: 8px;
+    margin-bottom: 15px;
     font-size: 16px;
-    border-radius: 5px;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
 }
