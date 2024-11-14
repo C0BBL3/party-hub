@@ -11,11 +11,23 @@ class Privacy {
 privacy = new Privacy();
 
 document.addEventListener('DOMContentLoaded', () => {
-    const privacySwitch = document.getElementById('privacySwitch');
-    const privacyStatus = document.getElementById('privacyStatus');
+    const savePrivacyButton = document.getElementById('savePrivacyButton');
 
-    // Update the status text based on switch position
-    privacySwitch.addEventListener('change', (event) => {
-        privacyStatus.textContent = event.target.checked ? 'Private' : 'Public';
+    savePrivacyButton.addEventListener('click', () => {
+        const profilePrivacy = document.getElementById('profilePrivacy').value;
+        const eventsPrivacy = document.getElementById('eventsPrivacy').value;
+        const discoverPrivacy = document.getElementById('discoverPrivacy').value;
+        const rsvpPrivacy = document.getElementById('rsvpPrivacy').value;
+
+        const privacySettings = {
+            profilePrivacy,
+            eventsPrivacy,
+            discoverPrivacy,
+            rsvpPrivacy
+        };
+
+        console.log('Saving privacy settings:', privacySettings);
+        alert('Privacy settings have been saved!');
     });
 });
+

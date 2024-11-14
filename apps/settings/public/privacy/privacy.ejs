@@ -7,14 +7,39 @@
     <div class="privacy-container">
         <h2>Privacy Settings</h2>
 
+        <!-- Privacy Dropdown for Profile Visibility -->
         <div class="privacy-option">
-            <label for="privacySwitch">Account Privacy:</label>
-            <div class="switch">
-                <input type="checkbox" id="privacySwitch" class="switch-input">
-                <label class="switch-label" for="privacySwitch"></label>
-            </div>
-            <!-- Privacy Status Label -->
-            <span id="privacyStatus" class="privacy-status">Public</span>
+            <label for="profilePrivacy">Who can view my profile and account:</label>
+            <select id="profilePrivacy" class="privacy-dropdown">
+                <option value="friends">Friends only</option>
+                <option value="followers">Followers only</option>
+                <option value="friends_followers">Friends and Followers</option>
+                <option value="anybody">Discoverable to anybody</option>
+            </select>
         </div>
+
+        <!-- Privacy Dropdown for Events Attending -->
+        <div class="privacy-option">
+            <label for="eventsPrivacy">Who can view events I am attending:</label>
+            <select id="eventsPrivacy" class="privacy-dropdown">
+                <option value="friends">Friends only</option>
+                <option value="followers">Followers only</option>
+                <option value="friends_followers">Friends and Followers</option>
+                <option value="anybody">Discoverable to anybody</option>
+            </select>
+        </div>
+
+        <!-- Privacy Dropdown for Event Discovery -->
+        <div class="privacy-option">
+            <label for="discoverPrivacy">Who can discover and RSVP for my events:</label>
+            <select id="discoverPrivacy" class="privacy-dropdown">
+                <option value="friends">Friends only</option>
+                <option value="followers">Followers only</option>
+                <option value="friends_followers">Friends and Followers</option>
+                <option value="anybody">Discoverable to anybody</option>
+            </select>
+        </div>
+
+        <button type="button" id="savePrivacyButton" class="save-button">Save Changes</button>
     </div>
 </div>
