@@ -17,29 +17,43 @@
             <!-- Profile Information Form -->
             <form id="profileForm">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your name">
-                </div>
-                
-                <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username">
+                    <input type="text" id="username" name="username" placeholder="Username" readonly>
+                </div>
+            
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div class="editable-container">
+                        <input type="text" id="nameDisplay" placeholder="Name" readonly>
+                        <button type="button" class="edit-button" data-target="nameDisplay">Edit</button>
+                    </div>
+                    <div id="splitNameContainer" style="display: none;">
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name">
+                        <input type="text" id="lastName" name="lastName" placeholder="Last Name">
+                    </div>
                 </div>
 
+                <!-- Profile Description Field -->
                 <div class="form-group">
                     <label for="description">Profile Description</label>
-                    <textarea id="description" name="description" placeholder="Enter a short description"></textarea>
+                    <div class="editable-container">
+                        <textarea id="description" name="description" placeholder="Description" readonly></textarea>
+                        <button type="button" class="edit-button" data-target="description">Edit</button>
+                    </div>
                 </div>
 
+                <!-- Profile Hashtags Field -->
                 <div class="form-group">
                     <label for="hashtags">Profile Hashtags</label>
-                    <input type="text" id="hashtags" name="hashtags" placeholder="#tag1, #tag2">
+                    <div class="editable-container">
+                        <input type="text" id="hashtags" name="hashtags" placeholder="#tag1, #tag2" readonly>
+                        <button type="button" class="edit-button" data-target="hashtags">Edit</button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <button type="button" id="saveButton" class="save-button">Save Changes</button>
                 </div>
-                
             </form>
         </div>
     </div>

@@ -222,3 +222,62 @@ function previewImage(event) {
         URL.revokeObjectURL(image.src); 
     };
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editButtons = document.querySelectorAll('.edit-button');
+    const saveButton = document.getElementById('saveButton');
+    const nameDisplay = document.getElementById('nameDisplay');
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const splitNameContainer = document.getElementById('splitNameContainer');
+
+    // Combine First and Last Name for display
+    function updateNameDisplay() {
+        nameDisplay.value = `${firstNameInput.value} ${lastNameInput.value}`.trim();
+    }
+
+    updateNameDisplay();
+
+    // Edit button functionality
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
+
+            if (targetId === 'nameDisplay') {
+                if (splitNameContainer.style.display === 'none') {
+                    splitNameContainer.style.display = 'flex';
+                    nameDisplay.style.display = 'none';
+                    button.textContent = 'Done';
+                } else {
+                    splitNameContainer.style.display = 'none';
+                    nameDisplay.style.display = 'block';
+                    button.textContent = 'Edit';
+                    updateNameDisplay();
+                }
+            } else {
+                const inputField = document.getElementById(targetId);
+                if (inputField.hasAttribute('readonly')) {
+                    inputField.removeAttribute('readonly');
+                    inputField.focus();
+                    button.textContent = 'Done';
+                } else {
+                    inputField.setAttribute('readonly', true);
+                    button.textContent = 'Edit';
+                }
+            }
+        });
+    });
+
+    saveButton.addEventListener('click', () => {
+        const fieldsToSave = {
+            firstName: firstNameInput.value,
+            lastName: lastNameInput.value,
+            description: document.getElementById('description').value,
+            hashtags: document.getElementById('hashtags').value
+        };
+
+        console.log('Saving changes:', fieldsToSave);
+        alert("Changes Saved!");
+    });
+});
