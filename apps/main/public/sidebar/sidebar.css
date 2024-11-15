@@ -14,15 +14,17 @@ div.sidebarSection {
 
 div.sidebarItem:hover {
     background-color: #f8f8fa;
+    transform: translateX(2px);
 }
 
 div.sidebarItem {
     display: flex;
-    margin-top: 2px;
+    margin-top: 7px;
     padding-left: 10px;
     padding-top: 8px;
     padding-bottom: 8px;
     justify-content: left;
+    align-items: center;
     text-align: left;
     border-radius: 6px;
     cursor: pointer;

@@ -1,4 +1,8 @@
 /* global css goes here */
+html {
+    width: 100%;
+    height: 100%;
+}
 
 * { /* good set of colors for front end to use */
     --transparent-black-color: #000000bd; /* good for shadows and gradients going from black to transparent */
@@ -18,7 +22,8 @@
     --purple-color: #909;
     --pink-color: #e65aaa; /* #ff76ff; */
     --sidebar-width: 170px;
-    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;;
+    font-family: 'Noto Sans JP', 'Open Sans', 'Lato', sans-serif;
+    transition: 0.2s ease;
 }
 
 body {
@@ -28,10 +33,12 @@ body {
     color: var(--grey-color);
     fill: var(--grey-color);
     user-select: none;
+    height: calc(100% - 50px);
 }
 
 div#wrap {
     width: 100%;
+    height: 100%;
 }
 
 div#topRibbon {
@@ -58,7 +65,7 @@ div#topBarContainer {
 
 div#topBarContainer div {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -96,14 +103,13 @@ a.headerLink {
     color: var(--grey-color);
     font-size: 14px;
     margin: 0px 20px;
-    padding: 17px 10px;
+    padding: 15px 10px;
     cursor: pointer;
 }
 
 a.headerLink:hover {
     color: var(--pink-color);
     border-bottom: 3px solid var(--pink-color);
-    padding-bottom: 14px;
 }
 
 a#adminHeaderLink:hover {
@@ -111,7 +117,6 @@ a#adminHeaderLink:hover {
     border-bottom: none;
     cursor: not-allowed;
     padding-bottom: 17px;
-
 }
 
 a {
@@ -122,6 +127,7 @@ a {
 
 div#topMenu {
     position: absolute;
+    top: 5px;
     right: 20px;
 }
 
@@ -138,7 +144,7 @@ div#userHeader {
     text-align: center;
     line-height: 38px;
     border-radius: 19px;
-    cursor: default;
+    cursor: pointer;
 }
 
 div#userMenu {
@@ -153,7 +159,9 @@ div#userMenu {
     background: white;
     border: 1px solid var(--lighter-grey-color);
     box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+    transition: none;
 }
+
 
 div#userMenu-info {
     display: block !important;
@@ -163,11 +171,13 @@ div#userMenu-info {
     white-space: nowrap;
     border-bottom: 1px solid var(--lighter-grey-color);
     padding-bottom: 15px;
+    transition: none;
 }
 
 div#userMenu-info div {
     margin: 5px 0px;
     justify-content: flex-start;
+    transition: none;
 }
 
 div.headerMenuItem {
@@ -181,6 +191,11 @@ div.headerMenuItem {
     white-space: nowrap;
     user-select: none;
     justify-content: flex-start !important;
+    transition: none;
+}
+
+div.headerMenuItem a, div.headerMenuItem svg, div.headerMenuItem span, div.headerMenuItem path {
+    transition: none;
 }
 
 div.headerMenuItem:hover {
@@ -190,10 +205,13 @@ div.headerMenuItem:hover {
 div#content {
     position: relative;
     top: 50px;
+    height: calc(100% - 50px);
 }
 
 div#topNavRight {
     float: right;
+    align-items: center !important;
+    margin-top: -5px;
 }
 
 a#loginLink {
@@ -228,11 +246,16 @@ span#signUpButton {
 }
 
 span#signUpButton:hover {
-    opacity: 0.9;
+    background-color: var(--blue-color);
 }
 
 div#container {
-    width: 100%
+    width: calc(100% - calc(2 * calc(var(--sidebar-width) + 30px)));
+    height: calc(100% - 50px);
+    margin: auto;
+    margin-left: calc(var(--sidebar-width) + 30px);
+    margin-top: 50px;
+    
 }
 
 .inputBox {
@@ -306,19 +329,19 @@ div#container {
 
 #context-menu-cancel {
     border: 1px solid var(--grey-color);
+    cursor: pointer;
 }
 
 #context-menu-cancel:hover {
     background-color: var(--lightest-grey-color);
-    cursor: pointer;
 }
 
 #context-menu-confirm {
     color: var(--white-color);
-    background-color: var(--blue-color);
+    background-color: var(--pink-color);
+    cursor: pointer;
 }
 
 #context-menu-confirm:hover {
-    opacity: 0.9;
-    cursor: pointer;
+    background-color: var(--blue-color);
 }
