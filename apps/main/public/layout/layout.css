@@ -1,4 +1,8 @@
 /* global css goes here */
+html {
+    width: 100%;
+    height: 100%;
+}
 
 * { /* good set of colors for front end to use */
     --transparent-black-color: #000000bd; /* good for shadows and gradients going from black to transparent */
@@ -29,10 +33,12 @@ body {
     color: var(--grey-color);
     fill: var(--grey-color);
     user-select: none;
+    height: calc(100% - 50px);
 }
 
 div#wrap {
     width: 100%;
+    height: 100%;
 }
 
 div#topRibbon {
@@ -153,6 +159,7 @@ div#userMenu {
     background: white;
     border: 1px solid var(--lighter-grey-color);
     box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+    transition: none;
 }
 
 div#userMenu-info {
@@ -163,11 +170,13 @@ div#userMenu-info {
     white-space: nowrap;
     border-bottom: 1px solid var(--lighter-grey-color);
     padding-bottom: 15px;
+    transition: none;
 }
 
 div#userMenu-info div {
     margin: 5px 0px;
     justify-content: flex-start;
+    transition: none;
 }
 
 div.headerMenuItem {
@@ -181,6 +190,11 @@ div.headerMenuItem {
     white-space: nowrap;
     user-select: none;
     justify-content: flex-start !important;
+    transition: none;
+}
+
+div.headerMenuItem a, div.headerMenuItem svg, div.headerMenuItem span, div.headerMenuItem path {
+    transition: none;
 }
 
 div.headerMenuItem:hover {
@@ -190,10 +204,13 @@ div.headerMenuItem:hover {
 div#content {
     position: relative;
     top: 50px;
+    height: calc(100% - 50px);
 }
 
 div#topNavRight {
     float: right;
+    align-items: center !important;
+    margin-top: -5px;
 }
 
 a#loginLink {
@@ -232,7 +249,12 @@ span#signUpButton:hover {
 }
 
 div#container {
-    width: 100%
+    width: calc(100% - calc(2 * calc(var(--sidebar-width) + 30px)));
+    height: calc(100% - 50px);
+    margin: auto;
+    margin-left: calc(var(--sidebar-width) + 30px);
+    margin-top: 50px;
+    
 }
 
 .inputBox {

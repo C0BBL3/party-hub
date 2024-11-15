@@ -14,7 +14,7 @@ div.sidebarSection {
 
 div.sidebarItem:hover {
     background-color: #f8f8fa;
-    transform: translateY(-2px);
+    transform: translateX(2px);
 }
 
 div.sidebarItem {
