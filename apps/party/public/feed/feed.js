@@ -1,52 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const partyList = document.getElementById('partyList');
-    const filters = {
-        rating: document.getElementById('filter-rating'),
-        following: document.getElementById('filter-following'),
-        friends: document.getElementById('filter-friends'),
-        theme: document.getElementById('filter-theme'),
-        venue: document.getElementById('filter-venue'),
-    };
-
-    // Placeholder for dynamically loaded parties
-    const parties = [
-        { name: "Party Name 1", theme: "Beach", rating: 4.5, venue: "Bar" },
-        { name: "Party Name 2", theme: "Halloween", rating: 4.8, venue: "House" },
-        { name: "Party Name 3", theme: "Formal", rating: 3.9, venue: "House" },
-        // Add more parties as needed
-    ];
-
-    function loadParties(filteredParties) {
-        partyList.innerHTML = ""; // Clear list
-        filteredParties.forEach(party => {
-            const item = document.createElement('div');
-            item.className = 'party-item';
-            item.innerHTML = `
-                <h3>${party.name}</h3>
-                <p>Theme: ${party.theme}</p>
-                <p>Rating: ${party.rating} ⭐</p>
-                <p>Venue: ${party.venue}</p>
-            `;
-            partyList.appendChild(item);
-        });
+class FeedScreen {
+    constructor() {
+        document.body.onload = this.init.bind(this);
     }
 
-    function filterParties() {
-        const filtered = parties.filter(party => {
+    async init() {
+        this.partyListDiv = $('partyList');
+        this.filters = {
+            rating: $('filter-rating'),
+            following: $('filter-following'),
+            friends: $('filter-friends'),
+            theme: $('filter-theme'),
+            venue: $('filter-venue'),
+        };
+
+        for (let filter of Object.values(this.filters)) {
+            filter.onchange = this.filterParties.bind(this);
+        }
+
+        // Placeholder for dynamically loaded parties
+        this.parties = [
+            { name: "Party Name 1", theme: "Beach", rating: 4.5, venue: "Bar" },
+            { name: "Party Name 2", theme: "Halloween", rating: 4.8, venue: "House" },
+            { name: "Party Name 3", theme: "Formal", rating: 3.9, venue: "House" },
+            // Add more parties as needed
+        ];
+
+        this.loadParties(this.parties);
+    }
+
+    loadParties(filteredParties) {
+        this.partyListDiv.innerHTML = ""; // Clear list
+
+        for (let party of filteredParties) {
+            const item = Core.createDiv(this.partyListDiv, '', 'party-item');
+            const title = Core.createElement(item, 'h3', '', '', party.name);
+            const theme = Core.createElement(item, 'p', '', '', party.theme);
+            const rating = Core.createElement(item, 'p', '', '', party.rating);
+            const venue = Core.createElement(item, 'p', '', '', party.venue);
+        }
+    }
+
+    filterParties() {
+        const filtered = this.parties.filter(party => {
             return (
-                (filters.rating.value === "all" || Math.floor(party.rating) === parseInt(filters.rating.value)) &&
-                (filters.theme.value === "all" || filters.theme.value === party.theme.toLowerCase()) &&
-                (filters.venue.value === "all" || filters.venue.value === party.venue.toLowerCase())
+                (this.filters.rating.value === "all" || Math.floor(party.rating) >= parseInt(this.filters.rating.value)) &&
+                (this.filters.theme.value === "all" || this.filters.theme.value === party.theme.toLowerCase()) &&
+                (this.filters.venue.value === "all" || this.filters.venue.value === party.venue.toLowerCase())
             );
         });
-        loadParties(filtered);
+        this.loadParties(filtered);
     }
+}
 
-    // Attach filter logic to dropdowns
-    Object.values(filters).forEach(filter => {
-        filter.addEventListener('change', filterParties);
-    });
-
-    // Initial load
-    loadParties(parties);
-});
+let feedScreen = new FeedScreen();

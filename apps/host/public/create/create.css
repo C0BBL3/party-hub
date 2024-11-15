@@ -130,7 +130,7 @@ p#privacyInfo, p#minLeagueInfo {
 }
 
 button.createButton:hover {
-    opacity: 0.9;
+    background-color: var(--blue-color);
 }
 
 button.createButton {
@@ -145,7 +145,7 @@ button.createButton {
     cursor: pointer; 
     user-select: none;
     border: none;  
-    background-color: rgb(9, 107, 183);
+    background-color: var(--pink-color);
     color: rgb(248, 248, 248);
 }
 
