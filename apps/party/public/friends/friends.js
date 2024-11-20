@@ -78,7 +78,7 @@ class Friends {
                     let friendButton = document.createElement("button");
                     friendButton.className = "button request";
                     friendButton.innerText = "request";
-                    friendButton.onmousedown = this.onRequest(friend.userId);
+                    friendButton.onmousedown = this.onRequest.bind(this, friend.userId);
                     friendPara.appendChild(friendButton);
                     this.resultsContainer.appendChild(friendPara);
                 }
