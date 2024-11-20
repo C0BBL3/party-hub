@@ -13,6 +13,7 @@ router.get(`${BASE_PATH}/search/:search`, APIMiddleware.checkIsHostOrPatron, Con
 // POST
 router.post(`${BASE_PATH}/accept`, APIMiddleware.checkIsHostOrPatron, Controller.accept);
 router.post(`${BASE_PATH}/reject`, APIMiddleware.checkIsHostOrPatron, Controller.reject);
+router.post(`${BASE_PATH}/request`, APIMiddleware.checkIsHostOrPatron, Controller.request);
 
 
 module.exports = router;

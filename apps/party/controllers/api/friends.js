@@ -84,6 +84,11 @@ class FriendsAPIController {
 
         res.send({ result });
     }
+
+    static async request(req, res) {
+        const result = await console.log("Request friend");
+        res.send({result});
+    }
    
 }
 
