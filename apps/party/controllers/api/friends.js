@@ -86,8 +86,20 @@ class FriendsAPIController {
     }
 
     static async request(req, res) {
-        const result = await console.log("Request friend");
-        res.send({result});
+        const user = req.session.user;
+        const userId = req.body.userId;
+
+        if (user.id != userId) {
+            return res.send({
+                result: false,
+            })
+        }
+
+        const friendId = req.body.friendId;
+
+        const result = await FriendsService.updateStatus(userId, friendId, 'pending');
+
+        res.send({ result });
     }
    
 }
