@@ -180,8 +180,6 @@ class FeedScreen {
 
         const choice = await contextMenu.showSync();
 
-        await this.delay(750);
-
         if (choice) {
             let userId = parseInt($('userId').value);
             let result = await api.feed.rsvp(partyId, userId);
