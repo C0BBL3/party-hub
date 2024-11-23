@@ -170,36 +170,68 @@ class FeedScreen {
             return;
         }
 
+        let userId = parseInt($('userId').value);
+
+        let status = await api.feed.checkStatus(partyId, userId);
+
         await this.delay(250);
 
-        const title = 'RSVP';
-        const message = `Would you like to RSVP for ${party.title}?`;
+        let title, message, contextMenu;
 
-        const contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'PARTY TIME!');
-        $('context-menu').style.height = '150px';
+        if (status.result && status.enabled) {
+            title = 'RSVP';
+            message = `You've already RSVP'ed for ${party.title}. Would you like to cancel?`;
+    
+            contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'CANCEL');
+            $('context-menu').style.height = '160px';
 
-        const choice = await contextMenu.showSync();
+            const choice = await contextMenu.showSync();
 
-        if (choice) {
-            let userId = parseInt($('userId').value);
-            let result = await api.feed.rsvp(partyId, userId);
+            if (choice) {
+                let cancel = await api.feed.cancelRSVP(partyId, userId);
 
-            await this.delay(500);
+                await this.delay(500);
 
-            let title, message;
+                title = cancel.result ? 'RSVP' : 'OOPS...';
 
-            if (result) {
-                title = 'RSVP';
-                message = `You have reserved a spot at ${party.title}.`;
-            } else {
-                title = 'OOPS...';
-                message = `There seems to be an error please try again at another time...`;
+                if (cancel.result) {
+                    message = `You have canceled your RSVP at ${party.title}.`;
+                } else {
+                    message = `There seems to be an error please try again at another time...`;
+                }
+
+                contextMenu = new ContextMenu(title, message, null, 'OK');
+                $('context-menu').style.height = cancel.result ? '150px' : '160px';
+
+                await contextMenu.showSync();
             }
+        } else {
+            title = 'RSVP';
+            message = `Would you like to RSVP for ${party.title}?`;
 
-            const contextMenu2 = new ContextMenu(title, message, null, 'OK');
-            $('context-menu').style.height = result ? '150px' : '160px';
+            contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'PARTY TIME!');
+            $('context-menu').style.height = '150px';
 
-            await contextMenu2.showSync();
+            const choice = await contextMenu.showSync();
+
+            if (choice) {
+                let rsvp = await api.feed.RSVP(partyId, userId);
+
+                await this.delay(500);
+
+                title = rsvp.result ? 'RSVP' : 'OOPS...';
+
+                if (rsvp.result) {
+                    message = `You have reserved a spot at ${party.title}.`;
+                } else {
+                    message = `There seems to be an error please try again at another time...`;
+                }
+
+                contextMenu = new ContextMenu(title, message, null, 'OK');
+                $('context-menu').style.height = rsvp.result ? '150px' : '160px';
+
+                await contextMenu.showSync();
+            }
         }
     }
 
