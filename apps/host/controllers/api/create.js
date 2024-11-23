@@ -12,7 +12,7 @@ class CreateAPIController {
         });
     }
 
-    static generateGroupSecretKey(length = 32) {
+    static generateSecretKey(length = 32) {
         const chars = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // base 36 w/ capital letters
         
         let secretKey = '';
@@ -97,7 +97,7 @@ class CreateAPIController {
         const vibes = capitalizer.fixCapitalization(body.vibes.trim());
         const description = body.description.trim();
 
-        const secretKey = CreateAPIController.generateGroupSecretKey();
+        const secretKey = CreateAPIController.generateSecretKey();
  
         const partyId = await CreateService.createParty(title, privacy, startDate, vibes, description, secretKey);
 

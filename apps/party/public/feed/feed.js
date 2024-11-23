@@ -35,6 +35,7 @@ class FeedScreen {
 
             for (let party_ of result.parties) {
                 let party = {
+                    id: party_.id,
                     title: party_.title,
                     startTime: party_.startTime,
                     description: party_.description,
@@ -134,11 +135,73 @@ class FeedScreen {
         this.partyListDiv.innerHTML = ""; // Clear list
 
         for (let party of filteredParties) {
-            const item = Core.createDiv(this.partyListDiv, '', 'party-item');
-            const title = Core.createElement(item, 'h3', '', '', party.title);
-            const theme = Core.createElement(item, 'p', '', '', party.vibes);
-            const rating = Core.createElement(item, 'p', '', '', moment(party.startTime).format('LLLL'));
-            const venue = Core.createElement(item, 'p', '', '', party.description);
+            const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-item');
+            const title = Core.createElement(partyDiv, 'h3', '', 'party-title', party.title);
+            const vibes = Core.createElement(partyDiv, 'p', '', 'party-vibes', party.vibes);
+            const rating = Core.createElement(partyDiv, 'p', '', 'party-startTime', moment(party.startTime).format('LLLL'));
+            const venue = Core.createElement(partyDiv, 'p', '', 'party-description', party.description);
+
+            partyDiv.onclick = this.onClickPartyDiv.bind(this);
+        }
+    }
+
+    async onClickPartyDiv(evt) {
+        let target = evt.target;
+        let partyDiv;
+
+        if (target.className == 'party-title' || target.className == 'party-vibes' || target.className == 'party-startTime' || target.className == 'party-description') {
+            partyDiv = target.parentElement;
+        } else {
+            partyDiv = target;
+        }
+
+
+        let parts = partyDiv.id.split('-')
+        let partyId = parseInt(parts[1]);
+        let party;
+        for (let party_ of this.parties) {
+            if (party_.id == partyId) {
+                party = party_;
+                break;
+            }
+        }
+
+        if (party == null) {
+            return;
+        }
+
+        await this.delay(250);
+
+        const title = 'RSVP';
+        const message = `Would you like to RSVP for ${party.title}?`;
+
+        const contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'PARTY TIME!');
+        $('context-menu').style.height = '150px';
+
+        const choice = await contextMenu.showSync();
+
+        await this.delay(750);
+
+        if (choice) {
+            let userId = parseInt($('userId').value);
+            let result = await api.feed.rsvp(partyId, userId);
+
+            await this.delay(500);
+
+            let title, message;
+
+            if (result) {
+                title = 'RSVP';
+                message = `You have reserved a spot at ${party.title}.`;
+            } else {
+                title = 'OOPS...';
+                message = `There seems to be an error please try again at another time...`;
+            }
+
+            const contextMenu2 = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = result ? '150px' : '160px';
+
+            await contextMenu2.showSync();
         }
     }
 

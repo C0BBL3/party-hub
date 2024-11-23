@@ -4,6 +4,7 @@ class FeedService {
     static async getFirst10Parties() {
         let result = await db.execute(`
             SELECT
+                id,
                 startTime,
                 title,
                 vibes,
@@ -22,12 +23,7 @@ class FeedService {
             let parties = [];
 
             for (let row of result.rows) {
-                let party = {
-                    title: row.party.title,
-                    vibes: row.party.vibes,
-                    description: row.party.description,
-                    startTime: row.party.startTime
-                };
+                let party = row.party;
 
                 parties.push(party);
             }
