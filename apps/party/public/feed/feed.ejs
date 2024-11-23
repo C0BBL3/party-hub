@@ -11,6 +11,8 @@
 <body>
     <%- include('../sidebar/sidebar.ejs') %>
 
+    <input id="userId" type="hidden" value="<%= user.id %>"/>
+
     <div id="container" style="width: calc(100% - calc(2 * calc(var(--sidebar-width) + 30px))); margin-left: calc(var(--sidebar-width) + 30px);">
         <div class="feed-container">
             <!-- Main Feed Section -->
