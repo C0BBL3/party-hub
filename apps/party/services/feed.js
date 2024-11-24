@@ -12,9 +12,6 @@ class FeedService {
                 
             FROM
                 party
-
-            WHERE
-                startTime > NOW()
                 
             LIMIT 
                 10;`
