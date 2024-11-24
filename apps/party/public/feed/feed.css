@@ -25,7 +25,6 @@
 .party-list {
     display: flex;
     flex-direction: column;
-    gap: 15px; 
     height: 100%;
     max-height: 600px;
     overflow-y: auto; 
@@ -35,17 +34,16 @@
 
 .party-item {
     width: calc(100% - 45px);
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    /* background-color: #f9f9f9; */
+    border-top: 1px solid var(--lighter-grey-color);
     padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
     cursor: pointer;
 }
 
 .party-item:hover {
-    transform: translateY(-5px);
+    /* transform: translateY(-5px); */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .party-item h3 {
@@ -57,6 +55,13 @@
     margin: 5px 0;
     text-wrap: nowrap;
     text-overflow: ellipsis;
+}
+
+p.party-startTime {
+    text-align: right;
+    position: relative;
+    right: 0;
+    bottom: 55px;
 }
 
 .sidebar-filters {
