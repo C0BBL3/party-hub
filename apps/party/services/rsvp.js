@@ -31,7 +31,7 @@ class RSVPService {
         const result = await db.execute(`
             SELECT 
                 id, 
-                enabled 
+                enabled
                 
             FROM 
                 partypatronlink 
@@ -53,6 +53,42 @@ class RSVPService {
         }
             
         return result.rows[0].partypatronlink;
+    }
+
+    static async getRSVPedParties(patronId) {
+        const result = await db.execute(`
+            SELECT
+                party.id,
+                party.startTime,
+                party.title,
+                party.vibes,
+                party.description
+
+            FROM
+                partypatronlink
+                
+                INNER JOIN party ON
+                    partypatronlink.partyId = party.id AND
+                    partypatronlink.patronId = [patronId] AND
+                    partypatronlink.enabled = 1;`,
+            {
+                patronId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return [];
+        } else {
+            let parties = [];
+
+            for (let row of result.rows) {
+                // if (row.party.id == null) { continue; }
+                let party = row.party;
+                parties.push(party);
+            }
+
+            return parties;
+        }
     }
 }
 
