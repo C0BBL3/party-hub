@@ -1,41 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSVP</title>
-    <link rel="stylesheet" href="../rsvp/rsvp.css">
-    <script type="text/javascript" src="../rsvp/rsvp.js" defer></script>
-</head>
-<body>
-    <%- include('../sidebar/sidebar.ejs') %>
 
-    <div id="container">
-        <div class="rsvp-feed">
-            <h2>Upcoming Events</h2>
-            <div class="event-list scrollable" id="upcomingEvents">
-                <!-- Placeholder for dynamic upcoming events -->
-                <% (typeof upcomingEvents !== 'undefined' && upcomingEvents.length > 0 ? upcomingEvents : [{ name: "Sample Event 1", date: "2024-12-25", location: "Downtown Bar" }]).forEach(event => { %>
-                    <div class="event-item">
-                        <h3><%= event.name %></h3>
-                        <p>Date: <%= new Date(event.date).toLocaleDateString() %></p>
-                        <p>Location: <%= event.location %></p>
+<link rel="stylesheet" href="../rsvp/rsvp.css">
+<script type="text/javascript" src="../rsvp/rsvp.js"></script>
+<script type="text/javascript" src="../rsvp/rsvp-api.js"></script>
+
+<%- include('../sidebar/sidebar.ejs') %>
+
+<input id="userId" type="hidden" value="<%= user.id %>" /> 
+
+<div id="container">
+    <div class="rsvp-feed">
+        <div id="upcomingParties-container">
+            <h2>Upcoming Parties</h2>
+            <div class="party-list scrollable" id="upcomingParties">
+                <div class="loading-GIF-outer">
+                    <div class="loading-GIF-inner">
+                        <div></div>
                     </div>
-                <% }) %>
+                </div>
             </div>
+        </div>
 
-            <h2>Past Events</h2>
-            <div class="event-list scrollable" id="pastEvents">
-                <!-- Placeholder for dynamic past events -->
-                <% (typeof pastEvents !== 'undefined' && pastEvents.length > 0 ? pastEvents : [{ name: "Sample Past Event", date: "2024-10-31", location: "Haunted Mansion" }]).forEach(event => { %>
-                    <div class="event-item">
-                        <h3><%= event.name %></h3>
-                        <p>Date: <%= new Date(event.date).toLocaleDateString() %></p>
-                        <p>Location: <%= event.location %></p>
+        <div id="pastParties-container">
+            <h2>Past Parties</h2>
+            <div class="party-list scrollable" id="pastParties">
+                <div class="loading-GIF-outer">
+                    <div class="loading-GIF-inner">
+                        <div></div>
                     </div>
-                <% }) %>
+                </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>

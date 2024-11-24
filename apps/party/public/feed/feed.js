@@ -134,12 +134,16 @@ class FeedScreen {
     async loadParties(filteredParties) {
         this.partyListDiv.innerHTML = ""; // Clear list
 
+        if (filteredParties.length == 0) {
+            this.partyListDiv.innerHTML = "Hmm... it seems we've run out of featured parties. Please try again at another time!"; 
+        }
+
         for (let party of filteredParties) {
             const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-item');
             const title = Core.createElement(partyDiv, 'h3', '', 'party-title', party.title);
             const vibes = Core.createElement(partyDiv, 'p', '', 'party-vibes', party.vibes);
-            const rating = Core.createElement(partyDiv, 'p', '', 'party-startTime', moment(party.startTime).format('LLLL'));
-            const venue = Core.createElement(partyDiv, 'p', '', 'party-description', party.description);
+            const startTime = Core.createElement(partyDiv, 'p', '', 'party-startTime', moment(party.startTime).format('LLLL'));
+            const description = Core.createElement(partyDiv, 'p', '', 'party-description', party.description);
 
             partyDiv.onclick = this.onClickPartyDiv.bind(this);
         }

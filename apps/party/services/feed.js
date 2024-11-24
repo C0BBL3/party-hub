@@ -12,6 +12,9 @@ class FeedService {
                 
             FROM
                 party
+
+            WHERE
+                startTime > NOW()
                 
             LIMIT 
                 10;`
@@ -29,6 +32,32 @@ class FeedService {
             }
 
             return parties;
+        }
+    }
+
+    static async getParty(partyId) {
+        let result = await db.execute(`
+            SELECT
+                id,
+                startTime,
+                title,
+                vibes,
+                description
+                
+            FROM
+                party
+
+            WHERE
+                id = [partyId];`,
+            {
+                partyId
+            }
+            );
+
+        if (result.rows.length == 0) {
+            return null;
+        } else {
+            return result.rows[0].party;
         }
     }
 }

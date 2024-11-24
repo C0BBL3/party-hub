@@ -1,3 +1,4 @@
+const FeedService = require('../../services/feed');
 const RSVPService = require('../../services/rsvp');
 
 class RSVPAPIController {
@@ -49,9 +50,31 @@ class RSVPAPIController {
             return res.send({ result: false });
         }
 
+        const party = await FeedService.getParty(partyId);
+
+        const nowUnix = new Date().getTime();
+        const partyStartTimeUnix = new Date(party.startTime).getTime();
+
+        if (partyStartTimeUnix < nowUnix) { // can't un-RSVP past events
+            return res.send({ result: false });
+        }
+
         const result = await RSVPService.cancel(partyId, patronId);
 
         return res.send({ result });
+    }
+
+    static async getRSVPedParties(req, res) {
+        const user = req.session.user;
+        const patronId = req.params.patronId;
+
+        if (user.id != patronId) {
+            return res.send({ result: false });
+        }
+
+        const parties = await RSVPService.getRSVPedParties(patronId);
+
+        return res.send({ result: true, parties });
     }
 }
 
