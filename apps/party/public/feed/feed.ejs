@@ -26,7 +26,7 @@
 
         <!-- Sidebar Filters -->
         <div class="sidebar-filters">
-            <h3>Filter Parties</h3>
+            <h3>Filters</h3>
             <select id="filter-startDay">
                 <option id="monday">Monday</option>
                 <option id="tuesday">Tuedsay</option>
@@ -37,18 +37,11 @@
                 <option id="sunday">Sunday</option>
             </select>
             <select id="filter-startTime">
-                <% for (let hour = 0; hour < 16; hour++) { %>
+                <% for (let hour = 0; hour < 24; hour++) { %>
                     <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
                     <option id="<%= numToWord[timeHour] %>"><%= timeHour %>:00 <%= AMPM[Math.floor(hour/12)] %></option>
                     <option id="<%= numToWord[timeHour] %>thirty"><%= timeHour %>:30 <%= AMPM[Math.floor(hour/12)] %></option>
                 <% } %>
-                <option id="eight">8:00 PM</option>
-                <option id="eightthirty">8:30 PM</option>
-                <option id="nine" selected>9:00 PM</option>
-                <option id="ninethirty">9:30 PM</option>
-                <option id="ten">10:00 PM</option>
-                <option id="tenthirty">10:30 PM</option>
-                <option id="eleven">11:00 PM</option>
             </select>
             <!-- <select id="filter-following">
                 <option value="all">Following Only</option>
