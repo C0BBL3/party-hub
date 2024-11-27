@@ -3,6 +3,8 @@
 <script type="text/javascript" src="../create/create-api.js"></script>
 
 <%- include('../sidebar/sidebar.ejs') %>
+<% const numToWord = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']; %>
+<% const AMPM = ['AM', 'PM']; %>
 
 <div id="container">    
     <div class="enterTitleContainer">
@@ -65,19 +67,20 @@
         <div class="enterContainerInfo">
             <p>When does your party start this week?</p>
             <select id="startDate">
+                <option id="monday">Monday</option>
+                <option id="tuesday">Tuedsay</option>
+                <option id="wednesday">Wednesday</option>
                 <option id="thursday">Thursday</option>
                 <option id="friday" selected>Friday</option>
                 <option id="saturday">Saturday</option>
                 <option id="sunday">Sunday</option>
             </select>
             <select id="startTime">
-                <option id="eight">8:00 PM</option>
-                <option id="eightthirty">8:30 PM</option>
-                <option id="nine" selected>9:00 PM</option>
-                <option id="ninethirty">9:30 PM</option>
-                <option id="ten">10:00 PM</option>
-                <option id="tenthirty">10:30 PM</option>
-                <option id="eleven">11:00 PM</option>
+                <% for (let hour = 0; hour < 24; hour++) { %>
+                    <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
+                    <option id="<%= numToWord[timeHour] %>"><%= timeHour %>:00 <%= AMPM[Math.floor(hour/12)] %></option>
+                    <option id="<%= numToWord[timeHour] %>thirty"><%= timeHour %>:30 <%= AMPM[Math.floor(hour/12)] %></option>
+                <% } %>
             </select>
         </div>
     </div>
