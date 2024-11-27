@@ -78,8 +78,9 @@
             <select id="startTime">
                 <% for (let hour = 0; hour < 24; hour++) { %>
                     <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
-                    <option id="<%= numToWord[timeHour] %>"><%= timeHour %>:00 <%= AMPM[Math.floor(hour/12)] %></option>
-                    <option id="<%= numToWord[timeHour] %>thirty"><%= timeHour %>:30 <%= AMPM[Math.floor(hour/12)] %></option>
+                    <% let cAMPM = AMPM[Math.floor(hour/12)] %>
+                    <option id="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
+                    <option id="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
                 <% } %>
             </select>
         </div>
