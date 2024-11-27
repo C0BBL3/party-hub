@@ -3,6 +3,8 @@
 <script type="text/javascript" src="../feed/feed.js"></script>
 <script type="text/javascript" src="../feed/feed-api.js"></script>
 <%- include('../sidebar/sidebar.ejs') %>
+<% const numToWord = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']; %>
+<% const AMPM = ['AM', 'PM']; %>
 
 <input id="userId" type="hidden" value="<%= user.id %>"/>
 
@@ -26,12 +28,20 @@
         <div class="sidebar-filters">
             <h3>Filter Parties</h3>
             <select id="filter-startDay">
+                <option id="monday">Monday</option>
+                <option id="tuesday">Tuedsay</option>
+                <option id="wednesday">Wednesday</option>
                 <option id="thursday">Thursday</option>
                 <option id="friday" selected>Friday</option>
                 <option id="saturday">Saturday</option>
                 <option id="sunday">Sunday</option>
             </select>
             <select id="filter-startTime">
+                <% for (let hour = 0; hour < 16; hour++) { %>
+                    <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
+                    <option id="<%= numToWord[timeHour] %>"><%= timeHour %>:00 <%= AMPM[Math.floor(hour/12)] %></option>
+                    <option id="<%= numToWord[timeHour] %>thirty"><%= timeHour %>:30 <%= AMPM[Math.floor(hour/12)] %></option>
+                <% } %>
                 <option id="eight">8:00 PM</option>
                 <option id="eightthirty">8:30 PM</option>
                 <option id="nine" selected>9:00 PM</option>
