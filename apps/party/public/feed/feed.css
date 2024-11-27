@@ -69,10 +69,9 @@ p.party-startTime {
 .sidebar-filters {
     flex: 1;
     max-width: 250px; 
-    background-color: #f5f5f5;
-    border-left: 1px solid #ddd;
+    background-color: white;
+    border-left: 1px solid white;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     height: fit-content;
 }
