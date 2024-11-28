@@ -91,6 +91,11 @@ p.party-startTime {
     cursor: pointer;
 }
 
+.filter:hover {
+    background-color: #f8f8fa;
+    transform: translateX(2px);
+}
+
 .loading-GIF-outer {
     margin: 0;
     width: 60px;
