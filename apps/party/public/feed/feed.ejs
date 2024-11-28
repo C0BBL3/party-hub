@@ -27,7 +27,7 @@
         <!-- Sidebar Filters -->
         <div class="sidebar-filters">
             <h3>Filters</h3>
-            <select id="filter-startDay">
+            <select id="filter-startDay" class="filter">
                 <option id="monday">Monday</option>
                 <option id="tuesday">Tuedsay</option>
                 <option id="wednesday">Wednesday</option>
@@ -36,7 +36,7 @@
                 <option id="saturday">Saturday</option>
                 <option id="sunday">Sunday</option>
             </select>
-            <select id="filter-startTime">
+            <select id="filter-startTime" class="filter">
                 <% for (let hour = 0; hour < 24; hour++) { %>
                     <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
                     <% let cAMPM = AMPM[Math.floor(hour/12)] %>
@@ -58,7 +58,7 @@
                 <option value="beach">Beach</option>
                 <option value="formal">Formal</option>
             </select> -->
-            <select id="filter-vibes">
+            <select id="filter-vibes" class="filter">
                 <option value="all">Vibes</option>
             </select>
         </div>
