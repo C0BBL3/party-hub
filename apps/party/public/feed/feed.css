@@ -89,12 +89,12 @@ p.party-startTime {
     border-radius: 5px;
     background-color: white;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .filter:hover {
     background-color: #f8f8fa;
     transform: translateX(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .loading-GIF-outer {
