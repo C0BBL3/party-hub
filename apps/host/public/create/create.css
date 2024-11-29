@@ -2,6 +2,11 @@ div#container {
     padding: 20px;
     border: 1px solid var(--lighter-grey-color);
     border-radius: 5px;
+    height: fit-content;
+}
+
+div#container textarea {
+    transition: none !important;
 }
 
 div#buttonBar {

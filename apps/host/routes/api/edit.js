@@ -5,5 +5,7 @@ const APIMiddleware = require('../../../../middleware/api/main');
 
 const BASE_PATH = '/api/host/edit';
 
+// POST
+router.post(`${BASE_PATH}/request-edit-party`, APIMiddleware.checkIsHost, Controller.requestEditParty);
 
 module.exports = router;

@@ -1,16 +1,77 @@
 <link rel="stylesheet" href="../edit/edit.css">
 <script type="text/javascript" src="../edit/edit.js"></script>
+<script type="text/javascript" src="../edit/edit-api.js"></script>
 
 <%- include('../sidebar/sidebar.ejs') %>
 
-<div id="container">
-    
-    <div id="formFrame">
+<input id="userId" type="hidden" value="<%= user.id %>"/>
+<input id="partyId" type="hidden" value="<%= party.id %>"/>
 
-        <div class="formHeader">Edit</div>
-
-        <div id="buttonBar">
-            <a id="saveButton" class="button" href="#">Save</a>
+<div id="container">    
+    <p style="font-size: 25px;">Edit: <b id="title"><%= party.title %></b></p>
+    <div class="enterPrivacyContainer">
+        <div class="enterContainerInfo">
+            <p>What would you like to change your party's privacy to?</p>
+            <select id="privacy">
+                <% if (party.privacy == 'Discoverable') { %>
+                    <option selected>Discoverable</option>
+                    <option>Public</option>
+                    <option>Private</option>
+                <% } else if (party.privacy == 'Public') { %>
+                    <option>Discoverable</option>
+                    <option selected>Public</option>
+                    <option>Private</option>
+                <% } else { %>
+                    <option>Discoverable</option>
+                    <option selected>Public</option>
+                    <option>Private</option>
+                <% } %>
+            </select>
         </div>
+        <p id="privacyInfo">Your party will be discoverable on the party home page and anyone can RSVP!</p>
+    </div>
+    <div class="enterStartTimeContainer">
+        <div class="enterContainerInfo">
+            <p>What do you want to change your party's start time to?</p>
+            <% const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; %>
+            <b style="margin-left: 5px;"><%= days[party.startTime.getDay()] %></b>
+            <p style="margin-left: 5px;">at</p>
+            <select id="startTime">
+                <option id="eight">8:00 PM</option>
+                <option id="eightthirty">8:30 PM</option>
+                <option id="nine" selected>9:00 PM</option>
+                <option id="ninethirty">9:30 PM</option>
+                <option id="ten">10:00 PM</option>
+                <option id="tenthirty">10:30 PM</option>
+                <option id="eleven">11:00 PM</option>
+            </select>
+        </div>
+    </div>
+    <div class="enterVibesContainer">
+        <div class="enterContainerInfo" id="enterVibesInfo">
+            <p>What kind of vibes do you want to change about your party?</p>
+            <textarea id="vibes" type="text" placeholder="Enter Additional Vibes"><%= party.vibes %></textarea>
+        </div>
+        <div class="requirements" id="vibesRequirements" style="display: none;">
+            <ul>
+                <li id="vibesBad" style="color: red; display: none;">Please enter the vibes your party will have.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="enterDescriptionContainer" >
+        <div class="enterContainerInfo" id="enterDescriptionInfo">
+            <p>Edit Description...</p>
+            <textarea id="description" type="text" placeholder="Enter Description"><%= party.description %></textarea>
+        </div>
+        <div class="requirements" id="descriptionRequirements" style="display: none;">
+            <ul>
+                <li id="descriptionBad" style="color: red; display: none;">Please enter a description for your group.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="buttonBar">
+        <button id="cancelButton" class="cancelButton">Cancel</button>
+        <button id="saveButton" class="saveButton">Save</button>
     </div>
 </div>
