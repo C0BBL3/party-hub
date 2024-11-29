@@ -13,7 +13,7 @@ div.sidebarSection {
 }
 
 div.sidebarItem:hover {
-    background-color: #f8f8fa;
+    background-color: var(--lightest-grey-color);
     transform: translateX(2px);
 }
 
