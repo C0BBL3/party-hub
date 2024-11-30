@@ -59,7 +59,7 @@ class PasswordService {
             hash
         });
 
-        return result;
+        return !result.error;
     }
 }
 

@@ -6,230 +6,234 @@ class Password {
     init() {        
         this.userId = parseInt($('userId').value);
 
+        this.onKeyUpCurrentPasswordTimeout = null;
 
-        this.currentPasswordTextbox = $('currentPasswordTextbox');
-        this.currentPasswordErrorMessage = $('currentPasswordErrorMessage');
+        this.currentPasswordInput = $('currentPassword');
+        this.currentPasswordInput.onkeyup = this.onKeyUpCurrentPassword.bind(this);
 
-        this.toggleCurrentPassword = $('toggleCurrentPassword');
+        this.currentPasswordRequirements = $('currentPasswordRequirements');
+        this.currentPasswordLoading = $('currentPasswordLoading');
+        this.currentPasswordGood = $('currentPasswordGood');
+        this.currentPasswordBad = $('currentPasswordBad');
 
-        if (this.toggleCurrentPassword) {
-            this.toggleCurrentPassword.onclick = this.onToggleCurrentPassword.bind(this);
-        }
+        this.onKeyUpNewPasswordTimeout = null;
 
-        this.requireCurrentPassword = this.currentPasswordTextbox ? true : false;
+        this.newPasswordInput = $('newPassword');
+        this.newPasswordInput.onkeyup = this.onKeyUpNewPassword.bind(this);
 
+        this.newPasswordConfirmInput = $('newPassword-confirm');
+        this.newPasswordConfirmInput.onkeyup = this.onKeyUpNewPassword.bind(this);
 
-        this.newPasswordTextbox = $('newPasswordTextbox');
-        
-        this.toggleNewPassword = $('toggleNewPassword');
-        this.toggleNewPassword.onclick = this.onToggleNewPassword.bind(this);
+        this.newPasswordRequirements = $('newPasswordRequirements');
+        this.newPasswordLengthGood = $('newPasswordLengthGood');
+        this.newPasswordLengthBad = $('newPasswordLengthBad');
+        this.newPasswordAlphaGood = $('newPasswordAlphaGood');
+        this.newPasswordAlphaBad = $('newPasswordAlphaBad');
 
-
-        this.newPasswordErrorMessage = $('newPasswordErrorMessage');
+        this.newPasswordConfirmRequirements = $('newPasswordConfirmRequirements');
+        this.newPasswordConfirmGood = $('newPasswordConfirmGood');
+        this.newPasswordConfirmBad = $('newPasswordConfirmBad');
 
         this.saveButton = $('saveButton');
-        this.saveButton.onclick = this.onMouseDownSaveButton.bind(this);
-
-        this.disableSaveButton();
-
-        if (this.requireCurrentPassword) {
-            this.monitorForUpdates(this.currentPasswordTextbox);
-        }
-
-        this.monitorForUpdates(this.newPasswordTextbox);
     }
 
-    onToggleCurrentPassword(event) {
-        const type = this.currentPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.currentPasswordTextbox.setAttribute('type', type);
-
-        this.toggleCurrentPassword.classList.toggle('fa-eye-slash');
-    }
-
-    onToggleNewPassword(event) {
-        const type = this.newPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.newPasswordTextbox.setAttribute('type', type);
-
-        this.toggleNewPassword.classList.toggle('fa-eye-slash');
-    }
-
-    monitorForUpdates(input) {
-        input.onchange = this.processUpdates.bind(this);
-        input.onkeyup = this.processUpdates.bind(this); 
-        input.onpaste = this.processUpdates.bind(this); 
-    }
-
-    processUpdates(evt) {
-        let data = this.getUpdatedData();
-
-        if (this.requireCurrentPassword) {            
-            if (data.currentPassword.length === 0) {
-                this.toggleCurrentPassword.style.visibility = 'hidden';
-                this.disableSaveButton();
-                return;
-            } else {
-                this.toggleCurrentPassword.style.visibility = 'visible';
-            }
-        }
-        
-        if (data.newPassword.length === 0) {
-            this.toggleNewPassword.style.visibility = 'hidden';
-            this.disableSaveButton();            
+    onKeyUpCurrentPassword(evt) {
+        if (this.currentPasswordInput.value.trim().length == 0) {
+            this.hideCurrentPasswordRequirements();
             return;
-        } else {
-            this.toggleNewPassword.style.visibility = 'visible';
         }
- 
-        let numChanges = Object.keys(data).length;
 
-        if (numChanges > 0) {
-            this.enableSaveButton();
+        clearTimeout(this.onKeyUpCurrentPasswordTimeout);
+        this.onKeyUpCurrentPasswordTimeout = setTimeout(this._onKeyUpCurrentPassword.bind(this, evt), 250);
+    }
+
+    async _onKeyUpCurrentPassword(evt) {
+        if (this.newPasswordInput.value.trim().length == 0) {
+            this.disableSaveButton();
+        }
+
+        this.showCurrentPasswordLoadingRequirement();
+
+        const correct = await this.checkIfCorrectPassword(this.currentPasswordInput.value);
+
+        if (correct) {
+            this.showCurrentPasswordGoodRequirement();
+
+            this.newPasswordInput.style.cursor = 'auto';
+            this.newPasswordInput.removeAttribute('readonly');
+
+            this.newPasswordConfirmInput.style.cursor = 'auto';
+            this.newPasswordConfirmInput.removeAttribute('readonly');
+
+            this.onKeyUpNewPassword();
         } else {
-            this.hideFieldError('currentPassword');
-            this.hideFieldError('newPassword');
+            this.showCurrentPasswordBadRequirement();
+
+            this.newPasswordInput.style.cursor = 'not-allowed';
+            this.newPasswordInput.setAttribute('readonly', true);
+
+            this.newPasswordConfirmInput.style.cursor = 'not-allowed';
+            this.newPasswordConfirmInput.setAttribute('readonly', true);
 
             this.disableSaveButton();
         }
     }
 
-    async onMouseDownSaveButton(evt) {
-        if (this.saveButton.enabled) {
-            let data = this.getUpdatedData();
-
-            if (this.validateData(data)) {
-                this.hideFieldErrors();
-
-                this.saveButton.innerHTML = 'Saving Changes...';  
-
-                data.userId = this.userId;
-
-                let response = await APISync.updatePassword(data);
-
-                if (!response.error) {
-                    this.disableSaveButton('Changes Saved');      
-
-                    if (this.requireCurrentPassword) {
-                        this.updateValue(data, 'currentPassword');
-                    }
-
-                    this.updateValue(data, 'newPassword');
-                } else {
-
-                    this.disableSaveButton();
-
-                    let error = response.error;
-                    this.showFieldError(error.fieldName, error.message);
-                }
-            } else {
-                this.disableSaveButton();
-            }
-        }
+    async checkIfCorrectPassword(password) {
+        const response = await api.password.verify(this.userId, password);
+        await this.delay(500);
+        return response && response.result;
     }
 
-    updateValue(data, fieldName) {
-        this[fieldName] = data[fieldName] && data[fieldName] !== this[fieldName] ? data[fieldName] : this[fieldName];
+    hideCurrentPasswordRequirements() {
+        this.currentPasswordRequirements.style.display = 'none';
+        this.currentPasswordLoading.style.display = 'none';
+        this.currentPasswordGood.style.display = 'none';
+        this.currentPasswordBad.style.display = 'none';
     }
 
-    getUpdatedData() {
-        let data = {};
-
-        if (this.requireCurrentPassword) {
-            let currentPassword = this.currentPasswordTextbox.value.trim();
-            if (currentPassword !== this.currentPassword) {
-                data.currentPassword = currentPassword;
-            }
-        }
-
-        let newPassword = this.newPasswordTextbox.value.trim();
-        if (newPassword !== this.newPassword) {
-            data.newPassword = newPassword;
-        }
-
-        return data;
+    showCurrentPasswordLoadingRequirement() {
+        this.hideCurrentPasswordRequirements();
+        this.currentPasswordRequirements.style.display = 'block';
+        this.currentPasswordLoading.style.display = 'list-item';
     }
 
-    enableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = true;
-        this.saveButton.classList.add('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
+    showCurrentPasswordGoodRequirement() {
+        this.hideCurrentPasswordRequirements();
+        this.currentPasswordRequirements.style.display = 'block';
+        this.currentPasswordGood.style.display = 'list-item';
     }
 
-    disableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = false;
-        this.saveButton.classList.remove('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
+    showCurrentPasswordBadRequirement() {
+        this.hideCurrentPasswordRequirements();
+        this.currentPasswordRequirements.style.display = 'block';
+        this.currentPasswordBad.style.display = 'list-item';
     }
 
-    validateData(data) {
-        let valid = true;
-
-        if (this.requireCurrentPassword) {
-            if (!this.validatePasswordField(data, 'currentPassword')) { valid = false; }
-        }
-
-        if (!this.validatePasswordField(data, 'newPassword')) { valid = false; }
-
-        return valid;
-    }
-
-    validatePasswordField(fieldName, data) {
-        if (!data.hasOwnProperty(fieldName)) { return true; }
-
-        if (!this.validatePassword(data[fieldName])) {
-            let errorMessage = 'Passwords must be between 8 and 30 characters';
-            this.showFieldError(fieldName, errorMessage);
-            return false 
+    onKeyUpNewPassword(evt) {
+        if (this.newPasswordInput.value.trim().length == 0) {
+            this.hideNewPasswordRequirements();
+            this.disableSaveButton();
+            return;
+        } else if (this.newPasswordInput.value.trim().length < 6) {
+            this.hideNewPasswordConfirmRequirements();
+            this.showNewPasswordLengthBadRequirement();
+            this.disableSaveButton();
         } else {
-            this.hideFieldError(fieldName);
-            return true;
+            this.showNewPasswordLengthGoodRequirement();
+
+            const valid = this.checkPasswordContainsNonAlpha(this.newPasswordInput.value);
+
+            if (valid) {
+                this.showNewPasswordAlphaGoodRequirement();
+
+                if (this.newPasswordInput.value == this.newPasswordConfirmInput.value) {
+                    this.showNewPasswordConfirmGoodRequirement();
+                    this.enableSaveButton();
+                } else {
+                    this.showNewPasswordConfirmBadRequirement();
+                    this.disableSaveButton();
+                }
+            }
         }
     }
 
-    validatePassword(password) {
-        if (password.length < 8 || password.length > 30) {  
-            return false;
+    checkPasswordContainsNonAlpha(password) {
+        for (let i = 0; i < password.length; i++) {
+            let code = password.charCodeAt(i);
+            if (!(code > 64 && code < 91) && !(code > 96 && code < 123)) {
+                return true;
+            }
         }
 
-        return true;
+        return false;
     }
+
+    hideNewPasswordRequirements() {
+        this.hideNewPasswordConfirmRequirements();
+        this.newPasswordRequirements.style.display = 'none';
+        this.newPasswordLengthGood.style.display = 'none';
+        this.newPasswordLengthBad.style.display = 'none';
+        this.newPasswordAlphaGood.style.display = 'none';
+        this.newPasswordAlphaBad.style.display = 'none';
+    }
+
+    hideNewPasswordConfirmRequirements() {
+        this.newPasswordConfirmRequirements.style.display = 'none';
+        this.newPasswordConfirmGood.style.display = 'none';
+        this.newPasswordConfirmBad.style.display = 'none';
+    }
+
+    showNewPasswordLengthGoodRequirement() {
+        this.hideNewPasswordRequirements();
+        this.newPasswordRequirements.style.display = 'block';
+        this.newPasswordLengthGood.style.display = 'list-item';
+    }
+
+    showNewPasswordLengthBadRequirement() {
+        this.hideNewPasswordRequirements();
+        this.newPasswordRequirements.style.display = 'block';
+        this.newPasswordLengthBad.style.display = 'list-item';
+    }
+
+    showNewPasswordAlphaGoodRequirement() {
+        this.hideNewPasswordRequirements();
+        this.newPasswordRequirements.style.display = 'block';
+        this.newPasswordAlphaGood.style.display = 'list-item';
+    }
+
+    showNewPasswordAlphaBadRequirement() {
+        this.hideNewPasswordRequirements();
+        this.newPasswordRequirements.style.display = 'block';
+        this.newPasswordAlphaBad.style.display = 'list-item';
+    }
+
+    showNewPasswordConfirmGoodRequirement() {
+        this.hideNewPasswordConfirmRequirements();
+        this.newPasswordConfirmRequirements.style.display = 'block';
+        this.newPasswordConfirmGood.style.display = 'list-item';
+    }
+
+    showNewPasswordConfirmBadRequirement() {
+        this.hideNewPasswordConfirmRequirements();
+        this.newPasswordConfirmRequirements.style.display = 'block';
+        this.newPasswordConfirmBad.style.display = 'list-item';
+    }
+
+    disableSaveButton() {
+        this.saveButton.classList.add('disabled');
+        this.saveButton.onclick = null;
+    }
+
+    enableSaveButton() {
+        this.saveButton.classList.remove('disabled');
+        this.saveButton.onclick = this.onClickSaveButton.bind(this);
+    }
+
+    async onClickSaveButton() {
+        const newPassword = this.newPasswordConfirmInput.value.trim();
+        const update = await api.password.update(this.userId, newPassword);
     
-    showFieldError(fieldName, errorMessage) {
-        this[`${fieldName}Textbox`].classList.add('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = errorMessage;
-        this[`${fieldName}ErrorMessage`].style.display = 'block';
-    }
-
-    hideFieldError(fieldName) {
-        this[`${fieldName}Textbox`].classList.remove('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = '';
-        this[`${fieldName}ErrorMessage`].style.display = 'none';
-    }
-
-    hideFieldErrors() {
-        if (this.requireCurrentPassword) {
-            this.hideFieldError('currentPassword');
+        if (!update.result) {
+            let title = 'OOPS...';
+            let message = 'There seemed to be an issue updating your password... please try again at another time.';
+    
+            let contextMenu = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = '165px';
+    
+            return await contextMenu.showSync();
         }
-        this.hideFieldError('newPassword');
+
+        document.location.reload();
+    }
+
+    async delay(timeMS) {
+        return new Promise((resolve, reject) => {
+            setTimeout((evt) => {
+                resolve(null);
+            }, timeMS);
+        });
     }
 }
 
-password = new Password();
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const saveButton = document.getElementById('saveButton');
-    const currentPassword = document.getElementById('currentPassword');
-    const newPassword = document.getElementById('newPassword');
-
-    function enableSaveButton() {
-        saveButton.disabled = !(currentPassword.value && newPassword.value);
-    }
-
-    currentPassword.addEventListener('input', enableSaveButton);
-    newPassword.addEventListener('input', enableSaveButton);
-
-    saveButton.addEventListener('click', () => {
-        console.log('Changes saved (non-functional example)');
-        saveButton.disabled = true; // Disable after "saving"
-    });
-});
+let password = new Password();

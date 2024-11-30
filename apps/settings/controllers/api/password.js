@@ -1,23 +1,38 @@
 const PasswordService = require('../../services/password');
 
 class PasswordAPIController  {
-    static async update(req, res) {
-        const userId = req.session.user.id;
+    static async verify(req, res) { // API
+        const password = req.query.password;
 
-        const body = req.body;
-        const password = body.password;
+        if (!password) {
+            return res.send({ result: false });
+        }
+
+        const user = req.session.user;
+        const userId = req.params.userId;
+
+        if (user.id != userId) {
+            return res.send({ result: false });
+        }
+
+        const result = await PasswordService.verifyPassword(password, user.salt, user.hash);
+
+        res.send({ result });
+    }
+
+    static async update(req, res) {
+        const user = req.session.user;
+        const userId = req.body.userId;
+
+        if (user.id != userId) {
+            return res.send({ result: false });
+        }
+
+        const password = req.body.password;
 
         const result = await PasswordService.updatePassword(userId, password);
 
-        if (result) {  
-            res.send({
-                result: true
-            });
-        } else {
-            res.send({
-                result: false
-            });
-        }
+        res.send({ result });
     }
 }
 
