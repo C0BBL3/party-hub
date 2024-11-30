@@ -12,11 +12,11 @@ html {
 	--lightest-grey-color: #e0e0e0; /* good for dividing lines/borders */
     --white-color: #ffffff; 
     --success-color: #5cb85c; /* green color a bit too green so need lower contrast green for a success color */
-    --red-color: #9c0000; /* also viable for error colors */
+    --red-color: #d00; /* also viable for error colors */
     --light-blue-color: #00bfff;
     --blue-color: #308CEA;
     --dark-blue-color: #287daf;
-	--green-color: #0a0;
+	--green-color: #080;
     --orange-color: #CC7621;
     --gold-color: #d4af37;
     --purple-color: #909;
