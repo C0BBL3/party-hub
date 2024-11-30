@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="../profile/profile.css">
 <script type="text/javascript" src="../profile/profile.js"></script>
+<script type="text/javascript" src="../profile/profile-api.js"></script>
 
 <%- include('../sidebar/sidebar.ejs') %>
+
+<input id="userId" type="hidden" value="<%= user.id %>"/>
 
 <div id="container">
     <div id="formFrame">
@@ -9,27 +12,33 @@
             <!-- Profile Image Upload -->
             <div class="profile-picture">
                 <label for="profileImageUpload">
-                    <img src="/path/to/default-image.jpg" alt="Profile Picture" id="profileImage">
+                    <% if (pictureBase64) { %>
+                        <img src="<%= pictureBase64 %>" alt="Profile Picture" id="profileImage" title="Click to upload new profile picture!">
+                    <% } else { %>
+                        <img src="/path/to/default-image.jpg" alt="Profile Picture" id="profileImage" title="Click to upload a profile picture!">
+                    <% } %>
                 </label>
                 <input type="file" id="profileImageUpload" style="display: none;" onchange="previewImage(event)">
             </div>
+
 
             <!-- Profile Information Form -->
             <form id="profileForm">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Username" readonly>
+                    <input type="text" id="username" name="username" style="cursor: not-allowed;" placeholder="<%= user.username %>" value="<%= user.username %>" readonly>
                 </div>
             
                 <div class="form-group">
                     <label for="name">Name</label>
                     <div class="editable-container">
-                        <input type="text" id="nameDisplay" placeholder="Name" readonly>
-                        <button type="button" class="edit-button" data-target="nameDisplay">Edit</button>
-                    </div>
-                    <div id="splitNameContainer" style="display: none;">
-                        <input type="text" id="firstName" name="firstName" placeholder="First Name">
-                        <input type="text" id="lastName" name="lastName" placeholder="Last Name">
+                        <input type="text" id="nameDisplay" placeholder="<%= user.firstName %> <%= user.lastName %>" value="<%= user.firstName %> <%= user.lastName %>" readonly>
+                        <div id="splitNameContainer" style="display: none;">
+                            <input type="text" id="firstName" name="firstName" placeholder="<%= user.firstName %>" value="<%= user.firstName %>">
+                            <input type="text" id="lastName" name="lastName" placeholder="<%= user.lastName %>" value="<%= user.lastName %>">
+                        </div>
+                        <button type="button" id="editNameButton" class="edit-button" data-target="nameDisplay">Edit</button>
+                        <button type="button" id="doneNameButton" class="edit-button" data-target="nameDisplay" style="display: none;">Done</button>
                     </div>
                 </div>
 
@@ -37,17 +46,19 @@
                 <div class="form-group">
                     <label for="description">Profile Description</label>
                     <div class="editable-container">
-                        <textarea id="description" name="description" placeholder="Description" readonly></textarea>
-                        <button type="button" class="edit-button" data-target="description">Edit</button>
+                        <textarea id="description" name="description" placeholder="<%= user.description %>" readonly><%= user.description %></textarea>
+                        <button type="button" id="editDescriptionButton" class="edit-button" data-target="description">Edit</button>
+                        <button type="button" id="doneDescriptionButton" class="edit-button" data-target="description" style="display: none;">Done</button>
                     </div>
                 </div>
 
                 <!-- Profile Hashtags Field -->
                 <div class="form-group">
-                    <label for="hashtags">Profile Hashtags</label>
+                    <label for="vibes">Profile Vibes</label>
                     <div class="editable-container">
-                        <input type="text" id="hashtags" name="hashtags" placeholder="#tag1, #tag2" readonly>
-                        <button type="button" class="edit-button" data-target="hashtags">Edit</button>
+                        <input type="text" id="vibes" name="vibes" value="<%= user.tags %>" readonly>
+                        <button type="button" id="editVibesButton" class="edit-button" data-target="vibes">Edit</button>
+                        <button type="button" id="doneVibesButton" class="edit-button" data-target="vibes" style="display: none;">Done</button>
                     </div>
                 </div>
 

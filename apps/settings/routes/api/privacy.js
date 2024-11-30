@@ -6,6 +6,6 @@ const Controller = require('../../controllers/api/privacy');
 const BASE_PATH = '/api/settings/privacy';
 
 // POST 
-router.post(`${BASE_PATH}/update`, ApiMiddleware.checkIsHostOrPatron, Controller.update);
+router.post(`${BASE_PATH}/update`, ApiMiddleware.checkAuth, Controller.update);
 
 module.exports = router;

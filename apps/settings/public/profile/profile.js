@@ -1,4 +1,4 @@
-class Password {
+class Profile {
     constructor() {
         document.body.onload = this.init.bind(this);      
     }
@@ -6,278 +6,219 @@ class Password {
     init() {        
         this.userId = parseInt($('userId').value);
 
+        this.profileImage = $('profileImage');
 
-        this.currentPasswordTextbox = $('currentPasswordTextbox');
-        this.currentPasswordErrorMessage = $('currentPasswordErrorMessage');
+        this.profileImageUpload = $('profileImageUpload');
+        this.profileImageUpload.onchange = this.previewImage.bind(this);
 
-        this.toggleCurrentPassword = $('toggleCurrentPassword');
+        this.firstNameInput = $('firstName');
+        this.lastNameInput = $('lastName');
 
-        if (this.toggleCurrentPassword) {
-            this.toggleCurrentPassword.onclick = this.onToggleCurrentPassword.bind(this);
-        }
+        this.descriptionInput = $('description');
 
-        this.requireCurrentPassword = this.currentPasswordTextbox ? true : false;
+        this.vibesInput = $('vibes');
 
+        this.nameDisplay = $('nameDisplay');
+        this.splitNameContainer = $('splitNameContainer');
 
-        this.newPasswordTextbox = $('newPasswordTextbox');
+        this.editNameButton = $('editNameButton');
+        this.editNameButton.onclick = this.onClickEditNameButton.bind(this);
+
+        this.editDescriptionButton = $('editDescriptionButton');
+        this.editDescriptionButton.onclick = this.onClickEditDescriptionButton.bind(this);
         
-        this.toggleNewPassword = $('toggleNewPassword');
-        this.toggleNewPassword.onclick = this.onToggleNewPassword.bind(this);
+        this.editVibesButton = $('editVibesButton');
+        this.editVibesButton.onclick = this.onClickEditVibesButton.bind(this);
 
+        this.doneNameButton = $('doneNameButton');
+        this.doneNameButton.onclick = this.onClickDoneNameButton.bind(this);
 
-        this.newPasswordErrorMessage = $('newPasswordErrorMessage');
+        this.doneDescriptionButton = $('doneDescriptionButton');
+        this.doneDescriptionButton.onclick = this.onClickDoneDescriptionButton.bind(this);
+
+        this.doneVibesButton = $('doneVibesButton');
+        this.doneVibesButton.onclick = this.onClickDoneVibesButton.bind(this);
 
         this.saveButton = $('saveButton');
-        this.saveButton.onclick = this.onMouseDownSaveButton.bind(this);
-
-        this.disableSaveButton();
-
-        if (this.requireCurrentPassword) {
-            this.monitorForUpdates(this.currentPasswordTextbox);
-        }
-
-        this.monitorForUpdates(this.newPasswordTextbox);
+        this.saveButton.onclick = this.onClickSaveButton.bind(this);
     }
 
-    onToggleCurrentPassword(event) {
-        const type = this.currentPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.currentPasswordTextbox.setAttribute('type', type);
-
-        this.toggleCurrentPassword.classList.toggle('fa-eye-slash');
+    onClickEditNameButton(evt) {
+        this.splitNameContainer.style.display = 'flex';
+        this.nameDisplay.style.display = 'none';
+        this.editNameButton.style.display = 'none';
+        this.doneNameButton.style.display = 'block';
     }
 
-    onToggleNewPassword(event) {
-        const type = this.newPasswordTextbox.getAttribute('type') === 'password' ? 'text' : 'password';
-        this.newPasswordTextbox.setAttribute('type', type);
-
-        this.toggleNewPassword.classList.toggle('fa-eye-slash');
+    onClickDoneNameButton(evt) {
+        this.splitNameContainer.style.display = 'none';
+        this.nameDisplay.style.display = 'block';
+        this.editNameButton.style.display = 'block';
+        this.doneNameButton.style.display = 'none';
+        this.nameDisplay.value = `${this.firstNameInput.value.trim()} ${this.lastNameInput.value.trim()}`.trim();
     }
 
-    monitorForUpdates(input) {
-        input.onchange = this.processUpdates.bind(this);
-        input.onkeyup = this.processUpdates.bind(this); 
-        input.onpaste = this.processUpdates.bind(this); 
+    onClickEditDescriptionButton(evt) {
+        this.descriptionInput.removeAttribute('readonly');
+        this.descriptionInput.focus();
+        this.editDescriptionButton.style.display = 'none';
+        this.doneDescriptionButton.style.display = 'block';
     }
 
-    processUpdates(evt) {
-        let data = this.getUpdatedData();
-
-        if (this.requireCurrentPassword) {            
-            if (data.currentPassword.length === 0) {
-                this.toggleCurrentPassword.style.visibility = 'hidden';
-                this.disableSaveButton();
-                return;
-            } else {
-                this.toggleCurrentPassword.style.visibility = 'visible';
-            }
-        }
-        
-        if (data.newPassword.length === 0) {
-            this.toggleNewPassword.style.visibility = 'hidden';
-            this.disableSaveButton();            
-            return;
-        } else {
-            this.toggleNewPassword.style.visibility = 'visible';
-        }
- 
-        let numChanges = Object.keys(data).length;
-
-        if (numChanges > 0) {
-            this.enableSaveButton();
-        } else {
-            this.hideFieldError('currentPassword');
-            this.hideFieldError('newPassword');
-
-            this.disableSaveButton();
-        }
+    onClickDoneDescriptionButton(evt) {
+        this.descriptionInput.setAttribute('readonly', true);
+        this.editDescriptionButton.style.display = 'block';
+        this.doneDescriptionButton.style.display = 'none';
     }
 
-    async onMouseDownSaveButton(evt) {
-        if (this.saveButton.enabled) {
-            let data = this.getUpdatedData();
-
-            if (this.validateData(data)) {
-                this.hideFieldErrors();
-
-                this.saveButton.innerHTML = 'Saving Changes...';  
-
-                data.userId = this.userId;
-
-                let response = await APISync.updatePassword(data);
-
-                if (!response.error) {
-                    this.disableSaveButton('Changes Saved');      
-
-                    if (this.requireCurrentPassword) {
-                        this.updateValue(data, 'currentPassword');
-                    }
-
-                    this.updateValue(data, 'newPassword');
-                } else {
-
-                    this.disableSaveButton();
-
-                    let error = response.error;
-                    this.showFieldError(error.fieldName, error.message);
-                }
-            } else {
-                this.disableSaveButton();
-            }
-        }
+    onClickEditVibesButton(evt) {
+        this.vibesInput.removeAttribute('readonly');
+        this.vibesInput.focus();
+        this.editVibesButton.style.display = 'none';
+        this.doneVibesButton.style.display = 'block';
     }
 
-    updateValue(data, fieldName) {
-        this[fieldName] = data[fieldName] && data[fieldName] !== this[fieldName] ? data[fieldName] : this[fieldName];
+    onClickDoneVibesButton(evt) {
+        this.vibesInput.setAttribute('readonly', true);
+        this.editVibesButton.style.display = 'block';
+        this.doneVibesButton.style.display = 'none';
     }
 
-    getUpdatedData() {
-        let data = {};
-
-        if (this.requireCurrentPassword) {
-            let currentPassword = this.currentPasswordTextbox.value.trim();
-            if (currentPassword !== this.currentPassword) {
-                data.currentPassword = currentPassword;
-            }
-        }
-
-        let newPassword = this.newPasswordTextbox.value.trim();
-        if (newPassword !== this.newPassword) {
-            data.newPassword = newPassword;
-        }
-
-        return data;
-    }
-
-    enableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = true;
-        this.saveButton.classList.add('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
-    }
-
-    disableSaveButton(text = 'Save Changes') {
-        this.saveButton.enabled = false;
-        this.saveButton.classList.remove('buttonEnabled') 
-        this.saveButton.innerHTML = text;  
-    }
-
-    validateData(data) {
-        let valid = true;
-
-        if (this.requireCurrentPassword) {
-            if (!this.validatePasswordField(data, 'currentPassword')) { valid = false; }
-        }
-
-        if (!this.validatePasswordField(data, 'newPassword')) { valid = false; }
-
-        return valid;
-    }
-
-    validatePasswordField(fieldName, data) {
-        if (!data.hasOwnProperty(fieldName)) { return true; }
-
-        if (!this.validatePassword(data[fieldName])) {
-            let errorMessage = 'Passwords must be between 8 and 30 characters';
-            this.showFieldError(fieldName, errorMessage);
-            return false 
-        } else {
-            this.hideFieldError(fieldName);
-            return true;
-        }
-    }
-
-    validatePassword(password) {
-        if (password.length < 8 || password.length > 30) {  
-            return false;
-        }
-
-        return true;
-    }
+    async encodeImageToBase64(imageUrl) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = imageUrl;
     
-    showFieldError(fieldName, errorMessage) {
-        this[`${fieldName}Textbox`].classList.add('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = errorMessage;
-        this[`${fieldName}ErrorMessage`].style.display = 'block';
-    }
-
-    hideFieldError(fieldName) {
-        this[`${fieldName}Textbox`].classList.remove('error');  
-        this[`${fieldName}ErrorMessage`].innerHTML = '';
-        this[`${fieldName}ErrorMessage`].style.display = 'none';
-    }
-
-    hideFieldErrors() {
-        if (this.requireCurrentPassword) {
-            this.hideFieldError('currentPassword');
-        }
-        this.hideFieldError('newPassword');
-    }
-}
-
-password = new Password();
-
-function previewImage(event) {
-    const image = document.getElementById('profileImage');
-    image.src = URL.createObjectURL(event.target.files[0]);
-    image.onload = () => {
-        URL.revokeObjectURL(image.src); 
-    };
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const editButtons = document.querySelectorAll('.edit-button');
-    const saveButton = document.getElementById('saveButton');
-    const nameDisplay = document.getElementById('nameDisplay');
-    const firstNameInput = document.getElementById('firstName');
-    const lastNameInput = document.getElementById('lastName');
-    const splitNameContainer = document.getElementById('splitNameContainer');
-
-    // Combine First and Last Name for display
-    function updateNameDisplay() {
-        nameDisplay.value = `${firstNameInput.value} ${lastNameInput.value}`.trim();
-    }
-
-    updateNameDisplay();
-
-    // Edit button functionality
-    editButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetId = button.getAttribute('data-target');
-
-            if (targetId === 'nameDisplay') {
-                if (splitNameContainer.style.display === 'none') {
-                    splitNameContainer.style.display = 'flex';
-                    nameDisplay.style.display = 'none';
-                    button.textContent = 'Done';
-                } else {
-                    splitNameContainer.style.display = 'none';
-                    nameDisplay.style.display = 'block';
-                    button.textContent = 'Edit';
-                    updateNameDisplay();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+    
+                try {
+                    const base64 = canvas.toDataURL('image/png');
+                    resolve(base64);
+                } catch (error) {
+                    reject(error);
                 }
-            } else {
-                const inputField = document.getElementById(targetId);
-                if (inputField.hasAttribute('readonly')) {
-                    inputField.removeAttribute('readonly');
-                    inputField.focus();
-                    button.textContent = 'Done';
-                } else {
-                    inputField.setAttribute('readonly', true);
-                    button.textContent = 'Edit';
-                }
-            }
+            };
+    
+            img.onerror = (error) => {
+                reject(error);
+            };
         });
-    });
+    }
 
-    saveButton.addEventListener('click', () => {
-        const fieldsToSave = {
-            firstName: firstNameInput.value,
-            lastName: lastNameInput.value,
-            description: document.getElementById('description').value,
-            hashtags: document.getElementById('hashtags').value
-        };
+    async previewImage(event) {
+        const file = event.target.files[0];
 
-        console.log('Saving changes:', fieldsToSave);
-        alert("Changes Saved!");
-    });
-});
+        if (file.size > 196608) {
+            let title = 'OOPS...';
+            let message = "Profile picture size must be smaller that 256x256!";
+    
+            let contextMenu = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = '150px';
+    
+            return await contextMenu.showSync();
+        }
+
+        const imageUrl = URL.createObjectURL(file);
+        const base64ImageUrl = await this.encodeImageToBase64(imageUrl);
+        
+        const update = await api.profile.updateProfilePicture(this.userId, base64ImageUrl);
+    
+        if (!update.result) {
+            let title = 'OOPS...';
+            let message = 'There seemed to be an issue updating your profile picture... please try again at another time.';
+    
+            let contextMenu = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = '165px';
+    
+            return await contextMenu.showSync();
+        }
+    
+        this.profileImage.src = base64ImageUrl;
+    }
+
+    async onClickSaveButton(evt) {
+        $('container').style.cursor = 'progress';
+
+        if (this.nameDisplay.placeholder != this.nameDisplay.value) { // name was changed
+            const response = await api.profile.updateName(this.userId, this.firstNameInput.value.trim(), this.lastNameInput.value.trim());
+
+            if (!response || !response.result) {
+                await this.delay(750);
+
+                $('container').style.cursor = 'auto';
+
+                let title = 'OOPS...';
+                let message = 'There seemed to be an issue updating your name... please try again at another time.';
+
+                let contextMenu = new ContextMenu(title, message, null, 'OK');
+                $('context-menu').style.height = '160px';
+
+                return await contextMenu.showSync();
+            }
+        }
+
+        if (this.descriptionInput.placeholder != this.descriptionInput.value) { // description was changed
+            const response = await api.profile.updateDescription(this.userId, this.descriptionInput.value.trim());
+
+            if (!response || !response.result) {
+                await this.delay(750);
+                
+                $('container').style.cursor = 'auto';
+
+                let title = 'OOPS...';
+                let message = 'There seemed to be an issue updating your description... please try again at another time.';
+
+                let contextMenu = new ContextMenu(title, message, null, 'OK');
+                $('context-menu').style.height = '160px';
+
+                return await contextMenu.showSync();
+            }
+        }
+
+        if (this.vibesInput.placeholder != this.vibesInput.value) { // vibes were changed
+            const response = await api.profile.updateVibes(this.userId, this.vibesInput.value.trim());
+
+            if (!response || !response.result) {
+                await this.delay(750);
+                
+                $('container').style.cursor = 'auto';
+
+                let title = 'OOPS...';
+                let message = 'There seemed to be an issue updating your vibes... please try again at another time.';
+
+                let contextMenu = new ContextMenu(title, message, null, 'OK');
+                $('context-menu').style.height = '160px';
+
+                return await contextMenu.showSync();
+            }
+        }
+
+        await this.delay(750);
+                
+        $('container').style.cursor = 'auto';
+
+        let title = 'SAVED';
+        let message = 'Profile updated.';
+
+        let contextMenu = new ContextMenu(title, message, null, 'OK');
+        $('context-menu').style.height = '150px';
+
+        return await contextMenu.showSync();
+    }
+
+    async delay(timeMS) {
+        return new Promise((resolve, reject) => {
+            setTimeout((evt) => {
+                resolve(null);
+            }, timeMS);
+        });
+    }
+}
+
+let profile = new Profile();

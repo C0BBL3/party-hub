@@ -25,7 +25,7 @@ class LoginProcess {
         let process = await api.login.process(this.usernameOrEmailInput.value, this.passwordInput.value);
 
         if (process.result) {
-            setTimeout(() => { $('wrap').style.cursor = 'auto'; window.location.href = '/party/feed'; }, 750);
+            setTimeout(() => { $('wrap').style.cursor = 'auto'; window.location.href = '/party/rsvp'; }, 750);
         } else {
             this.errorMessage.innerHTML = process.errorMessage;
 

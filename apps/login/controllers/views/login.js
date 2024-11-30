@@ -19,8 +19,9 @@ class LoginController {
         }
 
         req.session.user = user;
+        req.session.x = 7;
 
-        res.redirect('/login');
+        setTimeout(() => { res.redirect('/party/feed'); }, 1000);
     }
 }
 
