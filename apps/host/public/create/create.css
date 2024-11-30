@@ -120,11 +120,11 @@ div.check svg, div.cross svg {
 }
 
 div.check path {
-    fill: #0b0;
+    fill: var(--green-color);
 }
 
 div.cross path {
-    fill: red;
+    fill: var(--red-color);
 }
 
 p#privacyInfo, p#minLeagueInfo {

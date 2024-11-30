@@ -29,8 +29,8 @@
     border-color: seagreen;
 }
 .decline {
-    color: red; 
-    border-color: red;
+    color: var(--red-color); 
+    border-color: var(--red-color);
 }
 
 .request {
@@ -50,7 +50,7 @@
 
 .decline:hover {
     color: white;
-    background-color: red;
+    background-color: var(--red-color);
 }
 
 .request:hover {
