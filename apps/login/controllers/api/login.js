@@ -9,15 +9,23 @@ class LoginAPIController {
         if (user && user.password === password) { // if user enters correct temp password
             req.session.user = user;
 
+            if (req.session.user.isAdmin) {
+                req.session.user.isSupervisorMode = 1;
+            }
+
             return res.send({
                 result: true
             });
         } else if (user) { // if user exists
             const result = await LoginService.verifyPassword(password, user.salt, user.hash);
 
-            req.session.user = user;
-
             if (result) {
+                req.session.user = user;
+
+                if (req.session.user.isAdmin) {
+                    req.session.user.isSupervisorMode = 1;
+                }
+
                 return res.send({
                     result: true
                 });

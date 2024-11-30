@@ -6,8 +6,9 @@ const Controller = require('../../controllers/api/profile');
 const BASE_PATH = '/api/settings/profile';
 
 // POST 
-router.post(`${BASE_PATH}/picture`, ApiMiddleware.checkIsHostOrPatron, Controller.updatePicture);
-router.post(`${BASE_PATH}/username`, ApiMiddleware.checkIsHostOrPatron, Controller.updateUsername);
-router.post(`${BASE_PATH}/biography`, ApiMiddleware.checkIsHostOrPatron, Controller.updateBiography);
+router.post(`${BASE_PATH}/update-profile-picture`, ApiMiddleware.checkAuth, Controller.updateProfilePicture);
+router.post(`${BASE_PATH}/update-name`, ApiMiddleware.checkAuth, Controller.updateName);
+router.post(`${BASE_PATH}/update-description`, ApiMiddleware.checkAuth, Controller.updateDescription);
+router.post(`${BASE_PATH}/update-tags`, ApiMiddleware.checkAuth, Controller.updateTags);
 
 module.exports = router;

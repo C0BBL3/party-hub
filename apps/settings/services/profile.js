@@ -7,7 +7,7 @@ class ProfileService {
             pictureBase64
         });
 
-        return result;
+        return !result.error;
     }
 
     static async getPictureBase64(userId) {
@@ -20,22 +20,40 @@ class ProfileService {
         return null;
     }
 
-    static async updateUsername(userId, username) {
+    static async updateFirstName(userId, firstName) {
         const result = await db.update('user', {
             id: userId,
-            username
+            firstName
         });
 
-        return result;
+        return !result.error;
+    }
+    
+    static async updateLastName(userId, lastName) {
+        const result = await db.update('user', {
+            id: userId,
+            lastName
+        });
+
+        return !result.error;
     }
 
-    static async updateBiography(userId, biography) {
+    static async updateDescription(userId, description) {
         const result = await db.update('user', {
             id: userId,
-            biography
+            description
         });
 
-        return result;
+        return !result.error;
+    }
+
+    static async updateTags(userId, tags) {
+        const result = await db.update('user', {
+            id: userId,
+            tags
+        });
+
+        return !result.error;
     }
 }
 

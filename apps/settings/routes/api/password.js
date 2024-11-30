@@ -6,6 +6,6 @@ const Controller = require('../../controllers/api/password');
 const BASE_PATH = '/api/settings/password';
 
 // POST 
-router.post(`${BASE_PATH}/password`, ApiMiddleware.checkIsHostOrPatron, Controller.update);
+router.post(`${BASE_PATH}/password`, ApiMiddleware.checkAuth, Controller.update);
 
 module.exports = router;
