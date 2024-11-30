@@ -5,7 +5,10 @@ const Controller = require('../../controllers/api/password');
 
 const BASE_PATH = '/api/settings/password';
 
+// GET
+router.get(`${BASE_PATH}/verify/:userId`, ApiMiddleware.checkAuth, Controller.verify);
+
 // POST 
-router.post(`${BASE_PATH}/password`, ApiMiddleware.checkAuth, Controller.update);
+router.post(`${BASE_PATH}/update`, ApiMiddleware.checkAuth, Controller.update);
 
 module.exports = router;

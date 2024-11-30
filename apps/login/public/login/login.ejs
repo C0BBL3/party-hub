@@ -17,7 +17,7 @@
             <input id="usernameOrEmail-input" class="inputBox" type="text" name="username" autocomplete="username" required="" placeholder="Username or Email">
         </div>
         <div style="width: 90%">
-            <input id="password-input" class="inputBox" type="password" name="password" autocomplete="current-password" required="" placeholder="Password">
+            <input id="password-input" class="inputBox" type="password" name="password" autocomplete="current-password" required="" placeholder="Password" maxlength="128" onkeypress="return event.charCode != 32" >
         </div>
         <div style="text-align: left; width: 90%; visibility: hidden;">
             <div id="forgotPassword">Forgot your password?</div>
