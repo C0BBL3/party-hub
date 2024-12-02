@@ -8,8 +8,7 @@ class FeedScreen {
         this.filters = {
             startDay: $('filter-startDay'),
             startTime: $('filter-startTime'),
-            // following: $('filter-following'),
-            // friends: $('filter-friends'),
+            discoverability: $('filter-discoverability'),
             vibes: $('filter-vibes')
         };
 
@@ -18,7 +17,7 @@ class FeedScreen {
         }
 
         // Placeholder for dynamically loaded parties
-        this.parties = await this.getFirst10Parties();
+        this.parties = await this.getFeaturedParties();
 
         this.addVibeFilters();
 
@@ -27,8 +26,8 @@ class FeedScreen {
         this.loadParties(this.parties);
     }
 
-    async getFirst10Parties() {
-        const result = await api.feed.getFirst10Parties();
+    async getFeaturedParties() {
+        const result = await api.feed.getFeaturedParties();
 
         if (result) {
             let parties = [];
@@ -39,7 +38,14 @@ class FeedScreen {
                     title: party_.title,
                     startTime: party_.startTime,
                     description: party_.description,
-                    vibes: this.capitalize(party_.vibes)
+                    vibes: this.capitalize(party_.vibes).join(','),
+                    pictureBase64: party_.pictureBase64,
+                    host: party_.host,
+                    rsvpCount: party_.rsvpCount,
+                    discoverability: party_.discoverability,
+                    friendCount: party_.friendCount,
+                    otherCount: party_.otherCount,
+                    address: party_.address
                 };
 
                 parties.push(party);
@@ -123,15 +129,18 @@ class FeedScreen {
             const rletters = lowerCase.slice(1, lowerCase.length);
             const finalVibe = fLetter + rletters;
             
+            if (capitalizedItems.includes(finalVibe)) {
+                continue;
+            }
+
             capitalizedItems.push(finalVibe);
         }
-        
-        const capitalized = capitalizedItems.join(',');
-        
-        return capitalized;
+
+        return capitalizedItems;
     }
 
     async loadParties(filteredParties) {
+        this.onMouseExitPartyDivTimeout = null;
         this.partyListDiv.innerHTML = ""; // Clear list
 
         if (filteredParties.length == 0) {
@@ -139,29 +148,109 @@ class FeedScreen {
         }
 
         for (let party of filteredParties) {
-            const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-item');
-            const title = Core.createElement(partyDiv, 'h3', '', 'party-title', party.title);
-            const vibes = Core.createElement(partyDiv, 'p', '', 'party-vibes', party.vibes);
-            const startTime = Core.createElement(partyDiv, 'p', '', 'party-startTime', moment(party.startTime).format('LLLL'));
-            const description = Core.createElement(partyDiv, 'p', '', 'party-description', party.description);
-
+            const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
+            
             partyDiv.onclick = this.onClickPartyDiv.bind(this);
+
+            const shadow = Core.createDiv(partyDiv, `party-${party.id}-shadow`, 'party-shadow');
+            const container = Core.createDiv(partyDiv, `party-${party.id}-container`, 'party-container');
+
+            container.onmouseenter = this.onMouseEnterPartyDiv.bind(this);
+            container.onmouseleave = this.onMouseExitPartyDiv.bind(this);
+
+            container.onclick = this.onClickPartyDiv.bind(this);
+
+            let image;
+            if (party.pictureBase64) {
+                image = Core.createImg(container, `party-${party.id}-image`, 'party-image', party.pictureBase64);
+            } else {
+                image = Core.createImg(container, `party-${party.id}-image`, 'party-image', party.host.pictureBase64);
+            }
+
+            image.onclick = this.onClickPartyDiv.bind(this);
+                
+            const textContainer = Core.createDiv(container, `party-${party.id}-textContainer`, 'party-textContainer');
+            textContainer.onclick = this.onClickPartyDiv.bind(this);
+            
+            const title = Core.createSpan(textContainer, `party-${party.id}-title`, 'party-title', party.title);
+            title.onclick = this.onClickPartyDiv.bind(this);
+
+            const subtitleContainer = Core.createDiv(textContainer, `party-${party.id}-subtitleContainer`, 'party-subtitleContainer');
+            subtitleContainer.onclick = this.onClickPartyDiv.bind(this);
+            
+            const hostSpan = Core.createSpan(subtitleContainer, `party-${party.id}-host-span`, 'party-host-span');
+        
+            const hostByText = Core.createText(hostSpan, 'Hosted by ');
+            const host = Core.createAnchor(hostSpan, `party-${party.id}-host`, 'party-host', party.host.username, `host/${party.host.username}`);
+            
+            const startTime = Core.createSpan(subtitleContainer, `party-${party.id}-startTime`, 'party-startTime', moment(party.startTime).format('MMM D, h:mm A'));
+            startTime.onclick = this.onClickPartyDiv.bind(this);
+
+            const address = Core.createSpan(subtitleContainer, `party-${party.id}-address`, 'party-address', party.address.streetAddress);
+            address.onclick = this.onClickPartyDiv.bind(this);
+            
+
+            const rsvp = Core.createSpan(subtitleContainer, `party-${party.id}-rsvp`, 'party-rsvp', `${party.rsvpCount} / 100 Patrons`);
+            rsvp.onclick = this.onClickPartyDiv.bind(this);
+            
+            const vibesContainer = Core.createDiv(textContainer, `party-${party.id}-vibes`, 'party-vibes');
+            vibesContainer.onclick = this.onClickPartyDiv.bind(this);
+
+            let vibes = this.capitalize([party.vibes, party.host.vibes].join(','));
+            
+            for (let vibe of vibes) {
+                const vibeSpan = Core.createSpan(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
+                vibeSpan.onclick = this.onClickPartyVibe.bind(this);
+            }
+
+            const description = Core.createSpan(textContainer, `party-${party.id}-description`, 'party-description', party.description);
+            description.onclick = this.onClickPartyDiv.bind(this);
         }
     }
 
-    async onClickPartyDiv(evt) {
-        let target = evt.target;
-        let partyDiv;
+    onMouseEnterPartyDiv(evt) {
+        let id = evt.target.id;
+        let parts = id.split('-');
+        let shadow = $(`party-${parts[1]}-shadow`);
 
-        if (target.className == 'party-title' || target.className == 'party-vibes' || target.className == 'party-startTime' || target.className == 'party-description') {
-            partyDiv = target.parentElement;
+        shadow.style.background = 'linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important';
+        shadow.style.opacity = 1;
+    }
+
+    onMouseExitPartyDiv(evt) {
+        let id = evt.target.id;
+        let parts = id.split('-');
+        let shadow = $(`party-${parts[1]}-shadow`);
+
+        shadow.style.background = 'black';
+        shadow.style.opacity = 0.1;
+    }
+
+    onClickPartyVibe(evt) {
+        let target = evt.target;
+        let vibeSpan;
+
+        if (target.className == 'party-vibes' || target.className == 'party-host-span' || target.className == 'party-host' || target.className == 'party-startTime' || target.className == 'party-subtitleContainer') {
+            return;
         } else {
-            partyDiv = target;
+            vibeSpan = target;
         }
 
+        let parts = vibeSpan.id.split('-');
+        let vibe = parts[3]
 
-        let parts = partyDiv.id.split('-')
+        this.filters.vibes.value = vibe;
+        this.filterParties();
+    }
+
+    async onClickPartyDiv(evt) {
+        evt.stopPropagation();
+        let target = evt.target;
+        let parts = target.id.split('-');
         let partyId = parseInt(parts[1]);
+
+        let partyDiv = $(`party-${partyId}`);
+
         let party;
         for (let party_ of this.parties) {
             if (party_.id == partyId) {
@@ -249,10 +338,11 @@ class FeedScreen {
 
             return (
                 (startTimeUnix <= partyStartTimeUnix) &&
-                (this.filters.vibes.value === "all" || partyHasSelectedVibe)
+                (this.filters.vibes.value === "all" || partyHasSelectedVibe) &&
                 // (this.filters.rating.value === "all" || Math.floor(party.rating) >= parseInt(this.filters.rating.value)) &&
                 // (this.filters.theme.value === "all" || this.filters.theme.value === party.theme.toLowerCase()) &&
                 // (this.filters.venue.value === "all" || this.filters.venue.value === party.venue.toLowerCase())
+                (party.discoverability >= parseInt(this.filters.discoverability.value))
             );
         });
         this.loadParties(filtered);

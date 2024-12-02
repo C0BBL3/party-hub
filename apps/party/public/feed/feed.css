@@ -18,8 +18,10 @@
 }
 
 .feed h2 {
-    font-size: 24px;
+    font-size: 36px;
+    margin-top: -40px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .party-list {
@@ -38,14 +40,126 @@
     /* background-color: #f9f9f9; */
     border: 1px solid var(--lighter-grey-color);
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px linear-gradient(to bottom right, var(--blue-color), var(--pink-color)); 
     padding: 15px;
-    transition: transform 0.2s ease;
     cursor: pointer;
+    position: relative;
+    transform: translate(0);
+    transform-style: preserve-3d;
 }
 
 .party-item:hover {
     transform: translateY(-5px);
+    box-shadow: none;
+}
+
+div.party-div {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    cursor: pointer;
+}
+
+div.party-div:hover {
+    transform: translateY(-5px);
+}
+
+div.party-shadow {
+    position: absolute;
+    --shadow: 5px;
+    top: var(--shadow);
+    left: var(--shadow);
+    width: calc(100% - calc(2 *  var(--shadow)));
+    height: calc(100% - calc(2 *  var(--shadow)));
+    background: black;
+    opacity: 0.1;
+    filter: blur(5px);
+    border-radius: 15px;
+}
+
+div.party-shadow:hover {
+    opacity: 1;
+    background: linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important;
+}
+
+div.party-container {
+    position: absolute;
+    --margin: 10px;
+    top: var(--margin);
+    left: var(--margin);
+    width: calc(100% - calc(2* var(--margin)));
+    height: calc(100% - calc(2* var(--margin)));
+    background-color: var(--white-color);
+    border-radius: 10px;
+    display: flex;
+}
+
+img.party-image {
+    margin: 15px;
+    max-width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    visibility: visible;
+}
+
+div.party-textContainer {
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: -webkit-fill-available;
+    overflow: hidden;
+    border-left: 1px solid var(--lighter-grey-color);
+    margin-left: 0;
+    padding-left: 15px;
+}
+
+span.party-title {
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--black-color);
+}
+
+div.party-subtitleContainer {
+    display: flex;
+    gap: 10px;
+    color: var(--grey-color);
+}
+
+a.party-host, span.party-startTime, span.party-address {
+    padding-right: 10px;
+    border-right: 1px solid var(--lighter-grey-color);
+}
+
+a.party-host:hover {
+    color: var(--blue-color);
+}
+
+div.party-vibes {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: fit-content;
+    overflow-y: hidden;
+    overflow-x: auto;
+    justify-content: flex-start;
+}
+
+div.party-vibes span {
+    color: var(--blue-color);
+    cursor: pointer;
+}
+
+div.party-vibes span:hover {
+    color: var(--pink-color);
+}
+
+span.party-description {
+    text-align: justify;
+    padding-right: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-overflow: ellipsis;
 }
 
 .party-item h3 {
@@ -67,33 +181,55 @@ p.party-startTime {
 }
 
 .sidebar-filters {
-    flex: 1;
-    max-width: 250px; 
-    background-color: white;
-    border-left: 1px solid white;
-    padding: 20px;
-    border-radius: 8px;
-    height: fit-content;
+    position: relative;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.sidebar-filters-shadow {
+    position: absolute;
+    --shadow: 5px;
+    top: var(--shadow);
+    left: var(--shadow);
+    width: calc(100% - calc(2* var(--shadow)));
+    height: calc(100% - calc(2* var(--shadow)));
+    padding: 10px 0;
+    background: black;
+    opacity: 0.1;
+    filter: blur(5px);
+    border-radius: 15px
+}
+
+.sidebar-filters-container {
+    position: absolute;
+    --margin: 10px;
+    top: var(--margin);
+    left: var(--margin);
+    width: calc(100% - calc(6* var(--margin)));
+    height: calc(100% - calc(2* var(--margin)));
+    background-color: var(--white-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
 .sidebar-filters h3 {
     font-size: 20px;
-    margin-bottom: 15px;
 }
 
 .sidebar-filters select {
-    width: 100%;
+    width: 200px;
     padding: 8px;
-    margin-bottom: 15px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: white;
     cursor: pointer;
 }
 
 .filter:hover {
     background-color: #f8f8fa;
-    transform: translateX(2px);
+    transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 

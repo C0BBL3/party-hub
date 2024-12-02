@@ -2,6 +2,9 @@ api.feed = {
     getFirst10Parties: async () => {
         return await api.get(`${API_BASE_URL}/party/feed/get-first-10-parties`);
     },
+    getFeaturedParties: async () => {
+        return await api.get(`${API_BASE_URL}/party/feed/get-featured-parties`);
+    },
     checkStatus: async (partyId, patronId) => {
         return await api.get(`${API_BASE_URL}/party/rsvp/${partyId}/check/${patronId}`);
     },
