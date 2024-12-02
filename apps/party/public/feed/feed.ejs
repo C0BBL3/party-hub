@@ -12,7 +12,48 @@
     <div class="feed-container">
         <!-- Main Feed Section -->
         <div class="feed">
-            <h2>Available Parties</h2>
+            <h2>Featured Parties</h2>
+            <div class="sidebar-filters">
+                <div class="sidebar-filters-shadow"></div>
+                <div class="sidebar-filters-container">
+                    <h3>Filters</h3>
+                    <!-- Sidebar Filters -->
+                    <select id="filter-startDay" class="filter">
+                        <!-- <option id="monday">Monday</option>
+                        <option id="tuesday">Tuedsay</option>
+                        <option id="wednesday">Wednesday</option> -->
+                        <option id="thursday">Start Day</option>
+                        <option id="thursday">Thursday</option>
+                        <option id="friday">Friday</option>
+                        <option id="saturday">Saturday</option>
+                        <option id="sunday">Sunday</option>
+                    </select>
+                    <select id="filter-startTime" class="filter">
+                        <option id="eightPM">Start Time</option>
+                        <% for (let hour = 20; hour < 24; hour++) { %>
+                            <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
+                            <% let cAMPM = AMPM[Math.floor(hour/12)] %>
+                            <option id="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
+                            <option id="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
+                        <% } %>
+                    </select>
+                    <select id="filter-discoverability" class="filter">
+                        <option value="0">Discoverability</option>
+                        <option value="0">All</option>
+                        <option value="1">Following Only</option>
+                        <option value="2">Friends Only</option>
+                    </select>
+                    <!-- <select id="filter-theme">
+                        <option value="all">Theme</option>
+                        <option value="halloween">Halloween</option>
+                        <option value="beach">Beach</option>
+                        <option value="formal">Formal</option>
+                    </select> -->
+                    <select id="filter-vibes" class="filter">
+                        <option value="all">Vibes</option>
+                    </select>
+                </div>
+            </div>
             <div class="party-list" id="partyList">
                 <div class="loading-GIF-outer">
                     <div class="loading-GIF-inner">
@@ -24,43 +65,6 @@
         
         </div>
 
-        <!-- Sidebar Filters -->
-        <div class="sidebar-filters">
-            <h3>Filters</h3>
-            <select id="filter-startDay" class="filter">
-                <option id="monday">Monday</option>
-                <option id="tuesday">Tuedsay</option>
-                <option id="wednesday">Wednesday</option>
-                <option id="thursday">Thursday</option>
-                <option id="friday" selected>Friday</option>
-                <option id="saturday">Saturday</option>
-                <option id="sunday">Sunday</option>
-            </select>
-            <select id="filter-startTime" class="filter">
-                <% for (let hour = 0; hour < 24; hour++) { %>
-                    <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
-                    <% let cAMPM = AMPM[Math.floor(hour/12)] %>
-                    <option id="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
-                    <option id="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
-                <% } %>
-            </select>
-            <!-- <select id="filter-following">
-                <option value="all">Following Only</option>
-                <option value="yes">Yes</option>
-            </select>
-            <select id="filter-friends">
-                <option value="all">Friends Only</option>
-                <option value="yes">Yes</option>
-            </select> -->
-            <!-- <select id="filter-theme">
-                <option value="all">Theme</option>
-                <option value="halloween">Halloween</option>
-                <option value="beach">Beach</option>
-                <option value="formal">Formal</option>
-            </select> -->
-            <select id="filter-vibes" class="filter">
-                <option value="all">Vibes</option>
-            </select>
-        </div>
+       
     </div>
 </div>

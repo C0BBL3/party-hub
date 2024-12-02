@@ -9,13 +9,13 @@ class FeedService {
                 title,
                 vibes,
                 description
-                
+       
             FROM
                 party
-                
+    
             LIMIT 
                 10;`
-            );
+        );
 
         if (result.rows.length == 0) {
             return [];
@@ -27,8 +27,146 @@ class FeedService {
 
                 parties.push(party);
             }
+        }
+    }
+
+    static async getFeaturedParties(userId) {
+        let result = await db.execute(`
+            SELECT
+                party.id, 
+                party.startTime,
+                party.title,
+                party.vibes,
+                party.description,
+                party.privacy,
+                party.pictureBase64,
+                host.id,
+                host.username,
+                host.pictureBase64,
+                host.description,
+                host.tags,
+                count(patron.id) as rsvpCount,
+                address.*
+                
+            FROM
+                party
+
+                INNER JOIN partyhostlink ON
+                    party.id = partyhostlink.partyId 
+
+                INNER JOIN user as host ON 
+                    partyhostlink.hostId = host.id AND
+                    partyhostlink.primaryHost = 1 AND
+                    partyhostlink.enabled = 1
+
+                INNER JOIN partypatronlink ON
+                    party.id = partypatronlink.partyId
+
+                INNER JOIN user as patron ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1
+
+                INNER JOIN partyaddresslink ON
+                    party.id = partyaddresslink.partyId
+
+                INNER JOIN address ON
+                    partyaddresslink.addressId = address.id AND
+                    partyaddresslink.enabled = 1
+
+            WHERE
+                party.privacy = 'Discoverable' 
+                
+            LIMIT 
+                10;`
+            );
+
+        if (result.rows.length == 0) {
+            return [];
+        } else {
+            let parties = [];
+
+            for (let row of result.rows) {
+                if (row.party.id == null) { continue;}
+                
+                let party = row.party;
+                party.host = row.host;
+                party.rsvpCount = row[''].rsvpCount;
+                party.address = row.address;
+
+                parties.push(party);
+            }
 
             return parties;
+        }
+    }
+
+    static async getPatronsByParty(partyId) {
+        const result = await db.execute(`
+            SELECT
+                patron.id,
+                patron.username
+
+            FROM
+                user as patron
+
+                INNER JOIN partypatronlink ON
+                    partypatronlink.patronId = patron.id
+
+                INNER JOIN party ON
+                    party.id = partypatronlink.partyId
+                
+            WHERE
+                party.id = [partyId];`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return [];
+        } else {
+            let patrons = [];
+
+            for (let row of result.rows) {
+                let patron = row.patron;
+
+                patrons.push(patron);
+            }
+
+            return patrons;
+        }
+    }
+
+    static async getFriendStatus(userOneId, userTwoId) {
+        const result = await db.execute(`
+            SELECT
+                status
+                
+            FROM
+                friend
+                
+            WHERE
+                (
+                    (
+                        userOneId = [userOneId] AND
+                        userTwoId = [userTwoId]
+                    ) OR
+                    (
+                        userOneId = [userTwoId] AND
+                        userTwoId = [userOneId]
+                    )
+                ) AND 
+                status != 'rejected';`,
+            {
+                userOneId,
+                userTwoId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return false;
+        } else {
+            return result.rows[0].friend.status;
         }
     }
 
