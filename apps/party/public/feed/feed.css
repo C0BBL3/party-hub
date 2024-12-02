@@ -145,12 +145,23 @@ div.party-vibes {
     justify-content: flex-start;
 }
 
-div.party-vibes span {
+div.host-vibes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    text-align: left;
+}
+
+div.host-vibe {
+    color: var(--blue-color);
+}
+
+div.party-vibe {
     color: var(--blue-color);
     cursor: pointer;
 }
 
-div.party-vibes span:hover {
+div.party-vibe:hover, div.host-vibe:hover {
     color: var(--pink-color);
 }
 
@@ -162,23 +173,47 @@ span.party-description {
     text-overflow: ellipsis;
 }
 
-.party-item h3 {
-    font-size: 20px;
-    margin: 0;
+div.host-div {
+    display: flex;
+    flex-direction: column;
 }
 
-.party-item p {
-    margin: 5px 0;
-    text-wrap: nowrap;
+div.host-main-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+img.host-image {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    margin: 10px;
+    border: 1px solid var(--lighter-grey-color);
+}
+
+div.host-main-info {
+    display: flex;
+    border-left: 1px solid var(--lighter-grey-color);
+    padding-left: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+span.host-username {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span.host-description {
+    text-align: justify;
+    overflow: auto;
     text-overflow: ellipsis;
+    width: calc(100% - 5px);
+    padding-right: 5px;
+    height: 115px;
 }
 
-p.party-startTime {
-    text-align: right;
-    position: relative;
-    right: 0;
-    bottom: 55px;
-}
 
 .sidebar-filters {
     position: relative;

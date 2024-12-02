@@ -180,8 +180,9 @@ class FeedScreen {
             const hostSpan = Core.createSpan(subtitleContainer, `party-${party.id}-host-span`, 'party-host-span');
         
             const hostByText = Core.createText(hostSpan, 'Hosted by ');
-            const host = Core.createAnchor(hostSpan, `party-${party.id}-host`, 'party-host', party.host.username, `host/${party.host.username}`);
-            
+            const host = Core.createAnchor(hostSpan, `party-${party.id}-host-${party.host.id}`, 'party-host', party.host.username);
+            host.onclick = this.onClickHost.bind(this);
+
             const startTime = Core.createSpan(subtitleContainer, `party-${party.id}-startTime`, 'party-startTime', moment(party.startTime).format('MMM D, h:mm A'));
             startTime.onclick = this.onClickPartyDiv.bind(this);
 
@@ -240,6 +241,58 @@ class FeedScreen {
 
         this.filters.vibes.value = vibe;
         this.filterParties();
+    }
+
+    async onClickHost(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        let target = evt.target;   
+        let parts = target.id.split('-');
+        let partyId = parseInt(parts[1]);
+
+        let partyDiv = $(`party-${partyId}`);
+
+        let party;
+        for (let party_ of this.parties) {
+            if (party_.id == partyId) {
+                party = party_;
+                break;
+            }
+        }
+
+        if (party == null) {
+            return;
+        }   
+
+        const title = 'View Host';
+
+        const hostDiv = Core.createDiv(null, `host-${party.host.id}`, 'host-div');
+        const mainContainer = Core.createDiv(hostDiv, `host-${party.host.id}-main-container`, 'host-main-container')
+        const image = Core.createImg(mainContainer, `host-${party.host.id}-image`, 'host-image', party.host.pictureBase64);
+        const mainInfo = Core.createDiv(mainContainer, `host-${party.host.id}-main-info`, 'host-main-info');
+        const username = Core.createSpan(mainInfo, `host-${party.host.id}-username`, 'host-username', party.host.username);
+
+        const vibesContainer = Core.createDiv(mainInfo, `party-${party.id}-vibes`, 'host-vibes');
+
+        if (party.host.vibes == null) {
+            vibesContainer.innerHTML = 'This host has not selected any vibes.'
+        } else {
+            let vibes = this.capitalize(party.host.vibes);
+            
+            for (let vibe of vibes) {
+                const vibeSpan = Core.createDiv(vibesContainer, `host-${party.host.id}-vibe-${vibe}`, 'host-vibe', vibe);
+            }
+        }
+
+        let descriptionInnerHTML = party.host.description != null ? party.host.description : 'This host has not entered a description.'
+        const description = Core.createSpan(hostDiv, `host-${party.host.id}-description`, 'host-description', descriptionInnerHTML);
+
+        const contextMenu = new ContextMenu(title, '', null, 'OK');
+        contextMenu.createElement(hostDiv);
+        contextMenu.div.style.height = party.host.description != null ? '415px' : '320px';
+
+        const choice = await contextMenu.showSync();
     }
 
     async onClickPartyDiv(evt) {
