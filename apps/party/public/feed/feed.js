@@ -151,12 +151,11 @@ class FeedScreen {
             const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
             
             partyDiv.onclick = this.onClickPartyDiv.bind(this);
+            partyDiv.onmouseenter = this.onMouseEnterPartyDiv.bind(this);
+            partyDiv.onmouseleave = this.onMouseExitPartyDiv.bind(this);
 
             const shadow = Core.createDiv(partyDiv, `party-${party.id}-shadow`, 'party-shadow');
             const container = Core.createDiv(partyDiv, `party-${party.id}-container`, 'party-container');
-
-            container.onmouseenter = this.onMouseEnterPartyDiv.bind(this);
-            container.onmouseleave = this.onMouseExitPartyDiv.bind(this);
 
             container.onclick = this.onClickPartyDiv.bind(this);
 
