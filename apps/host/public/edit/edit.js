@@ -37,6 +37,8 @@ class CreateParty {
 
         this.picture = $('pictureImageUpload');
         this.picture.onchange = this.uploadPicture.bind(this);
+        this.defaultPictureBase64 = '';
+
         this.pictureRequirements = $('picturesRequirements');
 
         this.vibes = $('vibes');
@@ -54,7 +56,8 @@ class CreateParty {
             privacy: this.defaultPrivacy,
             startTime: this.defaultStartTime,
             vibes: this.defaultVibes,
-            description: this.defaultDescription
+            description: this.defaultDescription,
+            pictureBase64: this.defaultPictureBase64
         };
 
         // requirements
@@ -83,10 +86,12 @@ class CreateParty {
             privacy: this.defaultPrivacy,
             startTime: this.defaultStartTime,
             vibes: this.defaultVibes,
-            description: this.defaultDescription
+            description: this.defaultDescription,
+            pictureBase64: this.defaultPictureBase64
         }
 
         this.description.value = this.defaultDescription;
+        this.picture.value = this.defaultPictureBase64;
         
         this.onChangePrivacy();
 
@@ -223,7 +228,7 @@ class CreateParty {
     }
 
     updateSaveButton(evt) {
-        if (this.defaultValues.privacy == this.partySettings.privacy && this.defaultValues.startTime == this.partySettings.startTime && this.defaultValues.vibes == this.partySettings.vibes && this.defaultValues.description == this.partySettings.description) {
+        if (this.defaultValues.privacy == this.partySettings.privacy && this.defaultValues.startTime == this.partySettings.startTime && this.defaultValues.vibes == this.partySettings.vibes && this.defaultValues.description == this.partySettings.description && this.defaultValues.pictureBase64 == this.partySettings.pictureBase64) {
             this.disableSaveButton();
         } else {
             this.enableSaveButton();
@@ -243,7 +248,7 @@ class CreateParty {
 
         $('container').style.cursor = 'progress';
 
-        const response = await api.edit.requestEditParty(this.partyId, this.userId, data.privacy, data.startTime, data.vibes, data.description);
+        const response = await api.edit.requestEditParty(this.partyId, this.userId, data.privacy, data.startTime, data.vibes, data.description, data.pictureBase64);
         
         if (response && response.result) {
             await this.delay(750);

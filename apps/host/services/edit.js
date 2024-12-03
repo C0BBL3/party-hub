@@ -46,13 +46,14 @@ class EditService {
         }
     }
 
-    static async updateParty(partyId, privacy = 'Discoverable', startTime = '', vibes = '', description = '') {
+    static async updateParty(partyId, privacy = 'Discoverable', startTime = '', vibes = '', description = '', pictureBase64 = '') {
         const result = await db.update('party', {
             id: partyId,
             privacy, 
             startTime, 
             vibes, 
-            description
+            description,
+            pictureBase64
         });
 
         return !result.error;
