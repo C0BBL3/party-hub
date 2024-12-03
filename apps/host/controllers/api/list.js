@@ -11,6 +11,11 @@ class ListAPIController {
 
         const upcoming = await ListService.getUpcomingParties(user.id);
 
+        for (let party of upcoming) {
+            let rsvpCount = await ListService.getRSVPCountByPartyId(party.id);
+            party.rsvpCount = rsvpCount;
+        }
+
         res.send({
             result: true,
             upcoming
@@ -26,6 +31,11 @@ class ListAPIController {
         }
 
         const past = await ListService.getPastParties(user.id);
+
+        for (let party of past) {
+            let rsvpCount = await ListService.getRSVPCountByPartyId(party.id);
+            party.rsvpCount = rsvpCount;
+        }
 
         res.send({
             result: true,

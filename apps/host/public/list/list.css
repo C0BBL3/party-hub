@@ -11,7 +11,7 @@ div.parties-container {
     gap: 10px;
     flex-direction: column;
     height: fill;
-    min-height: calc(50% - 125px);
+    max-height: calc(50% - 125px);
     overflow-y: auto;
     padding-top: 5px;
 }
@@ -83,7 +83,7 @@ div.party-subtitleContainer {
     color: var(--grey-color);
 }
 
-a.party-host, span.party-startTime, span.party-address {
+a.party-host, span.party-startTime, span.party-address, span.party-privacy {
     padding-right: 10px;
     border-right: 1px solid var(--lighter-grey-color);
 }
@@ -102,11 +102,11 @@ div.party-vibes {
     justify-content: flex-start;
 }
 
-div.party-vibe {
+div.party-vibe, span.party-privacy {
     color: var(--blue-color);
 }
 
-div.party-vibe:hover {
+div.party-vibe:hover, span.party-privacy:hover {
     color: var(--pink-color);
 }
 
