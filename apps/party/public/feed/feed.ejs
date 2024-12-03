@@ -29,12 +29,12 @@
                         <option id="sunday">Sunday</option>
                     </select>
                     <select id="filter-startTime" class="filter">
-                        <option id="eightPM">Start Time</option>
+                        <option value="8:00 PM">Start Time</option>
                         <% for (let hour = 20; hour < 24; hour++) { %>
                             <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
                             <% let cAMPM = AMPM[Math.floor(hour/12)] %>
-                            <option id="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
-                            <option id="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
+                            <option value="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
+                            <option value="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
                         <% } %>
                     </select>
                     <select id="filter-discoverability" class="filter">
