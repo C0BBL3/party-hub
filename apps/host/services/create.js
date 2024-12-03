@@ -27,7 +27,7 @@ class CreateService {
         return null;
     }
 
-    static async createParty(title, privacy, startDate, vibes, description, secretKey) {
+    static async createParty(title, privacy, startDate, vibes, description, pictureBase64, secretKey) {
         const party = {
             title, 
             privacy, 
@@ -35,6 +35,7 @@ class CreateService {
             startTime: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
             vibes, 
             description, 
+            pictureBase64,
             secretKey
         };
 

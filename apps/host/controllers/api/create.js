@@ -96,10 +96,11 @@ class CreateAPIController {
         const startDate = CreateAPIController.getNextDayTime(start.date, start.time);
         const vibes = capitalizer.fixCapitalization(body.vibes.trim());
         const description = body.description.trim();
+        const pictureBase64 = body.pictureBase64.trim();
 
         const secretKey = CreateAPIController.generateSecretKey();
  
-        const partyId = await CreateService.createParty(title, privacy, startDate, vibes, description, secretKey);
+        const partyId = await CreateService.createParty(title, privacy, startDate, vibes, description, pictureBase64, secretKey);
 
         if (!partyId) {
             res.send({

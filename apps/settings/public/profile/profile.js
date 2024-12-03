@@ -116,7 +116,7 @@ class Profile {
 
         if (file.size > 196608) {
             let title = 'OOPS...';
-            let message = "Profile picture size must be smaller that 256x256!";
+            let message = "Profile picture size must be smaller than 200 kilobytes!";
     
             let contextMenu = new ContextMenu(title, message, null, 'OK');
             $('context-menu').style.height = '150px';
