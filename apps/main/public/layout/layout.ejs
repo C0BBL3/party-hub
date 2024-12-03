@@ -44,13 +44,13 @@
                         <% if (user) { %>
                             <% if (user.isAdmin || user.isPatron) { %>     
                                 <a id="partyHeaderLink" class="headerLink" href="/party">PARTY</a>
-                                <a id="mapHeaderLink" class="headerLink" href="/map">MAP</a>   
+                                <!-- <a id="mapHeaderLink" class="headerLink" href="/map">MAP</a>    -->
                             <% } %>         
                             <% if (user.isAdmin || user.isHost) { %>                                                               
                                 <a id="hostHeaderLink" class="headerLink" href="/host">HOST</a>    
                             <% } %>                                 
                                                                                 
-                            <% if (user.isAdmin) { %>   
+                            <% if (user.isAdmin && false) { %>   
                                 <!-- <a id="adminHeaderLink" class="headerLink"  href="/admin">ADMIN</a>   -->
                                 <a id="adminHeaderLink" class="headerLink">ADMIN</a>  
                             <% } %>         
