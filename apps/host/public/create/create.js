@@ -18,7 +18,8 @@ class CreateParty {
                 time: '9:00 PM'
             },
             vibes: '',
-            description: ''
+            description: '',
+            pictureBase64: ''
         }
 
         // elements
@@ -44,7 +45,6 @@ class CreateParty {
         this.state = $('state');
         this.state.onchange = this.onChangeAddress.bind(this);
         this.state.onkeyup = this.onChangeAddress.bind(this);
-        
 
         this.privacy = $('privacy');
         this.privacyInfo = $('privacyInfo');
@@ -61,13 +61,17 @@ class CreateParty {
         this.startTime = $('startTime');
         this.startTime.onchange = this.onChangeStartTime.bind(this);
 
-        this.eight = $('eight');
-        this.eightthirty = $('eightthirty');
-        this.nine = $('nine');
-        this.ninethirty = $('ninethirty');
-        this.ten = $('ten');
-        this.tenthirty = $('tenthirty');
-        this.eleven = $('eleven');
+        this.eight = $('eightPM');
+        this.eightthirty = $('eightthirtyPM');
+        this.nine = $('ninePM');
+        this.ninethirty = $('ninethirtyPM');
+        this.ten = $('tenPM');
+        this.tenthirty = $('tenthirtyPM');
+        this.eleven = $('elevenPM');
+
+        this.picture = $('pictureImageUpload');
+        this.picture.onchange = this.uploadPicture.bind(this);
+        this.pictureRequirements = $('picturesRequirements');
 
         this.vibes = $('vibes');
         this.vibes.onkeyup = this.onKeyUpVibes.bind(this);
@@ -115,7 +119,8 @@ class CreateParty {
                 time: '9:00 PM'
             },
             vibes: '',
-            description: ''
+            description: '',
+            pictureBase64: ''
         }
 
         this.titleInput.value = '';
@@ -216,6 +221,55 @@ class CreateParty {
         }
     }
 
+    async uploadPicture(evt) {
+        const file = evt.target.files[0];
+
+        if (file.size > 196608) {
+            let title = 'OOPS...';
+            let message = "Profile picture size must be smaller than 200 kilobytes!";
+    
+            let contextMenu = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = '150px';
+    
+            return await contextMenu.showSync();
+        }
+
+        const imageUrl = URL.createObjectURL(file);
+        this.partySettings.pictureBase64 = await this.encodeImageToBase64(imageUrl);
+
+        $('pictureBad').style.display = 'none';
+        $('pictureGood').style.display = 'list-item';
+
+        this.updateCreateButton(evt);
+    }
+
+    async encodeImageToBase64(imageUrl) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = imageUrl;
+    
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+    
+                try {
+                    const base64 = canvas.toDataURL('image/png');
+                    resolve(base64);
+                } catch (error) {
+                    reject(error);
+                }
+            };
+    
+            img.onerror = (error) => {
+                reject(error);
+            };
+        });
+    }
+
     onKeyUpVibes(evt) {
         if (this.vibes.value.trim().length == 0) {
             this.showVibesRequirement();
@@ -275,7 +329,7 @@ class CreateParty {
     }
 
     updateCreateButton(evt) {
-        if (this.partySettings.title.length == 0 || this.partySettings.description.length == 0 || this.partySettings.vibes.length == 0 || this.streetAddress.value.trim().length == 0 || this.postalCode.value.trim().length == 0 || this.city.value.trim().length == 0 || this.state.value.trim().length == 0) {
+        if (this.partySettings.title.length == 0 || this.partySettings.description.length == 0 || this.partySettings.vibes.length == 0 || this.streetAddress.value.trim().length == 0 || this.postalCode.value.trim().length == 0 || this.city.value.trim().length == 0 || this.state.value.trim().length == 0 || this.picture.value.trim().length == 0) {
             this.disableCreateButton();
         } else {
             this.enableCreateButton();
@@ -291,7 +345,7 @@ class CreateParty {
 
         $('container').style.cursor = 'progress';
 
-        const response = await api.create.requestCreateParty(data.title, data.address, data.privacy, data.start, data.vibes, data.description);
+        const response = await api.create.requestCreateParty(data.title, data.address, data.privacy, data.start, data.vibes, data.description, data.pictureBase64);
         
         if (response && response.result) {
             await this.delay(750);
