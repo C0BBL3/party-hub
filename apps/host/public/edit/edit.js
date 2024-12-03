@@ -152,7 +152,7 @@ class CreateParty {
         $('pictureBad').style.display = 'none';
         $('pictureGood').style.display = 'list-item';
 
-        this.updateCreateButton(evt);
+        this.updateSaveButton(evt);
     }
 
     async encodeImageToBase64(imageUrl) {
