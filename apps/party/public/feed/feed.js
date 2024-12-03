@@ -196,7 +196,7 @@ class FeedScreen {
             const vibesContainer = Core.createDiv(textContainer, `party-${party.id}-vibes`, 'party-vibes');
             vibesContainer.onclick = this.onClickPartyDiv.bind(this);
 
-            let vibes = this.capitalize([party.vibes.trim(), party.host.vibes.trim()].join(','));
+            let vibes = this.capitalize([party.vibes.trim(), party.host.tags.trim()].join(','));
             
             for (let vibe of vibes) {
                 if (vibe.trim().length == 0) { continue; }
