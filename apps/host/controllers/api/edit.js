@@ -64,8 +64,9 @@ class EditAPIController {
         const startDate = EditAPIController.getNextDayTime(startDay, startTime);
         const vibes = capitalizer.fixCapitalization(body.vibes.trim());
         const description = body.description.trim();
+        const pictureBase64 = body.pictureBase64.trim();
 
-        const update = await EditService.updateParty(partyId, privacy, startDate, vibes, description);
+        const update = await EditService.updateParty(partyId, privacy, startDate, vibes, description, pictureBase64);
 
         return res.send({ result: update });
     }
