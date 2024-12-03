@@ -29,10 +29,10 @@
     flex-direction: column;
     height: 100%;
     gap: 15px;
-    max-height: 600px;
     overflow-y: auto; 
     padding-top: 6px;
     align-items: center;
+    height: calc(100% - 75px);
 }
 
 .party-item {
