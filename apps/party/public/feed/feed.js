@@ -201,7 +201,7 @@ class FeedScreen {
             for (let vibe of vibes) {
                 if (vibe.trim().length == 0) { continue; }
                 const vibeDiv = Core.createDiv(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
-                vibeSpan.onclick = this.onClickPartyVibe.bind(this);
+                vibeDiv.onclick = this.onClickPartyVibe.bind(this);
             }
 
             const description = Core.createSpan(textContainer, `party-${party.id}-description`, 'party-description', party.description);

@@ -45,7 +45,6 @@ class FeedService {
                 host.pictureBase64,
                 host.description,
                 host.tags,
-                count(patron.id) as rsvpCount,
                 address.*
                 
             FROM
@@ -59,22 +58,12 @@ class FeedService {
                     partyhostlink.primaryHost = 1 AND
                     partyhostlink.enabled = 1
 
-                INNER JOIN partypatronlink ON
-                    party.id = partypatronlink.partyId
-
-                INNER JOIN user as patron ON
-                    partypatronlink.patronId = patron.id AND
-                    partypatronlink.enabled = 1
-
                 INNER JOIN partyaddresslink ON
                     party.id = partyaddresslink.partyId
 
                 INNER JOIN address ON
                     partyaddresslink.addressId = address.id AND
                     partyaddresslink.enabled = 1
-
-            WHERE
-                party.privacy = 'Discoverable' 
                 
             LIMIT 
                 10;`
@@ -90,7 +79,6 @@ class FeedService {
                 
                 let party = row.party;
                 party.host = row.host;
-                party.rsvpCount = row[''].rsvpCount;
                 party.address = row.address;
 
                 parties.push(party);
@@ -135,6 +123,32 @@ class FeedService {
 
             return patrons;
         }
+    }
+
+    static async getRSVPCountByPartyId(partyId) {
+        const result = await db.execute(`
+            SELECT
+                count(patron.id) as rsvpCount
+                
+            FROM
+                user AS patron
+                
+                INNER JOIN partypatronlink ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1
+                    
+            WHERE
+                partypatronlink.partyId = [partyId];`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return 0;
+        }
+
+        return result.rows[0][''].rsvpCount;
     }
 
     static async getFriendStatus(userOneId, userTwoId) {
