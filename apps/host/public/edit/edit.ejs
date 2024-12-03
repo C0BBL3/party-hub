@@ -36,14 +36,19 @@
             <% const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; %>
             <b style="margin-left: 5px;"><%= days[party.startTime.getDay()] %></b>
             <p style="margin-left: 5px;">at</p>
+            <% 
+                    let hour = party.startTime.getHours() % 12;
+                    let minutes = party.startTime.getMinutes();
+                    let time = `${hour}:${minutes}`;
+                %>
             <select id="startTime">
-                <option id="eight">8:00 PM</option>
-                <option id="eightthirty">8:30 PM</option>
-                <option id="nine" selected>9:00 PM</option>
-                <option id="ninethirty">9:30 PM</option>
-                <option id="ten">10:00 PM</option>
-                <option id="tenthirty">10:30 PM</option>
-                <option id="eleven">11:00 PM</option>
+                <option id="eight" <% if (time == '8:0') { %> selected <% } %> >8:00 PM</option>
+                <option id="eightthirty" <% if (time == '8:30') { %> selected <% } %> >8:30 PM</option>
+                <option id="nine" <% if (time == '9:0') { %> selected <% } %> >9:00 PM</option>
+                <option id="ninethirty" <% if (time == '9:30') { %> selected <% } %> >9:30 PM</option>
+                <option id="ten" <% if (time == '10:0') { %> selected <% } %> >10:00 PM</option>
+                <option id="tenthirty" <% if (time == '10:30') { %> selected <% } %> >10:30 PM</option>
+                <option id="eleven" <% if (time == '11:0') { %> selected <% } %> >11:00 PM</option>
             </select>
         </div>
     </div>
