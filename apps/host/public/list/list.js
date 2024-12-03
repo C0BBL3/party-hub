@@ -16,6 +16,8 @@ class List {
     }
 
     loadParties() {
+        this.container.innerHTML = '';
+
         if (this.upcomingParties.length > 0) {
             this.upcomingPartiesHeader = Core.createDiv(this.container, '', 'parties-header', 'Upcoming Parties');
             this.upcomingPartiesContainer = Core.createDiv(this.container, '', 'parties-container');
@@ -30,6 +32,7 @@ class List {
             this.pastPartiesHeader = Core.createDiv(this.container, '', 'parties-header', 'Past Parties');
             if (this.upcomingParties.length > 0) {
                 this.pastPartiesHeader.style.borderTop = '1px solid var(--lighter-grey-color)';
+                this.pastPartiesHeader.style.marginTop = '20px';
             }
             this.pastPartiesContainer = Core.createDiv(this.container, '', 'parties-container');
 
@@ -61,6 +64,7 @@ class List {
         const subtitleContainer = Core.createDiv(textContainer, `party-${party.id}-subtitleContainer`, 'party-subtitleContainer');
         const startTime = Core.createSpan(subtitleContainer, `party-${party.id}-startTime`, 'party-startTime', moment(party.startTime).format('MMM D, h:mm A'));
         const address = Core.createSpan(subtitleContainer, `party-${party.id}-address`, 'party-address', party.address.streetAddress);
+        const privacy = Core.createSpan(subtitleContainer, `party-${party.id}-privacy`, 'party-privacy', party.privacy);
         const rsvp = Core.createSpan(subtitleContainer, `party-${party.id}-rsvp`, 'party-rsvp', `${party.rsvpCount} / 100 Patrons`);
 
         const vibesContainer = Core.createDiv(textContainer, `party-${party.id}-vibes`, 'party-vibes');
@@ -72,7 +76,7 @@ class List {
             const vibeDiv = Core.createDiv(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
             
             if (upcoming) {
-                vibeSpan.onclick = this.onClickPartyDiv.bind(this); 
+                vibeDiv.onclick = this.onClickPartyDiv.bind(this); 
             }
         }
 
@@ -88,6 +92,7 @@ class List {
             subtitleContainer.onclick = this.onClickPartyDiv.bind(this); 
             startTime.onclick = this.onClickPartyDiv.bind(this); 
             address.onclick = this.onClickPartyDiv.bind(this); 
+            privacy.onclick = this.onClickPartyDiv.bind(this); 
             rsvp.onclick = this.onClickPartyDiv.bind(this); 
             vibesContainer.onclick = this.onClickPartyDiv.bind(this); 
             description.onclick = this.onClickPartyDiv.bind(this); 
@@ -96,7 +101,7 @@ class List {
         return partyDiv;
     }
 
-    async onClickPartyDiv() {
+    async onClickPartyDiv(evt) {
         evt.stopPropagation()
         let target = evt.target;
         let parts = target.id.split('-');
@@ -169,6 +174,7 @@ class List {
                 description: party_.description,
                 vibes: this.capitalize(party_.vibes).join(','),
                 pictureBase64: party_.pictureBase64,
+                privacy: party_.privacy,
                 host: party_.host,
                 rsvpCount: party_.rsvpCount,
                 address: party_.address

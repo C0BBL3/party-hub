@@ -16,7 +16,6 @@ class ListService {
                 host.pictureBase64,
                 host.description,
                 host.tags,
-                count(patron.id) as rsvpCount,
                 address.*
                 
             FROM
@@ -30,13 +29,6 @@ class ListService {
                     partyhostlink.primaryHost = 1 AND
                     partyhostlink.enabled = 1
 
-                INNER JOIN partypatronlink ON
-                    party.id = partypatronlink.partyId
-
-                INNER JOIN user as patron ON
-                    partypatronlink.patronId = patron.id AND
-                    partypatronlink.enabled = 1
-
                 INNER JOIN partyaddresslink ON
                     party.id = partyaddresslink.partyId
 
@@ -45,12 +37,11 @@ class ListService {
                     partyaddresslink.enabled = 1
 
             WHERE
-                party.privacy = 'Discoverable' AND
                 party.startTime > NOW() AND
                 host.id = [userId]
                 
-            LIMIT 
-                10;`,
+            ORDER BY
+                startTime DESC;`,
             {
                 userId
             }
@@ -62,11 +53,8 @@ class ListService {
             let parties = [];
 
             for (let row of result.rows) {
-                if (row.party.id == null) { continue;}
-                
                 let party = row.party;
                 party.host = row.host;
-                party.rsvpCount = row[''].rsvpCount;
                 party.address = row.address;
 
                 parties.push(party);
@@ -91,7 +79,6 @@ class ListService {
                 host.pictureBase64,
                 host.description,
                 host.tags,
-                count(patron.id) as rsvpCount,
                 address.*
                 
             FROM
@@ -105,13 +92,6 @@ class ListService {
                     partyhostlink.primaryHost = 1 AND
                     partyhostlink.enabled = 1
 
-                INNER JOIN partypatronlink ON
-                    party.id = partypatronlink.partyId
-
-                INNER JOIN user as patron ON
-                    partypatronlink.patronId = patron.id AND
-                    partypatronlink.enabled = 1
-
                 INNER JOIN partyaddresslink ON
                     party.id = partyaddresslink.partyId
 
@@ -120,12 +100,11 @@ class ListService {
                     partyaddresslink.enabled = 1
 
             WHERE
-                party.privacy = 'Discoverable' AND
                 party.startTime <= NOW() AND
                 host.id = [userId]
                 
-            LIMIT 
-                10;`,
+            ORDER BY
+                startTime DESC;`,
             {
                 userId
             }
@@ -136,12 +115,9 @@ class ListService {
         } else {
             let parties = [];
 
-            for (let row of result.rows) {
-                if (row.party.id == null) { continue;}
-                
+            for (let row of result.rows) {                
                 let party = row.party;
                 party.host = row.host;
-                party.rsvpCount = row[''].rsvpCount;
                 party.address = row.address;
 
                 parties.push(party);
@@ -149,6 +125,32 @@ class ListService {
 
             return parties;
         }
+    }
+
+    static async getRSVPCountByPartyId(partyId) {
+        const result = await db.execute(`
+            SELECT
+                count(patron.id) as rsvpCount
+                
+            FROM
+                user AS patron
+                
+                INNER JOIN partypatronlink ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1
+                    
+            WHERE
+                partypatronlink.partyId = [partyId];`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return 0;
+        }
+
+        return result.rows[0][''].rsvpCount;
     }
 }
 
