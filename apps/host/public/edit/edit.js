@@ -27,13 +27,17 @@ class CreateParty {
         this.startTime.onchange = this.onChangeStartTime.bind(this);
         this.defaultStartTime = this.startTime.value;
 
-        this.eight = $('eight');
-        this.eightthirty = $('eightthirty');
-        this.nine = $('nine');
-        this.ninethirty = $('ninethirty');
-        this.ten = $('ten');
-        this.tenthirty = $('tenthirty');
-        this.eleven = $('eleven');
+        this.eight = $('eightPM');
+        this.eightthirty = $('eightthirtyPM');
+        this.nine = $('ninePM');
+        this.ninethirty = $('ninethirtyPM');
+        this.ten = $('tenPM');
+        this.tenthirty = $('tenthirtyPM');
+        this.eleven = $('elevenPM');
+
+        this.picture = $('pictureImageUpload');
+        this.picture.onchange = this.uploadPicture.bind(this);
+        this.pictureRequirements = $('picturesRequirements');
 
         this.vibes = $('vibes');
         this.vibes.onkeyup = this.onKeyUpVibes.bind(this);
@@ -115,6 +119,62 @@ class CreateParty {
         }
 
         this.updateSaveButton(evt);
+    }
+
+    async uploadPicture(evt) {
+        const file = evt.target.files[0];
+
+        this.pictureRequirements.style.display = 'block';
+
+        if (file.size > 196608) {
+
+            $('pictureGood').style.display = 'none';
+
+            this.picture.value = '';
+
+            let title = 'OOPS...';
+            let message = "Party picture size must be smaller than 200 kilobytes!";
+    
+            let contextMenu = new ContextMenu(title, message, null, 'OK');
+            $('context-menu').style.height = '150px';
+    
+            return await contextMenu.showSync();
+        }
+
+        const imageUrl = URL.createObjectURL(file);
+        this.partySettings.pictureBase64 = await this.encodeImageToBase64(imageUrl);
+
+        $('pictureBad').style.display = 'none';
+        $('pictureGood').style.display = 'list-item';
+
+        this.updateCreateButton(evt);
+    }
+
+    async encodeImageToBase64(imageUrl) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = imageUrl;
+    
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+    
+                try {
+                    const base64 = canvas.toDataURL('image/png');
+                    resolve(base64);
+                } catch (error) {
+                    reject(error);
+                }
+            };
+    
+            img.onerror = (error) => {
+                reject(error);
+            };
+        });
     }
 
     onKeyUpVibes(evt) {

@@ -47,6 +47,28 @@
             </select>
         </div>
     </div>
+    <div class="uploadPictureContainer">
+        <div class="enterContainerInfo" id="uploadPictureInfo">
+            <p>What new picture do you want to upload to describe your party visually.</p>
+            <input type="file" id="pictureImageUpload">
+        </div>
+        <div class="requirements" id="picturesRequirements">
+            <ul>
+                <li id="pictureBad" style="color: var(--red-color);">
+                    Upload a smaller than 200KB picture to visually describe your party
+                    <div id="pictureBadSVG" class="cross">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23.707.293h0a1,1,0,0,0-1.414,0L12,10.586,1.707.293a1,1,0,0,0-1.414,0h0a1,1,0,0,0,0,1.414L10.586,12,.293,22.293a1,1,0,0,0,0,1.414h0a1,1,0,0,0,1.414,0L12,13.414,22.293,23.707a1,1,0,0,0,1.414,0h0a1,1,0,0,0,0-1.414L13.414,12,23.707,1.707A1,1,0,0,0,23.707.293Z"/></svg>    
+                    </div>
+                </li>
+                <li id="pictureGood" style="color: var(--green-color); display: none;" >
+                    Upload a smaller than 200KB picture to visually describe your party
+                    <div id="pictureGoodSVG" class="check">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M22.319,4.431,8.5,18.249a1,1,0,0,1-1.417,0L1.739,12.9a1,1,0,0,0-1.417,0h0a1,1,0,0,0,0,1.417l5.346,5.345a3.008,3.008,0,0,0,4.25,0L23.736,5.847a1,1,0,0,0,0-1.416h0A1,1,0,0,0,22.319,4.431Z"/></svg>    
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="enterVibesContainer">
         <div class="enterContainerInfo" id="enterVibesInfo">
             <p>What kind of vibes do you want to change about your party?</p>

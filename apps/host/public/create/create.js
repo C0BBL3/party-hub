@@ -224,9 +224,17 @@ class CreateParty {
     async uploadPicture(evt) {
         const file = evt.target.files[0];
 
+        this.pictureRequirements.style.display = 'block';
+
         if (file.size > 196608) {
+
+            $('pictureBad').style.display = 'list-item';
+            $('pictureGood').style.display = 'none';
+
+            this.picture.value = '';
+
             let title = 'OOPS...';
-            let message = "Profile picture size must be smaller than 200 kilobytes!";
+            let message = "Party picture size must be smaller than 200 kilobytes!";
     
             let contextMenu = new ContextMenu(title, message, null, 'OK');
             $('context-menu').style.height = '150px';
