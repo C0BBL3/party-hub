@@ -196,10 +196,11 @@ class FeedScreen {
             const vibesContainer = Core.createDiv(textContainer, `party-${party.id}-vibes`, 'party-vibes');
             vibesContainer.onclick = this.onClickPartyDiv.bind(this);
 
-            let vibes = this.capitalize([party.vibes, party.host.vibes].join(','));
+            let vibes = this.capitalize([party.vibes.trim(), party.host.vibes.trim()].join(','));
             
             for (let vibe of vibes) {
-                const vibeSpan = Core.createSpan(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
+                if (vibe.trim().length == 0) { continue; }
+                const vibeDiv = Core.createDiv(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
                 vibeSpan.onclick = this.onClickPartyVibe.bind(this);
             }
 
@@ -281,7 +282,7 @@ class FeedScreen {
             let vibes = this.capitalize(party.host.vibes);
             
             for (let vibe of vibes) {
-                const vibeSpan = Core.createDiv(vibesContainer, `host-${party.host.id}-vibe-${vibe}`, 'host-vibe', vibe);
+                const vibeDiv = Core.createDiv(vibesContainer, `host-${party.host.id}-vibe-${vibe}`, 'host-vibe', vibe);
             }
         }
 
