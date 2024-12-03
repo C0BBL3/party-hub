@@ -23,6 +23,9 @@ class FeedAPIController {
                 continue;
             }
 
+            let rsvpCount = await FeedService.getRSVPCountByPartyId(party.id);
+            party.rsvpCount = rsvpCount;
+
             let status = await FeedService.getFriendStatus(user.id, party.host.id);
             
             if (status == 'accepted') {
