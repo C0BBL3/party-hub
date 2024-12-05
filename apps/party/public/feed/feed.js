@@ -212,24 +212,6 @@ class FeedScreen {
         }
     }
 
-    onMouseEnterPartyDiv(evt) {
-        let id = evt.target.id;
-        let parts = id.split('-');
-        let shadow = $(`party-${parts[1]}-shadow`);
-
-        shadow.style.background = 'linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important';
-        shadow.style.opacity = 1;
-    }
-
-    onMouseExitPartyDiv(evt) {
-        let id = evt.target.id;
-        let parts = id.split('-');
-        let shadow = $(`party-${parts[1]}-shadow`);
-
-        shadow.style.background = 'black';
-        shadow.style.opacity = 0.1;
-    }
-
     onClickPartyVibe(evt) {
         let target = evt.target;
         let vibeSpan;
@@ -280,7 +262,7 @@ class FeedScreen {
         const vibesContainer = Core.createDiv(mainInfo, `party-${party.id}-vibes`, 'host-vibes');
 
         if (party.host.vibes == null) {
-            vibesContainer.innerHTML = 'This host has not selected any vibes.'
+            vibesContainer.innerHTML = 'This host not entered the vibes they give off.'
         } else {
             let vibes = this.capitalize(party.host.vibes);
             

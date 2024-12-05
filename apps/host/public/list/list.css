@@ -26,6 +26,11 @@ div.party-div:hover {
     transform: translateY(-5px);
 }
 
+div.party-div:hover div.party-shadow {
+    background: linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important;
+    opacity: 1;
+}
+
 div.party-shadow {
     position: absolute;
     --shadow: 5px;

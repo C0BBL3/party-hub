@@ -1,6 +1,172 @@
 const db = require('../../../utils/database');
 
 class RSVPService {
+    static async getUpcomingParties(patronId) {
+        let result = await db.execute(`
+            SELECT
+                party.id, 
+                party.startTime,
+                party.title,
+                party.vibes,
+                party.description,
+                party.privacy,
+                party.pictureBase64,
+                host.id,
+                host.username,
+                host.pictureBase64,
+                host.description,
+                host.tags,
+                address.*
+                
+            FROM
+                party
+
+                INNER JOIN partyhostlink ON
+                    party.id = partyhostlink.partyId 
+
+                INNER JOIN user as host ON 
+                    partyhostlink.hostId = host.id AND
+                    partyhostlink.primaryHost = 1 AND
+                    partyhostlink.enabled = 1
+
+                INNER JOIN partypatronlink ON
+                    party.id = partypatronlink.partyId
+
+                INNER JOIN user as patron ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1 AND
+                    patron.id = [patronId]
+
+                INNER JOIN partyaddresslink ON
+                    party.id = partyaddresslink.partyId
+
+                INNER JOIN address ON
+                    partyaddresslink.addressId = address.id AND
+                    partyaddresslink.enabled = 1
+
+            WHERE
+                party.startTime > NOW()
+                
+            ORDER BY
+                startTime DESC;`,
+            {
+                patronId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return [];
+        } else {
+            let parties = [];
+
+            for (let row of result.rows) {
+                let party = row.party;
+                party.host = row.host;
+                party.address = row.address;
+
+                parties.push(party);
+            }
+
+            return parties;
+        }
+    }
+
+    static async getPastParties(patronId) {
+        let result = await db.execute(`
+            SELECT
+                party.id, 
+                party.startTime,
+                party.title,
+                party.vibes,
+                party.description,
+                party.privacy,
+                party.pictureBase64,
+                host.id,
+                host.username,
+                host.pictureBase64,
+                host.description,
+                host.tags,
+                address.*
+                
+            FROM
+                party
+
+                INNER JOIN partyhostlink ON
+                    party.id = partyhostlink.partyId 
+
+                INNER JOIN user as host ON 
+                    partyhostlink.hostId = host.id AND
+                    partyhostlink.primaryHost = 1 AND
+                    partyhostlink.enabled = 1
+
+                INNER JOIN partypatronlink ON
+                    party.id = partypatronlink.partyId
+
+                INNER JOIN user as patron ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1 AND
+                    patron.id = [patronId]
+
+                INNER JOIN partyaddresslink ON
+                    party.id = partyaddresslink.partyId
+
+                INNER JOIN address ON
+                    partyaddresslink.addressId = address.id AND
+                    partyaddresslink.enabled = 1
+
+            WHERE
+                party.startTime <= NOW()
+                
+            ORDER BY
+                startTime DESC;`,
+            {
+                patronId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return [];
+        } else {
+            let parties = [];
+
+            for (let row of result.rows) {                
+                let party = row.party;
+                party.host = row.host;
+                party.address = row.address;
+
+                parties.push(party);
+            }
+
+            return parties;
+        }
+    }
+
+    static async getRSVPCountByPartyId(partyId) {
+        const result = await db.execute(`
+            SELECT
+                count(patron.id) as rsvpCount
+                
+            FROM
+                user AS patron
+                
+                INNER JOIN partypatronlink ON
+                    partypatronlink.patronId = patron.id AND
+                    partypatronlink.enabled = 1
+                    
+            WHERE
+                partypatronlink.partyId = [partyId];`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return 0;
+        }
+
+        return result.rows[0][''].rsvpCount;
+    }
+
     static async rsvp(partyId, patronId, secretKey) {
         const check = await db.execute(`SELECT id FROM partypatronlink WHERE partyId = [partyId] AND patronId = [patronId];`, { partyId, patronId });
 

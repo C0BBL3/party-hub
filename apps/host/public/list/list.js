@@ -1,4 +1,4 @@
-class List {
+class RSVP {
     constructor() {
         document.body.onload = this.init.bind(this)
     }
@@ -45,10 +45,6 @@ class List {
 
     createPartyDiv(party, upcoming = false) {
         const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
-            
-        partyDiv.onmouseenter = this.onMouseEnterPartyDiv.bind(this);
-        partyDiv.onmouseleave = this.onMouseExitPartyDiv.bind(this);
-
         const shadow = Core.createDiv(partyDiv, `party-${party.id}-shadow`, 'party-shadow');
         const container = Core.createDiv(partyDiv, `party-${party.id}-container`, 'party-container');
 
@@ -133,24 +129,6 @@ class List {
         }
     }
 
-    onMouseEnterPartyDiv(evt) {
-        let id = evt.target.id;
-        let parts = id.split('-');
-        let shadow = $(`party-${parts[1]}-shadow`);
-
-        shadow.style.background = 'linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important';
-        shadow.style.opacity = 1;
-    }
-
-    onMouseExitPartyDiv(evt) {
-        let id = evt.target.id;
-        let parts = id.split('-');
-        let shadow = $(`party-${parts[1]}-shadow`);
-
-        shadow.style.background = 'black';
-        shadow.style.opacity = 0.1;
-    }
-
     async getUpcomingParties() {
         const parties = await api.list.getUpcomingParties(this.userId);
         if (!parties.result) { return []; }
@@ -217,4 +195,4 @@ class List {
     }
 }
 
-const list = new List();
+const list = new RSVP();

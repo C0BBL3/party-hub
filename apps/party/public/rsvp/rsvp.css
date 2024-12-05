@@ -1,61 +1,180 @@
-#container {
-    display: flex;
-    padding: 20px;
-}
-
-.rsvp-feed {
-    flex: 1;
-    padding: 20px;
-}
-
-.rsvp-feed h2 {
+div.parties-header {
+    text-align: center;
     font-size: 24px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    font-weight: bold;
+    padding: 20px;
 }
 
-.scrollable {
+div.parties-container {
     display: flex;
-    overflow-y: hidden;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 10px 0;
-    width: 100%;    
-    white-space: nowrap; 
-    min-height: 60px;
+    gap: 10px;
+    flex-direction: column;
+    height: fill;
+    max-height: calc(50% - 125px);
+    overflow-y: auto;
+    padding-top: 5px;
 }
 
-.party-list {
-    display: flex;
-    gap: 15px;
+div.party-div {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
 }
 
-.party-item {
-    width: 200px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    flex-shrink: 0;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-}
-
-.party-item:hover {
+div.party-div:hover {
     transform: translateY(-5px);
 }
 
-.party-item h3 {
-    font-size: 18px;
-    margin-bottom: 5px;
+div.party-div:hover div.party-shadow {
+    background: linear-gradient(to bottom right, var(--blue-color), var(--pink-color)) !important;
+    opacity: 1;
+}
+
+div.party-shadow {
+    position: absolute;
+    --shadow: 5px;
+    top: var(--shadow);
+    left: var(--shadow);
+    width: calc(100% - calc(2 *  var(--shadow)));
+    height: calc(100% - calc(2 *  var(--shadow)));
+    background: black;
+    opacity: 0.1;
+    filter: blur(5px);
+    border-radius: 15px;
+}
+
+div.party-container {
+    position: absolute;
+    --margin: 10px;
+    top: var(--margin);
+    left: var(--margin);
+    width: calc(100% - calc(2* var(--margin)));
+    height: calc(100% - calc(2* var(--margin)));
+    background-color: var(--white-color);
+    border-radius: 10px;
+    display: flex;
+}
+
+img.party-image {
+    margin: 15px;
+    max-width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    visibility: visible;
+}
+
+div.party-textContainer {
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: -webkit-fill-available;
     overflow: hidden;
+    border-left: 1px solid var(--lighter-grey-color);
+    margin-left: 0;
+    padding-left: 15px;
+}
+
+span.party-title {
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--black-color);
+}
+
+div.party-subtitleContainer {
+    display: flex;
+    gap: 10px;
+    color: var(--grey-color);
+}
+
+a.party-host, span.party-startTime, span.party-address, span.party-privacy {
+    padding-right: 10px;
+    border-right: 1px solid var(--lighter-grey-color);
+}
+
+div.host-vibes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    text-align: left;
+}
+
+div.host-vibe {
+    color: var(--blue-color);
+}
+
+a.party-host:hover {
+    color: var(--blue-color);
+}
+
+div.party-vibes {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: fit-content;
+    overflow-y: hidden;
+    overflow-x: auto;
+    justify-content: flex-start;
+}
+
+div.party-vibe, span.party-privacy {
+    color: var(--blue-color);
+}
+
+div.party-vibe:hover,  div.host-vibe:hover, span.party-privacy:hover {
+    color: var(--pink-color);
+}
+
+span.party-description {
+    text-align: justify;
+    padding-right: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
     text-overflow: ellipsis;
 }
 
-.party-item p {
-    overflow: hidden;
-    text-overflow: ellipsis;
+div.host-div {
+    display: flex;
+    flex-direction: column;
 }
+
+div.host-main-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+img.host-image {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    margin: 10px;
+    border: 1px solid var(--lighter-grey-color);
+}
+
+div.host-main-info {
+    display: flex;
+    border-left: 1px solid var(--lighter-grey-color);
+    padding-left: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+span.host-username {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span.host-description {
+    text-align: justify;
+    overflow: auto;
+    text-overflow: ellipsis;
+    width: calc(100% - 5px);
+    padding-right: 5px;
+    height: 115px;
+}
+
+
 
 .loading-GIF-outer {
     margin: 0;
@@ -104,14 +223,4 @@
 
 .loading-GIF-inner div {
     box-sizing: content-box;
-}
-
-
-#upcomingParty-empty-home-anchor {
-    color: var(--pink-color);
-}
-
-#upcomingParty-empty-home-anchor:hover {
-    color: var(--blue-color);
-    text-decoration: underline;
 }
