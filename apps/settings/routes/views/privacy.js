@@ -5,6 +5,6 @@ const Controller = require('../../controllers/views/privacy');
 
 const BASE_PATH = '/settings/privacy';
 
-router.get(BASE_PATH, Middleware.checkIsHostOrPatron, Controller.render);
+// router.get(BASE_PATH, Middleware.checkIsHostOrPatron, Controller.render);
 
 module.exports = router;
