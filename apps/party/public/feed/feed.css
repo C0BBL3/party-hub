@@ -131,7 +131,7 @@ div.party-subtitleContainer {
     color: var(--grey-color);
 }
 
-a.party-host, span.party-startTime, span.party-address {
+a.party-host, span.party-startTime, span.party-address, span.party-privacy {
     padding-right: 10px;
     border-right: 1px solid var(--lighter-grey-color);
 }
@@ -161,12 +161,16 @@ div.host-vibe {
     color: var(--blue-color);
 }
 
+span.party-privacy {
+    color: var(--blue-color);
+} 
+
 div.party-vibe {
     color: var(--blue-color);
     cursor: pointer;
 }
 
-div.party-vibe:hover, div.host-vibe:hover {
+div.party-vibe:hover, div.host-vibe:hover, span.party-privacy:hover {
     color: var(--pink-color);
 }
 
