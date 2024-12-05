@@ -22,24 +22,23 @@
                         <!-- <option value="Monday">Monday</option>
                         <option value="Tuesday">Tuedsay</option>
                         <option value="Wednesday">Wednesday</option> -->
-                        <option value="Thursday">Start Day</option>
+                        <option value="all">Start Day</option>
                         <option value="Thursday">Thursday</option>
                         <option value="Friday">Friday</option>
                         <option value="Saturday">Saturday</option>
                         <option value="Sunday">Sunday</option>
                     </select>
                     <select id="filter-startTime" class="filter">
-                        <option value="8:00 PM">Start Time</option>
+                        <option value="all">Start Time</option>
                         <% for (let hour = 20; hour < 24; hour++) { %>
                             <% let timeHour = (hour % 12 != 0) ? hour % 12 : 12; %>
                             <% let cAMPM = AMPM[Math.floor(hour/12)] %>
-                            <option value="<%= numToWord[timeHour] %><%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
-                            <option value="<%= numToWord[timeHour] %>thirty<%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
+                            <option value="<%= timeHour %>:00 <%= cAMPM %>"><%= timeHour %>:00 <%= cAMPM %></option>
+                            <option value="<%= timeHour %>:30 <%= cAMPM %>"><%= timeHour %>:30 <%= cAMPM %></option>
                         <% } %>
                     </select>
                     <select id="filter-discoverability" class="filter">
                         <option value="0">Discoverability</option>
-                        <option value="0">All</option>
                         <option value="1">Following Only</option>
                         <option value="2">Friends Only</option>
                     </select>
