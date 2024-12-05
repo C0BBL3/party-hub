@@ -136,8 +136,12 @@ a.party-host, span.party-startTime, span.party-address, span.party-privacy {
     border-right: 1px solid var(--lighter-grey-color);
 }
 
-a.party-host:hover {
+a.party-host {
     color: var(--blue-color);
+}
+
+a.party-host:hover {
+    color: var(--pink-color);
 }
 
 div.party-vibes {
