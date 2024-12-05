@@ -93,6 +93,9 @@ class FeedScreen {
         const currentDayIndex = now.getDay();
         
         // Parse time (e.g., "9:00 PM")
+        if (time == 'all') {
+            time = '8:00 PM';
+        }
         const [timeString, period] = time.split(" ");
         let [hour, minute] = timeString.split(":").map(Number);
         
@@ -382,23 +385,101 @@ class FeedScreen {
     }
 
     filterParties() {
-        let startTime = this.getNextDayTime(this.filters.startDay.value, this.filters.startTime.value);
-        let startTimeUnix = startTime.getTime();
-
         const filtered = this.parties.filter(party => {
-            let partyStartTimeUnix = new Date(party.startTime).getTime();
             let partyHasSelectedVibe = party.vibes.split(',').includes(this.filters.vibes.value);
+            let startBool = this.getStartTimeBool(party);
 
             return (
-                (startTimeUnix <= partyStartTimeUnix) &&
+                startBool &&
                 (this.filters.vibes.value === "all" || partyHasSelectedVibe) &&
                 // (this.filters.rating.value === "all" || Math.floor(party.rating) >= parseInt(this.filters.rating.value)) &&
                 // (this.filters.theme.value === "all" || this.filters.theme.value === party.theme.toLowerCase()) &&
-                // (this.filters.venue.value === "all" || this.filters.venue.value === party.venue.toLowerCase())
+                // (this.filters.venue.value === "all" || this.filters.venue.value === party.venue.toLowerCase()) &&
                 (party.discoverability >= parseInt(this.filters.discoverability.value))
             );
         });
+
         this.loadParties(filtered);
+    }
+
+    getStartTimeBool(party) {
+        if (this.filters.startDay.value == 'all' && this.filters.startTime.value == 'all') { // user has no start filters applied
+            return true;
+        } else if (this.filters.startDay.value != 'all' && this.filters.startTime.value == 'all') { // user has start day filter but no start time filter
+            let partyStartTime = new Date(party.startTime);
+            let days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+            let partyStartDay = days[partyStartTime.getDay()];
+            return this.compareDays(this.filters.startDay.value, partyStartDay) == 'eq';
+        } else if (this.filters.startDay.value == 'all' && this.filters.startTime.value != 'all') { // user has start time filter but no start day filter
+            let partyStartTime = new Date(party.startTime);
+            let partyStartHour = moment(partyStartTime).format('h:mm A');
+            return this.compareTime(this.filters.startTime.value, partyStartHour) == 'eq';
+        } else { // if (this.filters.startDay.value != 'all' && this.filters.startTime.value != 'all') { // user has both start day and time filters applied
+            let startTime = this.getNextDayTime(this.filters.startDay.value, this.filters.startTime.value);
+            let startTimeUnix = startTime.getTime();
+            let partyStartTimeUnix = new Date(party.startTime).getTime();
+            return startTimeUnix == partyStartTimeUnix;
+        }       
+    }
+
+    compareDays(day1, day2) {
+        if (day1.toLowerCase() == day2.toLowerCase()) {
+            return 'eq';
+        }
+
+        if ((day1.toLowerCase() == 'monday') && (day2.toLowerCase() == 'sunday')) {
+            return 'geq';
+        }
+
+        if ((day2.toLowerCase() == 'monday') && (day1.toLowerCase() == 'sunday')) {
+            return 'leq';
+        }
+
+        let days = {
+            'monday': 1,
+            'tuesday': 2,
+            'wednesday': 3,
+            'thursday': 4,
+            'friday': 5,
+            'saturday': 6,
+            'sunday': 7,
+        };
+
+        let day1Int = days[day1.toLowerCase()];
+        let day2Int = days[day2.toLowerCase()];
+
+        if (day1Int > day2Int) {
+            return 'geq';
+        } else if (day1Int < day2Int) {
+            return 'leq';
+        }
+
+        return 'eq';
+    }
+
+    compareTime(time1, time2) {
+        let parts1 = time1.split(':');
+        let parts2 = time2.split(':');
+
+        let hour1 = parseInt(parts1);
+        let hour2 = parseInt(parts2);
+
+        if (hour1 > hour2) {
+            return 'geq';
+        } else if (hour1 < hour2) {
+            return 'leq';
+        }
+
+        let minute1 = parseInt(parts1[1].split(' ')[0]);
+        let minute2 = parseInt(parts2[1].split(' ')[0]);
+
+        if (minute1 > minute2) {
+            return 'geq';
+        } else if (minute1 < minute2) {
+            return 'leq';
+        }
+
+        return 'eq';
     }
 
 

@@ -64,6 +64,10 @@ class FeedService {
                 INNER JOIN address ON
                     partyaddresslink.addressId = address.id AND
                     partyaddresslink.enabled = 1
+
+            WHERE
+                party.startTime >= NOW() AND
+                party.privacy = 'Discoverable'
                 
             LIMIT 
                 10;`
