@@ -40,6 +40,7 @@ class FeedScreen {
                     description: party_.description,
                     vibes: this.capitalize(party_.vibes).join(','),
                     pictureBase64: party_.pictureBase64,
+                    privacy: party_.privacy,
                     host: party_.host,
                     rsvpCount: party_.rsvpCount,
                     discoverability: party_.discoverability,
@@ -152,10 +153,7 @@ class FeedScreen {
 
         for (let party of filteredParties) {
             const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
-            
             partyDiv.onclick = this.onClickPartyDiv.bind(this);
-            partyDiv.onmouseenter = this.onMouseEnterPartyDiv.bind(this);
-            partyDiv.onmouseleave = this.onMouseExitPartyDiv.bind(this);
 
             const shadow = Core.createDiv(partyDiv, `party-${party.id}-shadow`, 'party-shadow');
             const container = Core.createDiv(partyDiv, `party-${party.id}-container`, 'party-container');
@@ -191,7 +189,9 @@ class FeedScreen {
 
             const address = Core.createSpan(subtitleContainer, `party-${party.id}-address`, 'party-address', party.address.streetAddress);
             address.onclick = this.onClickPartyDiv.bind(this);
-            
+
+            const privacy = Core.createSpan(subtitleContainer, `party-${party.id}-privacy`, 'party-privacy', party.privacy);
+            privacy.onclick = this.onClickPrivacy.bind(this);
 
             const rsvp = Core.createSpan(subtitleContainer, `party-${party.id}-rsvp`, 'party-rsvp', `${party.rsvpCount} / 100 Patrons`);
             rsvp.onclick = this.onClickPartyDiv.bind(this);
@@ -364,6 +364,39 @@ class FeedScreen {
                 await contextMenu.showSync();
             }
         }
+    }
+
+    onClickPrivacy(evt) {
+        evt.stopPropagation();
+        let target = evt.target;
+        let parts = target.id.split('-');
+        let partyId = parseInt(parts[1]);
+
+        let partyDiv = $(`party-${partyId}`);
+
+        let party;
+        for (let party_ of this.parties) {
+            if (party_.id == partyId) {
+                party = party_;
+                break;
+            }
+        }
+
+        if (party == null) {
+            return;
+        }
+
+        let userId = parseInt($('userId').value);
+
+        let privacy = target.innerHTML;
+
+        if (privacy == 'Discoverable') {
+            this.filters.discoverability.value = 0;
+        } else if (privacy == 'Public') {
+            this.filters.discoverability.value = 1;
+        }
+
+        this.filterParties();
     }
 
     filterParties() {
