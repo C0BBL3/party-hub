@@ -2,6 +2,48 @@ const FeedService = require('../../services/feed');
 const RSVPService = require('../../services/rsvp');
 
 class RSVPAPIController {
+    static async getUpcomingParties(req, res) {
+        const user = req.session.user;
+        const patronId = parseInt(req.params.patronId);
+
+        if (user.id != patronId) {
+            return res.send({ result: false });
+        }
+
+        const upcoming = await RSVPService.getUpcomingParties(user.id);
+
+        for (let party of upcoming) {
+            let rsvpCount = await RSVPService.getRSVPCountByPartyId(party.id);
+            party.rsvpCount = rsvpCount;
+        }
+
+        res.send({
+            result: true,
+            upcoming
+        });
+    }
+
+    static async getPastParties(req, res) {
+        const user = req.session.user;
+        const patronId = parseInt(req.params.patronId);
+
+        if (user.id != patronId) {
+            return res.send({ result: false });
+        }
+
+        const past = await RSVPService.getPastParties(user.id);
+
+        for (let party of past) {
+            let rsvpCount = await RSVPService.getRSVPCountByPartyId(party.id);
+            party.rsvpCount = rsvpCount;
+        }
+
+        res.send({
+            result: true,
+            past
+        });
+    }
+
     static async rsvp(req, res) {
         const user = req.session.user;
         const { partyId, patronId } = req.body;

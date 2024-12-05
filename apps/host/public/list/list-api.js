@@ -1,4 +1,4 @@
-const BASE_PATH = `${API_BASE_URL}/host/list`
+const BASE_PATH = `${API_BASE_URL}/host/list`;
 
 api.list = {
     getUpcomingParties: async (userId) => {
