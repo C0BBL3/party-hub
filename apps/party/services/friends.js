@@ -178,7 +178,31 @@ class FriendsService {
                     userTwo.username like [search6] OR
                     userTwo.firstName like [search7] OR
                     userTwo.firstName like [search8]
-                );`,
+                )
+            UNION ALL
+            SELECT
+                userOne.id,
+                userOne.username,
+                [userId],
+                '',
+                'requestable'
+            FROM
+                USER as userOne
+            WHERE 
+                userOne.id NOT IN
+            (
+                SELECT userOneId FROM FRIEND WHERE userTwoId = [userId] AND NOT status = 'rejected'
+                UNION
+                SELECT userTwoId FROM FRIEND WHERE userOneId = [userId] AND NOT status = 'rejected'
+            )
+                AND NOT userOne.id = [userId]
+                AND
+            (
+                userOne.username like [search1] OR
+                userOne.username like [search2] OR
+                userOne.firstName like [search3] OR
+                userOne.firstName like [search4]
+            );`,
             {
                 userId,
                 search1: search + '%',
