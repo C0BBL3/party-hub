@@ -9,4 +9,8 @@ const BASE_PATH = '/api/party/feed';
 router.get(`${BASE_PATH}/get-first-10-parties`, APIMiddleware.checkIsHostOrPatron, Controller.getFirst10Parties);
 router.get(`${BASE_PATH}/get-featured-parties`, APIMiddleware.checkIsHostOrPatron, Controller.getFeaturedParties);
 
+// POST
+router.post(`${BASE_PATH}/follow-host`, APIMiddleware.checkIsHostOrPatron, Controller.followHost);
+router.post(`${BASE_PATH}/unfollow-host`, APIMiddleware.checkIsHostOrPatron, Controller.unfollowHost);
+
 module.exports = router;

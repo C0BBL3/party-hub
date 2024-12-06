@@ -14,4 +14,10 @@ api.feed = {
     cancelRSVP: async (partyId, patronId) => {
         return await api.post(`${API_BASE_URL}/party/rsvp/cancel`, { partyId, patronId });
     },
+    followHost: async (userId, hostId) => {
+        return await api.post(`${API_BASE_URL}/party/feed/follow-host`, { userId, hostId });
+    },
+    unfollowHost: async (userId, hostId) => {
+        return await api.post(`${API_BASE_URL}/party/feed/unfollow-host`, { userId, hostId });
+    }
 }

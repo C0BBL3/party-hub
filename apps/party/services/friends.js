@@ -116,6 +116,30 @@ class FriendsService {
         return !result.error;
     }
 
+    static async removeFriend(userOneId, userTwoId) {
+        const result = await db.execute(`
+            DELETE FROM 
+                friend 
+                
+            WHERE
+                (
+                    userOneId = [userOneId] AND
+                    userTwoId = [userTwoId]
+                ) 
+                OR
+                (
+                    userTwoId = [userOneId] AND
+                    userOneId = [userTwoId]
+                )`,
+            {
+                userOneId,
+                userTwoId
+            }
+        );
+
+        return !result.error;
+    }
+
     static async updateStatus(userOneId, userTwoId, status) { // works even if user id's are backwards (probably idk i didnt test it :P )
         let result = await db.execute(`
             UPDATE 

@@ -1,4 +1,5 @@
 const FeedService = require('../../services/feed');
+const FriendsService = require('../../services/friends');
 
 class FeedAPIController {
     static async getFirst10Parties(req, res) {
@@ -19,9 +20,9 @@ class FeedAPIController {
 
         for (let party of parties_) {
 
-            if (user.id == party.host.id) {
-                continue;
-            }
+            // if (user.id == party.host.id) {
+            //     continue;
+            // }
 
             let rsvpCount = await FeedService.getRSVPCountByPartyId(party.id);
             party.rsvpCount = rsvpCount;
@@ -74,6 +75,40 @@ class FeedAPIController {
             result: true,
             parties
         });
+    }
+
+    static async followHost(req, res) {
+        const user = req.session.user;
+        const userId = req.body.userId;
+         
+        if (user.id != userId) {
+            return res.send({
+                result: false
+            });
+        }
+
+        const hostId = req.body.hostId;
+
+        const result = await FriendsService.addFriend(userId, hostId);
+
+        res.send({ result });
+    }
+
+    static async unfollowHost(req, res) {
+        const user = req.session.user;
+        const userId = req.body.userId;
+         
+        if (user.id != userId) {
+            return res.send({
+                result: false
+            });
+        }
+
+        const hostId = req.body.hostId;
+
+        const result = await FriendsService.removeFriend(userId, hostId);
+
+        res.send({ result });
     }
 }
 

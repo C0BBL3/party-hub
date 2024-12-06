@@ -4,6 +4,7 @@ class FeedScreen {
     }
 
     async init() {
+        this.userId = parseInt($('userId').value);
         this.partyListDiv = $('partyList');
         this.filters = {
             startDay: $('filter-startDay'),
@@ -62,7 +63,8 @@ class FeedScreen {
         let vibes = [];
         
         for (let party of this.parties) {
-            let partyVibes = party.vibes.split(',');
+            let partyVibes = [party.vibes.trim(), party.host.tags.trim()].join(',').split(',');
+            
 
             for (let vibe of partyVibes) {
                 if (!vibes.includes(vibe)) {
@@ -257,7 +259,20 @@ class FeedScreen {
         const mainContainer = Core.createDiv(hostDiv, `host-${party.host.id}-main-container`, 'host-main-container')
         const image = Core.createImg(mainContainer, `host-${party.host.id}-image`, 'host-image', party.host.pictureBase64);
         const mainInfo = Core.createDiv(mainContainer, `host-${party.host.id}-main-info`, 'host-main-info');
-        const username = Core.createSpan(mainInfo, `host-${party.host.id}-username`, 'host-username', party.host.username);
+        const usernameContainer = Core.createDiv(mainInfo, `host-${party.host.id}-username-container`, 'host-username');
+        const username = Core.createSpan(usernameContainer, `host-${party.host.id}-username`, 'host-username', party.host.username);
+        
+        const follow = Core.createDiv(usernameContainer, `host-${party.host.id}-follow`, 'host-follow', 'Follow');        
+        const following = Core.createDiv(usernameContainer, `host-${party.host.id}-following`, 'host-follow', 'Following');
+
+        if (party.discoverability > 0) {
+            follow.style.display = 'none';
+        } else {
+            following.style.display = 'none';
+        }
+
+        follow.onclick = this.onClickHostFollow.bind(this, party.host);
+        following.onclick = this.onClickHostFollowing.bind(this, party.host);
 
         const vibesContainer = Core.createDiv(mainInfo, `party-${party.id}-vibes`, 'host-vibes');
 
@@ -279,6 +294,68 @@ class FeedScreen {
         contextMenu.div.style.height = party.host.description != null ? '415px' : '320px';
 
         const choice = await contextMenu.showSync();
+    }
+
+    async onClickHostFollow(host, evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        let party;
+        for (let party_ of this.parties) {
+            if (party_.host.id == host.id) {
+                party = party_;
+                break;
+            }
+        }
+
+        if (party == null) {
+            return;
+        }
+
+        if (party.discoverability > 0) {
+            return;
+        }
+
+        const follow = await api.feed.followHost(this.userId, host.id);
+
+        if (follow.result) {
+            $(`host-${host.id}-follow`).style.display = 'none';
+            $(`host-${host.id}-following`).style.display = 'block';
+
+            this.parties = await this.getFeaturedParties();
+            this.filterParties();
+        }
+    }
+
+    async onClickHostFollowing(host, evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        let party;
+        for (let party_ of this.parties) {
+            if (party_.host.id == host.id) {
+                party = party_;
+                break;
+            }
+        }
+
+        if (party == null) {
+            return;
+        }
+
+        if (party.discoverability == 0) {
+            return;
+        }
+
+        const unfollow = await api.feed.unfollowHost(this.userId, host.id);
+
+        if (unfollow.result) {
+            $(`host-${host.id}-following`).style.display = 'none';
+            $(`host-${host.id}-follow`).style.display = 'block';
+           
+            this.parties = await this.getFeaturedParties();
+            this.filterParties();
+        } 
     }
 
     async onClickPartyDiv(evt) {
@@ -401,7 +478,8 @@ class FeedScreen {
 
     filterParties() {
         const filtered = this.parties.filter(party => {
-            let partyHasSelectedVibe = party.vibes.split(',').includes(this.filters.vibes.value);
+            let partyVibes = [party.vibes.trim(), party.host.tags.trim()].join(',')
+            let partyHasSelectedVibe = partyVibes.split(',').includes(this.filters.vibes.value);
             let startBool = this.getStartTimeBool(party);
 
             return (
