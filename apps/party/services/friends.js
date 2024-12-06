@@ -182,7 +182,7 @@ class FriendsService {
             UNION ALL
             SELECT
                 userOne.id as userOneId,
-                userOne.username as userOneUserName,
+                userOne.username as userOneUsername,
                 [userId] as userTwoId,
                 '' as userTwoUsername,
                 'requestable' as status
@@ -220,15 +220,19 @@ class FriendsService {
             return [];
         }
 
+        console.log(result.userOneId);
+
         return result.rows.map(row => {
             if (row.userTwoId != userId) {
                 //row.userTwo.status = row.friend.status;
+                //console.log(row.userTwoUsername);
                 return {
                     userId: row.userTwoId,
                     username: row.userTwoUsername
                 };
             } else {
                 //row.userOne.status = row.friend.status;
+                //console.log(row.userOneUsername)
                 return {
                     userId: row.userOneId,
                     username: row.userOneUsername
