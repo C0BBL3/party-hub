@@ -220,20 +220,22 @@ class FriendsService {
             return [];
         }
 
+        console.log(result.row)
+
         return result.rows.map(row => {
-            if (row.userTwoId != userId) {
+            if (row[2] != userId) {
                 //row.userTwo.status = row.friend.status;
                 //console.log(row.userTwoUsername);
                 return {
-                    userId: row.userTwoId,
-                    username: row.userTwoUsername
+                    userId: row[2],
+                    username: row[3]
                 };
             } else {
                 //row.userOne.status = row.friend.status;
                 //console.log(row.userOneUsername)
                 return {
-                    userId: row.userOneId,
-                    username: row.userOneUsername
+                    userId: row[0],
+                    username: row[1]
                 };
             }
         });
