@@ -147,11 +147,11 @@ class FriendsService {
     static async searchFriends(userId, search) {
         let result = await db.execute(`
             SELECT 
-                userOne.id,
-                userOne.username,
-                userTwo.id,
-                userTwo.username,
-                friend.status
+                userOne.id as userOneId,
+                userOne.username as userOneUsername,
+                userTwo.id as userTwoId,
+                userTwo.username as userTwoUsername,
+                friend.status as status
                 
             FROM 
                 friend 
@@ -181,11 +181,11 @@ class FriendsService {
                 )
             UNION ALL
             SELECT
-                userOne.id,
-                userOne.username,
-                [userId],
-                '',
-                'requestable'
+                userOne.id as userOneId,
+                userOne.username as userOneUserName,
+                [userId] as userTwoId,
+                '' as userTwoUsername,
+                'requestable' as status
             FROM
                 USER as userOne
             WHERE 
@@ -221,17 +221,17 @@ class FriendsService {
         }
 
         return result.rows.map(row => {
-            if (row.userTwo.id != userId) {
-                row.userTwo.status = row.friend.status;
+            if (row.userTwoId != userId) {
+                //row.userTwo.status = row.friend.status;
                 return {
-                    userId: row.userTwo.id,
-                    username: row.userTwo.username
+                    userId: row.userTwoId,
+                    username: row.userTwoUsername
                 };
             } else {
-                row.userOne.status = row.friend.status;
+                //row.userOne.status = row.friend.status;
                 return {
-                    userId: row.userOne.id,
-                    username: row.userOne.username
+                    userId: row.userOneId,
+                    username: row.userOneUsername
                 };
             }
         });
