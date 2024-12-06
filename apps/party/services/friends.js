@@ -220,8 +220,6 @@ class FriendsService {
             return [];
         }
 
-        console.log(result.userOneId);
-
         return result.rows.map(row => {
             if (row.userTwoId != userId) {
                 //row.userTwo.status = row.friend.status;
