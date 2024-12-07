@@ -2,10 +2,10 @@
 
 Welcome to **Party Hub** – a simple and fun way to manage party RSVPs online! This website allows users to create, manage, and RSVP to events effortlessly.
 
-Authors: Makani Buckley, Jack Davy, Colby Roberts
+- Authors: Makani Buckley, Jack Davy, Colby Roberts
 
-Course: CS 422
-Assignment: Group Project
+- Course: CS 422
+- Assignment: Group Project
 ---
 
 ## 🌟 Features
