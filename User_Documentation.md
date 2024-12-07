@@ -156,7 +156,10 @@ The **Party Screen** is where patrons explore, RSVP to, and manage parties. This
   - Lists all parties you’ve RSVP’d to.  
   - Clicking a party prompts you to manage your RSVP:  
     - **Cancel**: Removes your RSVP.  
-    - **Nevermind**: Keeps your RSVP.  
+    - **Nevermind**: Keeps your RSVP.
+
+---
+     
 ### **5. Host Screen**  
 
 The **Host Screen** is where users who have selected to be Hosts can create, manage, and edit the parties they are hosting. This screen consists of three pages: **List**, **Create**, and **Edit**.  
