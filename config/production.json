@@ -1,0 +1,19 @@
+{
+    "http": {
+        "port": 80,
+        "baseUrl": "https://www.galactic-conquerors.com"
+    },
+    "secretPassphrase": "48sk.3dUTHBE-dK9011K.83t42-t4FWX3/9MV.g3846dRtgZ",    
+    "database": {
+        "host": "galactic-conquerors.chdv21uogr2e.us-east-1.rds.amazonaws.com",
+        "user": "admin",
+        "password": "DUzh29Sfyhz",
+        "database": "galactic",
+        "connectionLimit": 100,
+        "waitForConnections": true,
+        "queueLimit": 0
+    },
+    "logging": {
+        "dir": "/svr/logs"
+    }
+}
