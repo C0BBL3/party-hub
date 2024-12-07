@@ -22,9 +22,7 @@ Each screen is carefully designed with a user-friendly interface and clear funct
 
 The **Landing Page** is the starting point for all users. It introduces PartyHub’s purpose and functionality, encouraging new users to join and existing users to log in.  
 
-#### **Features**:  
-- **Overview**:  
-  The tagline, *“PartyHub: A simple and fun way to manage party RSVPs online!”*, reflects PartyHub’s mission to streamline event management for both hosts and patrons.  
+#### **Features**:   
 - **Join Now**:  
   Clicking this button takes new users to the Signup screen, where they can create a PartyHub account.  
 - **Login**:  
