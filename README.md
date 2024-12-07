@@ -57,14 +57,16 @@ Welcome to **Party Hub** – a simple and fun way to manage party RSVPs online! 
 
 PartyHub is designed to analyze party hosts’ names and addresses to predict vibes and recommend parties. The architecture comprises the following components:  
 
-1. **Party Analysis Component**: Extracts patron and host data using AI and Party Intelligence reports to assess compatibility.  
-2. **Party Intelligence Component**: Queries a proprietary API with host names and party addresses for additional insights.  
-3. **Party Report Generation Component**: Creates summary reports of party analysis results.  
-4. **UI Component**: Offers an intuitive interface for RSVPs, party hosting, and editing, with input fields, result displays, and admin tools for API management and settings.  
+1. **Party App**: Extracts patron and host data using AI to assess compatibility and determine party vibes.  
+2. **Host App**: Provides tools for hosts to create, edit, and manage parties, including analyzing party details like names and addresses.  
+3. **Settings App**: Allows users to manage administrative controls such as API keys, preferences, and account settings.  
+
+**UI Component:**  
+The user interface includes features for RSVPs, hosting and editing parties, and managing settings. It provides input fields for raw names and addresses, a display area for results, and controls for customization and administration.  
 
 **Component Interaction:**  
-- The UI communicates with the server for data exchange and report uploads.  
-- The server securely interacts with the database for data storage, retrieval, and deletion using authentication and hashing.  
+- The **UI** communicates with the **server** to transfer input data and fetch or upload party analysis results.  
+- The **server** interacts with the **database** to securely fetch, store, or delete data using authentication and hashing.  
 
 **Design Rationale:**  
-PartyHub integrates analysis tools for accurate party recommendations, leveraging diverse data sources like host and address histories. It ensures user-friendliness, security, and legal compliance, providing a reliable solution for enhancing social experiences while addressing dynamic networking challenges.
+PartyHub integrates analysis tools for accurate party recommendations, enhancing social experiences through intuitive apps tailored for patrons, hosts, and administrators. Its user-friendly design, coupled with a focus on data security and legal compliance, ensures reliability and addresses dynamic networking needs effectively..
