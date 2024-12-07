@@ -55,15 +55,16 @@ Welcome to **Party Hub** – a simple and fun way to manage party RSVPs online! 
 
 ## Detailed Description of Architecture
 
-PartyHub is designed to analyze party hosts’ names and addresses to predict vibes and recommend parties. The architecture comprises the following components:
-	1.	Party Analysis Component: Extracts patron and host data using AI and Party Intelligence reports to assess compatibility.
-	2.	Party Intelligence Component: Queries a proprietary API with host names and party addresses for additional insights.
-	3.	Party Report Generation Component: Creates summary reports of party analysis results.
-	4.	UI Component: Offers an intuitive interface for RSVPs, party hosting, and editing, with input fields, result displays, and admin tools for API management and settings.
+PartyHub is designed to analyze party hosts’ names and addresses to predict vibes and recommend parties. The architecture comprises the following components:  
 
-Component Interaction:
-	•	The UI communicates with the server for data exchange and report uploads.
-	•	The server securely interacts with the database for data storage, retrieval, and deletion using authentication and hashing.
+1. **Party Analysis Component**: Extracts patron and host data using AI and Party Intelligence reports to assess compatibility.  
+2. **Party Intelligence Component**: Queries a proprietary API with host names and party addresses for additional insights.  
+3. **Party Report Generation Component**: Creates summary reports of party analysis results.  
+4. **UI Component**: Offers an intuitive interface for RSVPs, party hosting, and editing, with input fields, result displays, and admin tools for API management and settings.  
 
-Design Rationale:
+**Component Interaction:**  
+- The UI communicates with the server for data exchange and report uploads.  
+- The server securely interacts with the database for data storage, retrieval, and deletion using authentication and hashing.  
+
+**Design Rationale:**  
 PartyHub integrates analysis tools for accurate party recommendations, leveraging diverse data sources like host and address histories. It ensures user-friendliness, security, and legal compliance, providing a reliable solution for enhancing social experiences while addressing dynamic networking challenges.
