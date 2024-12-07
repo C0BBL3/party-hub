@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the RSVP screen
+Author Colby Roberts
+*/
 const FeedService = require('../../services/feed');
 const RSVPService = require('../../services/rsvp');
 

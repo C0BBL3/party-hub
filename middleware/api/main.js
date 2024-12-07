@@ -1,3 +1,7 @@
+/*
+Creates API for Middleware to use throughout the website
+Author Colby Roberts
+*/
 class APIMiddleware {
     static checkIsAdmin(req, res, next) {
         if(!req.session.user) {

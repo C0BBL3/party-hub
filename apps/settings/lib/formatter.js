@@ -1,3 +1,7 @@
+/*
+Creates the Formatter class for formatting text
+Author Colby Roberts
+*/
 const pluralize = require('pluralize')
 
 class Formatter {

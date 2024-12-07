@@ -1,3 +1,7 @@
+/*
+Dynamically manages the RSVP screen and its behaviors
+Author Jack Davy, Colby Roberts
+*/
 class RSVP {
     constructor() {
         document.body.onload = this.init.bind(this)

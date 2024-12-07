@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Main screen
+Author Colby Roberts
+*/
 class MainController {
     static sessionExpired(req, res) {
         res.render('session-expired/session-expired', {

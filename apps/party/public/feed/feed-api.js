@@ -1,3 +1,7 @@
+/*
+Sets up the API endpoints for the Feed screen
+Author Colby Roberts
+*/
 api.feed = {
     getFirst10Parties: async () => {
         return await api.get(`${API_BASE_URL}/party/feed/get-first-10-parties`);

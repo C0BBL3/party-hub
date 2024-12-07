@@ -1,3 +1,7 @@
+/*
+Sets up the API for the Signup screen
+Author Colby Roberts
+*/
 api.signup = {
     checkIfUniqueUsername: async (username) => {
         return await api.get(`${API_BASE_URL}/signup/check-if-unique-username/${username}`);

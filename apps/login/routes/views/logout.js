@@ -1,3 +1,7 @@
+/*
+Creates the endpoint to open the Logout route
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Controller = require('../../controllers/views/logout');

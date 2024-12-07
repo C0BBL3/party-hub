@@ -1,3 +1,7 @@
+/*
+Sets up the API for the List screen
+Author Colby Roberts
+*/
 const BASE_PATH = `${API_BASE_URL}/host/list`;
 
 api.list = {

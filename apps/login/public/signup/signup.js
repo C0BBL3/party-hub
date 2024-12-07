@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Signup screen and its behaviors
+Author Colby Roberts
+*/
 class Password {
     constructor() {
         document.body.onload = this.init.bind(this);      

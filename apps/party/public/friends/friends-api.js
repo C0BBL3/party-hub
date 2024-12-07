@@ -1,3 +1,7 @@
+/*
+Sets up the API for the Friends screen
+Author Makani Buckley, Colby Roberts
+*/
 api.friends = {
     refresh: async (userId) => {
         return await api.get(`${API_BASE_URL}/party/friends/${userId}`);

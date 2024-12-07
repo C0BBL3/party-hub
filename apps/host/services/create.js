@@ -1,3 +1,7 @@
+/*
+Defines the services required by the Create screen
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 const moment = require('moment');
 

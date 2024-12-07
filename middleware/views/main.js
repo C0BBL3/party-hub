@@ -1,3 +1,7 @@
+/*
+Creates Middleware class for functions to be used throughout the website
+Author Colby Roberts
+*/
 class Middleware {
     static checkIsAdmin(req, res, next) {
         if (!req.session.user) {

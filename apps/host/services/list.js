@@ -1,3 +1,7 @@
+/*
+Defines the services required by the List screen
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 
 class ListService {

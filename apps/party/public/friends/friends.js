@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Feed screen and its behaviors
+Author Makani Buckley, Colby Roberts
+*/
 class Friends {
     constructor() {
         document.body.onload = this.init.bind(this);

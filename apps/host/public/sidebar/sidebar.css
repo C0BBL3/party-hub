@@ -1,3 +1,7 @@
+/*
+Establishes the styling for the CSS classes of the Sidebar
+Author Colby Roberts
+*/
 div#sidebar {
     position: absolute;
     left: 0px;

@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Signup screen
+Author Colby Roberts
+*/
 const SignupService = require('../../services/signup');
 
 class SignupController {

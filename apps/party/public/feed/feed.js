@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Feed screen and its behaviors
+Author Jack Davy, Colby Roberts
+*/
 class FeedScreen {
     constructor() {
         document.body.onload = this.init.bind(this);

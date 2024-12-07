@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Privacy screen
+Author Colby Roberts
+*/
 const PrivacyService = require("../../services/privacy");
 
 class PrivacyAPIController {

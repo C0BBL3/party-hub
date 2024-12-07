@@ -1,4 +1,7 @@
-
+/*
+Establishes the styling for the CSS classes of the Signup screen
+Author Colby Roberts
+*/
 body::-webkit-scrollbar { display: none; }
 body::-moz-scrollbar { width: 0; }
 

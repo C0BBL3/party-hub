@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Edit screen
+Author Colby Roberts
+*/
 const EditService = require('../../services/edit');
 const capitalizer = require("../../../../utils/capitilzer");
 

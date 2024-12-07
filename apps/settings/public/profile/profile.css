@@ -1,4 +1,7 @@
-
+/*
+Establishes the styling for the CSS classes of the Profile screen
+Author Jack Davy, Colby Roberts
+*/
 .profile-container {
     display: flex;
     flex-direction: column;

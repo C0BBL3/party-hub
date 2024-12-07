@@ -1,3 +1,7 @@
+/*
+Connects the API of the RSVP screen to the RSVP screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Controller = require('../../controllers/api/rsvp');

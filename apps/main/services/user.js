@@ -1,3 +1,7 @@
+/*
+Defines the services required by the User
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 
 class UserService {

@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Password screen
+Author Colby Roberts
+*/
 const PasswordService = require('../../services/password');
 
 class PasswordAPIController  {

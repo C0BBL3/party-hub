@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Main screen
+Author Colby Roberts
+*/
 const UserService = require('../../services/user');
 
 class MainAPIController {

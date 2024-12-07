@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Edit screen
+Author Colby Roberts
+*/
 const EditService = require('../../services/edit');
 
 class EditController {

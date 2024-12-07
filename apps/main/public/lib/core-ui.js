@@ -1,3 +1,7 @@
+/*
+Establish Core UI class for basic UI features
+Author Colby Roberts
+*/
 Core.Button = Class.extend({
 	_construct: function(options) {
         this.element = document.getElementById(options.id);

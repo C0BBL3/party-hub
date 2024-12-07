@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Profile screen
+Author Colby Roberts
+*/
 const ProfileService = require("../../services/profile");
 
 class ProfileController {

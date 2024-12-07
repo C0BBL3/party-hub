@@ -1,3 +1,7 @@
+/*
+Connects the API of the Privacy screen to the Privacy screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const ApiMiddleware = require('../../../../middleware/api/main');

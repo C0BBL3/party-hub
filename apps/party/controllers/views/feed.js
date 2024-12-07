@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Feed screen
+Author Colby Roberts
+*/
 const FeedService = require('../../services/feed');
 
 class FeedController {

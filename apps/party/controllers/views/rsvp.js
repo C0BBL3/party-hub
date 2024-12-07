@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Friends screen
+Author Colby Roberts
+*/
 const RSVPService = require('../../services/rsvp');
 
 class RSVPController {

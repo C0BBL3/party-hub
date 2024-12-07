@@ -1,3 +1,7 @@
+/*
+Connects the API of the Signup screen to the Signup screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Controller = require('../../controllers/api/signup');

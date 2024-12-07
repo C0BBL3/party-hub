@@ -1,3 +1,7 @@
+/*
+Defines the services required by the Profile screen
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 
 class ProfileService {

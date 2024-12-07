@@ -1,3 +1,7 @@
+/*
+Functions for managing the capitalization of strings
+Author Colby Roberts
+*/
 function fixCapitalization(name) {
     if (needToFixCapitalization(name)) {
         return capitalize(name);

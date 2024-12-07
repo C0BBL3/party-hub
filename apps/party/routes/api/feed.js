@@ -1,3 +1,7 @@
+/*
+Connects the API of the Feed screen to the Feed screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Controller = require('../../controllers/api/feed');

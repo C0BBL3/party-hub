@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Profile screen
+Author Colby Roberts
+*/
 const ProfileService = require("../../services/profile");
 
 class ProfileAPIController {

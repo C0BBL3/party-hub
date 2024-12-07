@@ -1,3 +1,7 @@
+/*
+Connects the API of the Main screen to the Main screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const APIMiddleware = require('../../../../middleware/api/main');

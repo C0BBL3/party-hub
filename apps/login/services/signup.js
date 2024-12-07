@@ -1,3 +1,7 @@
+/*
+Defines the services required by the Signup screen
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 
 const crypto = require('crypto');

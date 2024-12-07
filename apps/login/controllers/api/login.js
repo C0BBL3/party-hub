@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Login screen
+Author Colby Roberts
+*/
 const LoginService = require('../../services/login');
 
 class LoginAPIController {

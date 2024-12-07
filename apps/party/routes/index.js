@@ -1,3 +1,7 @@
+/*
+Creates the routes to the Feed, Friends, and RSVP screens
+Author Colby Roberts
+*/
 const fs = require('fs');
 const path = require('path');
 const Formatter = require('../lib/formatter');

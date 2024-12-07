@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Create screen and its behaviors
+Author Colby Roberts
+*/
 class CreateParty {
     constructor() {
         document.body.onload = this.init.bind(this);

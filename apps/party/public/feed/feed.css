@@ -1,4 +1,7 @@
-
+/*
+Establishes the styling for the CSS classes of the Feed screen
+Author Jack Davy, Colby Roberts
+*/
 .feed-container {
     display: flex;
     flex-direction: row; 

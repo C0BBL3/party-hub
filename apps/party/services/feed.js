@@ -1,3 +1,7 @@
+/*
+Defines the services required by the Feed screen
+Author Colby Roberts
+*/
 const db = require('../../../utils/database');
 
 class FeedService {

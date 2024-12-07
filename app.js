@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+/*
+Sets up and runs the PartyHub app
+Author Colby Roberts
+*/
 const fs = require("fs");
 const path = require('path');
 const http = require('http');

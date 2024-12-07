@@ -1,3 +1,7 @@
+/*
+Creates the routes to the Create, Edit, and List screens
+Author Colby Roberts
+*/
 const fs = require('fs');
 const path = require('path');
 const Formatter = require('../lib/formatter');

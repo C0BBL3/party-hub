@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Create screen
+Author Colby Roberts
+*/
 const CreateService = require('../../services/create');
 
 class CreateController {

@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the Login screen
+Author Colby Roberts
+*/
 const LoginService = require('../../services/login');
 
 class LoginController {

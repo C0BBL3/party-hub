@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Privacy screen and its behaviors
+Author Colby Roberts
+*/
 class Privacy {
     constructor() {
         document.body.onload = this.init.bind(this);      

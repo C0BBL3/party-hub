@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Profile screen and its behaviors
+Author Colby Roberts
+*/
 class Profile {
     constructor() {
         document.body.onload = this.init.bind(this);      

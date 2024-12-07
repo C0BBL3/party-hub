@@ -1,3 +1,7 @@
+/*
+Create core API
+Author Colby Roberts
+*/
 const API_BASE_URL = '/api';
 
 let api = {

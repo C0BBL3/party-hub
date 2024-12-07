@@ -1,3 +1,7 @@
+/*
+Sets up the API endpoints for the Profile screen
+Author Colby Roberts
+*/
 const BASE_PATH = `${API_BASE_URL}/settings/profile`;
 
 api.profile = {

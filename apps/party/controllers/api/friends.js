@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Friends screen
+Author Colby Roberts
+*/
 const { query } = require('express');
 const FriendsService = require('../../services/friends');
 

@@ -1,3 +1,7 @@
+/*
+Creates the endpoint to open the Friends screen
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Controller = require('../../controllers/views/friends');

@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Login screen and its behaviors
+Author Colby Roberts
+*/
 class LoginProcess {
     constructor() {
         document.body.onload = this.init.bind(this);

@@ -1,3 +1,7 @@
+/*
+Creates the endpoint to open the Main screen
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const MainController = require('../../controllers/views/main');

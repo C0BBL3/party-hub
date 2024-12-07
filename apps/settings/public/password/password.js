@@ -1,3 +1,7 @@
+/*
+Dynamically manages the Password screen and its behaviors
+Author Jack Davy, Colby Roberts
+*/
 class Password {
     constructor() {
         document.body.onload = this.init.bind(this);      

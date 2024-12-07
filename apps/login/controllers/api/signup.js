@@ -1,3 +1,7 @@
+/*
+Creates an API Controller for the Signup screen
+Author Colby Roberts
+*/
 const SignupService = require("../../services/signup");
 const capitalizer = require("../../../../utils/capitilzer");
 

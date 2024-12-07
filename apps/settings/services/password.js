@@ -1,3 +1,7 @@
+/*
+Defines the services required by the Password screen
+Author Colby Roberts
+*/
 const crypto = require('crypto');
 const scryptAsync = require('scrypt-async');
 const db = require('../../../utils/database');

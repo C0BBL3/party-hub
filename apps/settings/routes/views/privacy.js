@@ -1,3 +1,7 @@
+/*
+Creates the endpoint to open the Privacy screen
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const Middleware = require('../../../../middleware/views/main');

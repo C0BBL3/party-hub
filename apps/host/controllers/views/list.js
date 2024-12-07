@@ -1,3 +1,7 @@
+/*
+Creates a Controller for the List screen
+Author Colby Roberts
+*/
 const ListService = require('../../services/list');
 
 class ListController {

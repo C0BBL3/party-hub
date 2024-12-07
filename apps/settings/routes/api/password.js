@@ -1,3 +1,7 @@
+/*
+Connects the API of the Password screen to the Password screen API controller
+Author Colby Roberts
+*/
 const express = require('express');
 const router = express.Router();
 const ApiMiddleware = require('../../../../middleware/api/main');

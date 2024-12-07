@@ -1,3 +1,7 @@
+/*
+Creates the ContextMenu class for context menus
+Author Colby Roberts
+*/
 class ContextMenu {
     constructor(title, message = '', cancel = 'Cancel', confirm = 'Confirm') {
         const wrap = $('wrap');

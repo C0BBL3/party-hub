@@ -1,3 +1,7 @@
+/*
+Establishes the styling for the CSS classes of the Create screen
+Author Colby Roberts
+*/
 div#container {
     padding: 20px;
     border: 1px solid var(--lighter-grey-color);

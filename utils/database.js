@@ -1,3 +1,7 @@
+/*
+Interfaces with and Manages the Database of the website
+Author Colby Roberts
+*/
 const mysql = require('mysql');
 
 var _pool;
