@@ -46,6 +46,29 @@ class ListAPIController {
             past
         });
     }
+
+    static async getPartyLink(req, res) {
+        const user = req.session.user;
+        const hostId = parseInt(req.params.hostId);
+
+        if (user.id != hostId) {
+            return res.send({ result: false });
+        }
+
+        const partyId = parseInt(req.params.partyId);
+
+        const secretKey = await ListService.getPartySecretKey(partyId);
+
+        if (secretKey) {
+            const BASE_URL = req.protocol + '://' + req.get('host');
+            return res.send({
+                result: true,
+                link: `${BASE_URL}/party/secret${secretKey}`
+            });
+        } else {
+            return res.send({ result: false });
+        }
+    }
 }
 
 module.exports = ListAPIController;

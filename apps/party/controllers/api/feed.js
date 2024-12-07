@@ -24,9 +24,9 @@ class FeedAPIController {
 
         for (let party of parties_) {
 
-            // if (user.id == party.host.id) {
-            //     continue;
-            // }
+            if (user.id == party.host.id) {
+                continue;
+            }
 
             let rsvpCount = await FeedService.getRSVPCountByPartyId(party.id);
             party.rsvpCount = rsvpCount;

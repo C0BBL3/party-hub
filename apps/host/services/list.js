@@ -156,6 +156,28 @@ class ListService {
 
         return result.rows[0][''].rsvpCount;
     }
+
+    static async getPartySecretKey(partyId) {
+        const result = await db.execute(`
+            SELECT
+                secretKey
+                
+            FROM
+                party
+                
+            WHERE
+                id = [partyId]`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length == 0) {
+            return false;
+        }
+
+        return result.rows[0].party.secretKey;
+    }
 }
 
 module.exports = ListService;

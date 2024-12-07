@@ -6,6 +6,10 @@ const LoginService = require('../../services/login');
 
 class LoginController {
     static async render(req, res) {
+        if (req.query.redirect) { // if "?redirect=blah/blahblah/blahblahblah/blah"
+            req.session.redirect_url = req.query.redirect;
+        }
+        
         const user = req.session.user;
 
         res.render('login/login', {

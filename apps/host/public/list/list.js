@@ -60,7 +60,21 @@ class RSVP {
         }
         
         const textContainer = Core.createDiv(container, `party-${party.id}-textContainer`, 'party-textContainer');
-        const title = Core.createSpan(textContainer, `party-${party.id}-title`, 'party-title', party.title);
+        const titleContainer = Core.createDiv(textContainer, `party-${party.id}-titleContainer`, 'party-titleContainer');
+        const title = Core.createSpan(titleContainer, `party-${party.id}-title`, 'party-title', party.title);
+
+        if (upcoming || true) {
+            const share = Core.createSpan(titleContainer, `party-${party.id}-share`, 'party-share', `
+                <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M19.333,14.667a4.66,4.66,0,0,0-3.839,2.024L8.985,13.752a4.574,4.574,0,0,0,.005-3.488l6.5-2.954a4.66,4.66,0,1,0-.827-2.643,4.633,4.633,0,0,0,.08.786L7.833,8.593a4.668,4.668,0,1,0-.015,6.827l6.928,3.128a4.736,4.736,0,0,0-.079.785,4.667,4.667,0,1,0,4.666-4.666ZM19.333,2a2.667,2.667,0,1,1-2.666,2.667A2.669,2.669,0,0,1,19.333,2ZM4.667,14.667A2.667,2.667,0,1,1,7.333,12,2.67,2.67,0,0,1,4.667,14.667ZM19.333,22A2.667,2.667,0,1,1,22,19.333,2.669,2.669,0,0,1,19.333,22Z"/>
+                </svg>
+            `);
+
+           share.onclick = this.onClickShareParty.bind(this, party);
+        }
+
+
+
         const subtitleContainer = Core.createDiv(textContainer, `party-${party.id}-subtitleContainer`, 'party-subtitleContainer');
         const startTime = Core.createSpan(subtitleContainer, `party-${party.id}-startTime`, 'party-startTime', moment(party.startTime).format('MMM D, h:mm A'));
         const address = Core.createSpan(subtitleContainer, `party-${party.id}-address`, 'party-address', party.address.streetAddress);
@@ -99,6 +113,35 @@ class RSVP {
         }
 
         return partyDiv;
+    }
+
+    async onClickShareParty(party, evt) {
+        evt.stopPropagation();
+
+        const partyLink = await api.list.getPartyLink(this.userId, party.id);
+
+        if (partyLink.result) {
+            await this.delay(250);
+
+            const title = 'Share Party';
+            let message;
+
+            if (party.privacy == 'Private') {
+                message = 'Anyone of your friends with the link can join the party!';
+            } else {
+                message = 'Anyone with the link can join the party!';
+            }
+
+            const contextMenu = new ContextMenu(title, message, null, 'OK');
+            contextMenu.createInput(partyLink.link);
+            contextMenu.input.value = partyLink.link;
+            contextMenu.input.disabled = true;
+            contextMenu.input.style.marginTop = '10px';
+            contextMenu.input.style.textAlign = 'center';
+            contextMenu.setHeight('190');
+
+            await contextMenu.showSync();
+        }
     }
 
     async onClickPartyDiv(evt) {

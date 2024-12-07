@@ -252,7 +252,7 @@ class RSVPService {
             let parties = [];
 
             for (let row of result.rows) {
-                // if (row.party.id == null) { continue; }
+                if (row.party.id == null) { continue; }
                 let party = row.party;
                 parties.push(party);
             }

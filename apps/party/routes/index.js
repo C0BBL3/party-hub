@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const Formatter = require('../lib/formatter');
 
-const categories = ['feed', 'friends', 'rsvp'];
+const categories = ['feed', 'friends', 'join', 'rsvp'];
 
 module.exports.register = (app) => {
     addCategoryRoutes(app, categories);

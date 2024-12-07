@@ -17,6 +17,12 @@ class LoginAPIController {
                 req.session.user.isSupervisorMode = 1;
             }
 
+            if (req.session.redirect_url) {
+                const redirect_url = req.session.redirect_url;
+                delete req.session.redirect_url;
+                return res.redirect(redirect_url);
+            }
+
             return res.send({
                 result: true
             });
@@ -28,6 +34,12 @@ class LoginAPIController {
 
                 if (req.session.user.isAdmin) {
                     req.session.user.isSupervisorMode = 1;
+                }
+
+                if (req.session.redirect_url) {
+                    const redirect_url = req.session.redirect_url;
+                    delete req.session.redirect_url;
+                    return res.redirect(redirect_url);
                 }
 
                 return res.send({

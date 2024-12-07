@@ -46,10 +46,7 @@ Author Colby Roberts
                 <div>
                     <div id="headerLinks">
                         <% if (user) { %>
-                            <% if (user.isAdmin || user.isPatron) { %>     
-                                <a id="partyHeaderLink" class="headerLink" href="/party">PARTY</a>
-                                <!-- <a id="mapHeaderLink" class="headerLink" href="/map">MAP</a>    -->
-                            <% } %>         
+                            <a id="partyHeaderLink" class="headerLink" href="/party">PARTY</a>      
                             <% if (user.isAdmin || user.isHost) { %>                                                               
                                 <a id="hostHeaderLink" class="headerLink" href="/host">HOST</a>    
                             <% } %>                                 

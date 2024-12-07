@@ -12,5 +12,6 @@ const BASE_PATH = '/api/host/list';
 // GET
 router.get(`${BASE_PATH}/get-upcoming-parties/:hostId`, APIMiddleware.checkIsHost, Controller.getUpcomingParties);
 router.get(`${BASE_PATH}/get-past-parties/:hostId`, APIMiddleware.checkIsHost, Controller.getPastParties);
+router.get(`${BASE_PATH}/get-party-link/:hostId/:partyId`, APIMiddleware.checkIsHost, Controller.getPartyLink);
 
 module.exports = router;

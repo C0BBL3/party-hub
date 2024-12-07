@@ -11,4 +11,8 @@ api.list = {
     getPastParties: async (userId) => {
         return await api.get(`${BASE_PATH}/get-past-parties/${userId}`);
     },
+    getPartyLink: async (userId, partyId) => {
+        return await api.get(`${BASE_PATH}/get-party-link/${userId}/${partyId}`);
+
+    }
 }
