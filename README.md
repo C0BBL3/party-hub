@@ -69,4 +69,4 @@ The user interface includes features for RSVPs, hosting and editing parties, and
 - The **server** interacts with the **database** to securely fetch, store, or delete data using authentication and hashing.  
 
 **Design Rationale:**  
-PartyHub integrates analysis tools for accurate party recommendations, enhancing social experiences through intuitive apps tailored for patrons, hosts, and administrators. Its user-friendly design, coupled with a focus on data security and legal compliance, ensures reliability and addresses dynamic networking needs effectively..
+PartyHub integrates analysis tools for accurate party recommendations, enhancing social experiences through intuitive apps tailored for patrons, hosts, and administrators. Its user-friendly design, coupled with a focus on data security and legal compliance, ensures reliability and addresses dynamic networking needs effectively.
