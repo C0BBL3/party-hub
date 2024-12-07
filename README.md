@@ -28,7 +28,7 @@ Welcome to **Party Hub** – a simple and fun way to manage party RSVPs online! 
 
 ## 🚀 Getting Started
 
-- **Go to website at: http://3.234.148.129/ **
+- Go to website at: https://www.galactic-conquerors.com
 
 ## Software Dependencies
 - body-parser: A library for parsing request bodies, version 1.20.3 or later.
