@@ -177,8 +177,7 @@ class FeedService {
                         userOneId = [userTwoId] AND
                         userTwoId = [userOneId]
                     )
-                ) AND 
-                status != 'rejected';`,
+                );`,
             {
                 userOneId,
                 userTwoId

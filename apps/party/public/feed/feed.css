@@ -225,6 +225,7 @@ div.host-username {
 span.host-username {
     font-size: 18px;
     font-weight: bold;
+    line-height: 1;
 }
 
 span.host-description {

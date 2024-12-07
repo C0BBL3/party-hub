@@ -10,8 +10,16 @@ class FriendsService {
             SELECT 
                 userOne.id,
                 userOne.username,
+                userOne.tags,
+                userOne.description,
+                userOne.pictureBase64,
+                userOne.isHost,
                 userTwo.id,
                 userTwo.username,
+                userTwo.tags,
+                userTwo.description,
+                userTwo.pictureBase64,
+                userTwo.isHost,
                 friend.status
                 
             FROM 
@@ -28,7 +36,7 @@ class FriendsService {
                     friend.userOneId = [userId] OR
                     friend.userTwoId = [userId]
                 ) AND
-                friend.status = 'accepted';`,
+                friend.status != 'rejected';`,
             {
                 userId
             }
@@ -38,21 +46,20 @@ class FriendsService {
             return [];
         }
 
-        return result.rows.map(row => {
-            if (row.userTwo.id != userId) {
-                row.userTwo.status = row.friend.status;
-                return {
-                    userId: row.userTwo.id,
-                    username: row.userTwo.username
-                };
+        let friends = [];
+        for (let row of result.rows) {
+            let friend = row.userTwo.id != userId ? row.userTwo : row.userOne;
+            if (row.userOne.id == userId) {
+                friend.status = row.friend.status == 'accepted' ? 2 : 1;
             } else {
-                row.userOne.status = row.friend.status;
-                return {
-                    userId: row.userOne.id,
-                    username: row.userOne.username
-                };
+                if (row.friend.status == 'pending') { continue; }
+                friend.status = 2;
             }
-        });
+
+            friends.push(friend);
+        }
+
+        return friends;
     }
 
     static async getFriendRequestsByUserId(userId) {
@@ -60,24 +67,19 @@ class FriendsService {
             SELECT
                 userOne.id,
                 userOne.username,
-                userTwo.id,
-                userTwo.username,
-                friend.status
+                userOne.tags,
+                userOne.description,
+                userOne.pictureBase64,
+                userOne.isHost
                 
             FROM 
                 friend 
 
                 INNER JOIN user userOne ON
                     userOne.id = friend.userOneId
-
-                INNER JOIN user userTwo ON
-                    userTwo.id = friend.userTwoId
             
             WHERE 
-                (
-                    friend.userOneId = [userId] OR
-                    friend.userTwoId = [userId]
-                ) AND
+                friend.userTwoId = [userId] AND
                 friend.status = 'pending';`,
                 
             {
@@ -92,22 +94,7 @@ class FriendsService {
         let requests = [];
 
         for (let row of result.rows) {
-            let request = {};
-
-            if (row.userTwo.id != userId) {
-                request = {
-                    userId: row.userTwo.id,
-                    username: row.userTwo.username
-                };
-            } else {
-                request = {
-                    userId: row.userOne.id,
-                    username: row.userOne.username
-                };
-            }
-
-            request.status = row.friend.status;
-
+            let request = row.userOne;
             requests.push(request)
         }
 
@@ -172,73 +159,110 @@ class FriendsService {
         return !result.error;
     }
 
-    static async searchFriends(userId, search) {
-        let result = await db.execute(`
-            SELECT 
-                userOne.id,
-                userOne.username,
-                userTwo.id,
-                userTwo.username,
+    static async checkIfPending(userOneId, userTwoId) {
+        const result = await db.execute(`
+            SELECT
                 friend.status
                 
-            FROM 
-                friend 
-
-                INNER JOIN user userOne ON
-                    userOne.id = friend.userOneId
-
-                INNER JOIN user userTwo ON
-                    userTwo.id = friend.userTwoId
-            
-            WHERE 
-                friend.status = 'accepted' AND
-                (
-                    friend.userOneId = [userId] OR
-                    friend.userTwoId = [userId]
-                ) 
-                    AND
-                (
-                    userOne.username like [search1] OR
-                    userOne.username like [search2] OR
-                    userOne.firstName like [search3] OR
-                    userOne.firstName like [search4] OR
-                    userTwo.username like [search5] OR
-                    userTwo.username like [search6] OR
-                    userTwo.firstName like [search7] OR
-                    userTwo.firstName like [search8]
-                );`,
+            FROM
+                friend
+                
+            WHERE
+                friend.userOneId = [userOneId] AND
+                friend.userTwoId = [userTwoId] AND
+                friend.status = 'pending';`,
             {
-                userId,
-                search1: search + '%',
-                search2: '%' + search + '%',
-                search3: search + '%',
-                search4: '%' + search + '%',
-                search5: search + '%',
-                search6: '%' + search + '%',
-                search7: search + '%',
-                search8: '%' + search + '%'
+                userOneId,
+                userTwoId
             }
         );
 
-        if (!result.rows.length) {
+        if (!result.error) {
+            return result.rows.length == 1;
+        } else {
+            return false;
+        }
+    }
+
+    static async checkIfFriend(userOneId, userTwoId) {
+        const result = await db.execute(`
+            SELECT
+                friend.status
+                
+            FROM
+                friend
+                
+            WHERE
+                (
+                    (
+                        friend.userOneId = [userOneId] AND
+                        friend.userTwoId = [userTwoId] 
+                    ) 
+                    OR
+                    (
+                        friend.userOneId = [userTwoId] AND
+                        friend.userTwoId = [userOneId]
+                    )
+                ) AND
+                friend.status = 'accepted';`,
+            {
+                userOneId,
+                userTwoId
+            }
+        );
+
+        if (!result.error) {
+            return result.rows.length == 1;
+        } else {
+            return false;
+        }
+    }
+
+    static async searchForFriend(userId, search) {
+        userId = 0;
+        let result = await db.execute(`
+            SELECT 
+                patron.id,
+                patron.username,
+                patron.tags,
+                patron.description,
+                patron.pictureBase64,
+                patron.isHost
+                
+            FROM 
+                user as patron
+            
+            WHERE 
+                patron.id != [userId] AND
+                (
+                    patron.username like [search] OR
+                    patron.description like [search] OR
+                    patron.tags like [search]
+                );`,
+            {
+                userId,
+                search: '%' + search + '%',
+            }
+        );
+
+        if (result.error || result.rows.length == 0) {
             return [];
         }
 
-        return result.rows.map(row => {
-            if (row.userTwo.id != userId) {
-                row.userTwo.status = row.friend.status;
-                return {
-                    userId: row.userTwo.id,
-                    username: row.userTwo.username
-                };
-            } else {
-                row.userOne.status = row.friend.status;
-                return {
-                    userId: row.userOne.id,
-                    username: row.userOne.username
-                };
-            }
-        });
+        let patrons = [];
+
+        for (let row of result.rows) {
+            let patron = row.patron;
+
+            let status1 = await FriendsService.checkIfFriend(userId, patron.id);
+            let status2 = await FriendsService.checkIfPending(userId, patron.id);
+
+            if (status1 || status2) { continue; }
+
+            patrons.push(patron);
+        }
+
+        return patrons;
     }
 }
 

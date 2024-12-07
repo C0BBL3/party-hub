@@ -271,7 +271,10 @@ class FeedScreen {
 
         if (party.discoverability > 0) {
             follow.style.display = 'none';
+        } else if (party.discoverability == 0) {
+            following.style.display = 'none';
         } else {
+            follow.style.display = 'none';
             following.style.display = 'none';
         }
 
@@ -295,7 +298,7 @@ class FeedScreen {
 
         const contextMenu = new ContextMenu(title, '', null, 'OK');
         contextMenu.createElement(hostDiv);
-        contextMenu.div.style.height = party.host.description != null ? '415px' : '320px';
+        contextMenu.setHeight(party.host.description != null ? '415' : '320');
 
         const choice = await contextMenu.showSync();
     }

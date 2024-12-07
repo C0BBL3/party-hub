@@ -8,50 +8,34 @@ Author Makani Buckley, Colby Roberts
 
 <%- include('../sidebar/sidebar.ejs') %>
 
-<input id="userId" type="hidden" value="<%= user.id %>" /> 
+<input id="userId" type="hidden" value="<%= user.id %>" />
 
 <div id="container">
-    <!-- remove the paragraph and ejs elements below when finished with them -->
-    <!-- dont save the object into html itll just say "[Object object]" save specific values you need -->
-    <!-- <p id="userData">USERNAME: <%= user.firstName %></p>    
-    <p id="friendsData">LENGTH OF FRIENDS: <%= friends.length %></p>
-    <p id="requestsData">LENGTH OF REQUESTS: <%= requests.length %></p> -->
-    <!-- below is example on how to iterate and create html elements w/ ejs -->
-    <!-- "open angle bracket percent sign" is to indictate js code -->
-    <!-- "open angle bracket percent sign equals sign" is to embed js variable values as text -->
-    <!--always close the ejs with "percent sign close angle bracket" -->
-    <!-- <% for (let friend of friends) { %>
-        <p id="friend-<%= friend.id %>"><%= friend.id %></p>
-    <% } %> -->
-    <div class="row">
-        <div class="column">
-            <h3>Friends</h3>
-            <form>
-                <input type="text" class="search" id="friendsearch" name="friendsearch" placeholder="Search" autocomplete="off">
-            </form>
-            <div id="friendsContainer">
-                <% for (let friend of friends) { %>
-                    <p id="friend-<%= friend.userId %>">
-                        <%= friend.username %>
-                        <button id="friend-<%= friend.userId %>-profileButton" class="button profile">profile</button>
-                    </p>
-                <% } %>
+    <div id="tabs-container">
+        <div class="tabs">
+            <div class="tab selected" id="friends-tab">
+                <span>Friends</span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="m7.5 13a4.5 4.5 0 1 1 4.5-4.5 4.505 4.505 0 0 1 -4.5 4.5zm0-7a2.5 2.5 0 1 0 2.5 2.5 2.5 2.5 0 0 0 -2.5-2.5zm7.5 17v-.5a7.5 7.5 0 0 0 -15 0v.5a1 1 0 0 0 2 0v-.5a5.5 5.5 0 0 1 11 0v.5a1 1 0 0 0 2 0zm9-5a7 7 0 0 0 -11.667-5.217 1 1 0 1 0 1.334 1.49 5 5 0 0 1 8.333 3.727 1 1 0 0 0 2 0zm-6.5-9a4.5 4.5 0 1 1 4.5-4.5 4.505 4.505 0 0 1 -4.5 4.5zm0-7a2.5 2.5 0 1 0 2.5 2.5 2.5 2.5 0 0 0 -2.5-2.5z"/></svg>
             </div>
-            <div id="resultsContainer"></div>
-        </div>
-        <div class="column">
-            <h3>Requests</h3>
-            <div id="requestsContainer">
-                <% for (let request of requests) { %>
-                    <div class="request-acceptButton" hidden>request-<%= request.userId %>-acceptButton</div>
-                    <div class="request-declineButton" hidden>request-<%= request.userId %>-declineButton</div>
-                    <p id="request-<%= request.userId %>">
-                        <%= request.username %>
-                        <button id="request-<%= request.userId %>-declineButton" class="button decline">decline</button>
-                        <button id="request-<%= request.userId %>-acceptButton" class="button accept">accept</button>
-                    </p>
-                <% } %>
+            <div class="tab" id="requests-tab">
+                <span>Requests</span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"><path d="M23,11H21V9a1,1,0,0,0-2,0v2H17a1,1,0,0,0,0,2h2v2a1,1,0,0,0,2,0V13h2a1,1,0,0,0,0-2Z"/><path d="M9,12A6,6,0,1,0,3,6,6.006,6.006,0,0,0,9,12ZM9,2A4,4,0,1,1,5,6,4,4,0,0,1,9,2Z"/><path d="M9,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,9,14Z"/></svg>
+            </div>
+            <div class="tab" id="search-tab">
+                <span>Search</span> 
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 513.749 513.749" style="enable-background:new 0 0 24 24;" xml:space="preserve" width="24" height="24"><g><path d="M504.352,459.061l-99.435-99.477c74.402-99.427,54.115-240.344-45.312-314.746S119.261-9.277,44.859,90.15   S-9.256,330.494,90.171,404.896c79.868,59.766,189.565,59.766,269.434,0l99.477,99.477c12.501,12.501,32.769,12.501,45.269,0   c12.501-12.501,12.501-32.769,0-45.269L504.352,459.061z M225.717,385.696c-88.366,0-160-71.634-160-160s71.634-160,160-160   s160,71.634,160,160C385.623,314.022,314.044,385.602,225.717,385.696z"/></g></svg>
             </div>
         </div>
     </div>
+    <div class="subcontainer" id="friends"></div>
+    <div class="subcontainer" id="requests" style="display: none;"></div>
+    <div class="subcontainer" id="search" style="display: none;">
+        <div class="search-bar-container">
+            <input id="search-bar" placeholder="Search">
+        </div>
+        <div id="search-results">
+            <div id="no-results">Type into the search bar to search for your friends!</div>
+        </div>
+    </div>
+    
 </div>

@@ -37,6 +37,8 @@ class FeedAPIController {
                 party.discoverability = 2; // friend
             } else if (status == 'pending') {
                 party.discoverability = 1; // follower
+            } else if (status == 'rejected') {
+                party.discoverability = -1 // rejected
             } else {
                 party.discoverability = 0; // neither
             }

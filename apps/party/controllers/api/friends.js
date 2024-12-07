@@ -6,7 +6,7 @@ const { query } = require('express');
 const FriendsService = require('../../services/friends');
 
 class FriendsAPIController {
-    static async refresh(req, res) {
+    static async friends(req, res) {
         const user = req.session.user;
         const userId = req.params.userId;
 
@@ -46,14 +46,30 @@ class FriendsAPIController {
         const user = req.session.user;
         const search = req.params.search;
 
-        const friends = await FriendsService.searchFriends(user.id, search);
+        const patrons = await FriendsService.searchForFriend(user.id, search);
 
         res.send({
             result: true,
-            friends
+            patrons
         });
     }
 
+    static async remove(req, res) {
+        const user = req.session.user;
+        const userId = req.body.userId;
+
+        if (user.id != userId) {
+            return res.send({
+                result: false,
+            })
+        }
+
+        const friendId = req.body.friendId;
+
+        const result = await FriendsService.removeFriend(userId, friendId);
+
+        res.send({ result });
+    }
 
     static async accept(req, res) {
         const user = req.session.user;
@@ -87,6 +103,36 @@ class FriendsAPIController {
         const result = await FriendsService.updateStatus(userId, friendId, 'rejected');
 
         res.send({ result });
+    }
+
+    static async request(req, res) {
+        const user = req.session.user;
+        const userId = req.body.userId;
+
+        if (user.id != userId) {
+            return res.send({
+                result: false,
+            })
+        }
+
+        const friendId = req.body.friendId;
+
+        const status1 = await FriendsService.checkIfPending(userId, friendId);
+
+        if (status1) { // already pending
+            return res.send({ result: false, pending: true });
+        }
+
+        const status2 = await FriendsService.checkIfPending(friendId, userId);
+
+        let result;
+        if (status2) { // if other user requested to be friend of current user
+            result = await FriendsService.updateStatus(userId, friendId, 'accepted'); // make friends
+        } else {
+            result = await FriendsService.addFriend(userId, friendId); // otherwise request
+        }
+
+        res.send({ result, pending: false });
     }
    
 }

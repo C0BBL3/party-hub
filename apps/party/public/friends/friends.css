@@ -2,102 +2,377 @@
 Establishes the styling for the CSS classes of the Friends screen
 Author Makani Buckley, Colby Roberts
 */
-.row {
-    height: 100%;
+div#container {
+    position: relative;
+    padding: 5px;
 }
 
-.column {
-    float: left;
-    width: calc(50% - 30px);
-    height: 100%;
-    margin: 0 15px;
+div.tabs, div.subcontainer {
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.1);
 }
 
-.row::after {
-    content: "";
-    display: table;
-    clear: both;
+div.tabs {
+    position: relative;
+    display: flex;
+    margin: auto;
+    gap: 10px;
+    z-index: 1;
+    border-radius: 10px;
+    background-color: var(--white-color);
+    width: fit-content;
+    padding: 10px;
+    border: 1px solid var(--lighter-grey-color);
+    margin-bottom: 30px;
+    justify-content: center;
 }
 
-.button {
-    float: right;
-    border-style: solid;
-    margin-inline: 4px;
-    background-color: white;
-    text-decoration: none;
-    border-radius: 4px;
+div.tab {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1;
+    background-color: var(--white-color);
 }
 
-.accept { 
-    color: seagreen; 
-    border-color: seagreen;
-}
-.decline {
-    color: var(--red-color); 
-    border-color: var(--red-color);
+div.tab:hover {
+    background-color: var(--lightest-grey-color);
+    color: var(--blue-color);
+    transform: translateY(-2px);
 }
 
-.request {
-    color: orchid;
-    border-color: orchid;
+div.selected {
+    color: var(--pink-color);
 }
 
-.profile { 
-    color: blue; 
-    border-color: blue;
+
+div.tab span {
+    font-size: 18px;
+    font-weight: 500;
 }
 
-.accept:hover {
+div.tab svg {
+    fill: var(--grey-color);
+    height: 20px;
+    width: 20px;
+}
+
+div.selected svg {
+    fill: var(--pink-color);
+}
+
+div.tab:hover svg {
+    fill: var(--blue-color) !important;
+}
+
+div#subcontainer-shadow {
+    position: absolute;
+    top: 94px;
+    left: -5px;
+    height: 480.1px;
+    width: calc(100% + 10px);
+    background-color: var(--black-color);
+    opacity: 0.1;
+    filter: blur(5px);
+    z-index: 0;
+}
+
+div.subcontainer {
+    margin: auto;
+    display: flex;
+    gap: 25px;
+    position: relative;
+    background-color: var(--white-color);
+    height: 420.1px;
+    max-width: 1000px;
+    padding: 25px;
+    border: 1px solid var(--lighter-grey-color);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-content: flex-start;
+}
+
+div.friend, div.request, div.patron {
+    display: flex;
+    height: 75px;
+    padding: 5px 20px;
+    min-width: 400px;
+    width: calc(50% - 75px);
+    max-width: 450px;
+    border: 1px solid var(--lighter-grey-color);
+    border-radius: 10px;
+    align-items: center;
+    color: var(--grey-color);
+}
+
+div.patron {
+    min-width: 310px;
+    max-width: 360px;
+    width: calc(50% - 165px);
+}
+
+
+div.friend:hover, div.request:hover, div.patron:hover {
+    transform: translateX(5px);
+}
+
+div.friend img, div.request img, div.patron img {
+    height: 58px;
+    width: 58px;
+    border-radius: 50%;
+    border: 1px solid var(--lighter-grey-color);
+    cursor: pointer;
+}
+
+div.friend-info-container, div.request-info-container, div.patron-info-container {
+    display: flex;
+    height: 60px;
+    width: calc(100% - 175px);
+    margin: 0 20px;
+    padding: 0 20px;
+    font-size: 18px;
+    gap: 10px;
+    border-left: 1px solid var(--lighter-grey-color);
+    border-right: 1px solid var(--lighter-grey-color);
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.request-info-container {
+    margin-right: 0;
+    width: calc(100% - 262px);
+}
+
+div.patron-info-container {
+    margin-right: 0;
+    width: calc(100% - 180px);
+}
+
+div.friend span, div.request span, div.patron span {
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+}
+
+span.friend-info-status {
+    width: 90px;
+    text-align: right;
+}
+
+span.friend-info-username, span.request-info-username, span.patron-info-username {
+    min-width: 130px;
+    max-width: 180px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+}
+
+span.request-info-username {
+    min-width: 140px;
+    max-width: 190px;
+}
+
+span.friend-info-username, span.request-info-username, span.patron-info-username, span.friend-info-status:hover {
+    color: var(--blue-color);
+}
+
+span.friend-info-username:hover, span.request-info-username:hover, span.patron-info-username:hover {
+    color: var(--pink-color);
+}
+
+div.friend-options-container, div.request-options-container, div.patron-options-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 -20px;
+}
+
+div.request-options-container, div.patron-options-container {
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+div.friend-options-container svg {
+    fill: var(--grey-color);
+    padding: 20px;
+}
+
+div.friend-options-container svg:hover {
+    fill: var(--lighter-grey-color) !important;
+}
+
+/* div.friend-options-container span {
+    padding: 10px;
+    border: 1px solid var(--blue-color);
+    border-radius: 10px;
+}
+
+div.friend-options-container span:hover {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+} */
+
+div.friendCC-div {
+    display: flex;
+    flex-direction: column;
+}
+
+div.friendCC-main-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+img.friendCC-image {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    margin: 10px;
+    border: 1px solid var(--lighter-grey-color);
+}
+
+div.friendCC-main-info {
+    display: flex;
+    border-left: 1px solid var(--lighter-grey-color);
+    padding-left: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+div.friendCC-username {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+span.friendCC-username {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+div.friendCC-status {
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid var(--blue-color);
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+div.friendCC-status:hover {
+    background-color: var(--blue-color);
     color: white;
-    background-color: seagreen;
 }
 
-.decline:hover {
-    color: white;
-    background-color: var(--red-color);
+div.friendCC-vibes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    text-align: left;
 }
 
-.request:hover {
-    color: white;
-    background-color: orchid;
+div.friendCC-vibe {
+    color: var(--blue-color);
 }
 
-.profile:hover { 
-    color: white; 
-    background-color: blue;
+div.friendCC-vibe:hover {
+    color: var(--pink-color);
 }
 
-.accept:active {
-    background-color: darkgreen;
-    border-color: darkgreen;
+span.friendCC-description {
+    text-align: justify;
+    overflow: auto;
+    text-overflow: ellipsis;
+    width: calc(100% - 5px);
+    padding-right: 5px;
+    height: 115px;
 }
 
-.decline:active {
-    background-color: darkred;
-    border-color: darkred;
+div.cross, div.check, div.add {
+    height: 60px;
 }
 
-.request:active {
-    background-color: darkorchid;
-    border-color: darkorchid;
+div.cross {
+    border-right: 1px solid var(--lighter-grey-color);
+    padding-right: 10px;
+    margin-right: 10px;
 }
 
-.profile:active { 
-    background-color: darkblue;
-    border-color: darkblue;
+div.check svg, div.cross svg, div.add svg { 
+    border-radius: 10px;
 }
 
-.search {
-    border: none;
-    background-color: lightgray;
-    border-radius: 4px;
-    width: calc(100% - 12px);
-    padding: 4px;
+div.check svg, div.add svg {
+    padding: 10px;
 }
 
-#resultsContainer {
-    visibility: hidden;
-    border-top: 2px lightgray solid;
+div.cross svg {
+    padding: 15px;
+}
+
+div.check path, div.add path {
+    fill: var(--pink-color);
+}
+
+div.check svg:hover path, div.add svg:hover path {
+    fill: var(--blue-color);
+}
+
+div.cross path {
+    fill: var(--blue-color);
+}
+
+div.cross svg:hover path {
+    fill: var(--pink-color);
+}
+
+div.check svg:hover, div.cross svg:hover, div.add svg:hover {
+    background-color: var(--lightest-grey-color);
+}
+
+div#search {
+    overflow: hidden;
+}
+
+div.search-bar-container {
+    text-align: center;
+    border-bottom: 1px solid var(--lighter-grey-color);
+    margin-bottom: 25px;
+}
+
+input#search-bar {
+    padding: 20px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--lighter-grey-color);
+    font-size: 18px;
+    width: 350px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+div#search-results {
+    display: flex;
+    flex-wrap: wrap;
+    height: 330px;
+    flex-direction: column;
+    gap: 25px;
+    overflow: auto;
+    align-content: flex-start;
+}
+
+div#no-results {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
 }
 
 .loading-GIF-outer {
