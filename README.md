@@ -55,18 +55,69 @@ Welcome to **Party Hub** – a simple and fun way to manage party RSVPs online! 
 
 ## Detailed Description of Architecture
 
-PartyHub is designed to analyze party hosts’ names and addresses to predict vibes and recommend parties. The architecture comprises the following components:  
+PartyHub is designed to analyze party hosts’ names and addresses to predict vibes and recommend parties. The architecture is modular, organized by feature, and designed to facilitate maintainability, scalability, and clarity.
 
-1. **Party App**: Extracts patron and host data using AI to assess compatibility and determine party vibes.  
-2. **Host App**: Provides tools for hosts to create, edit, and manage parties, including analyzing party details like names and addresses.  
-3. **Settings App**: Allows users to manage administrative controls such as API keys, preferences, and account settings.  
+The project follows a feature-based modular architecture where functionality is grouped under individual modules. Each module contains its respective controllers, views, public assets, routes, and services. This approach ensures easy navigation, maintainability, and scaling of the application.
 
-**UI Component:**  
-The user interface includes features for RSVPs, hosting and editing parties, and managing settings. It provides input fields for raw names and addresses, a display area for results, and controls for customization and administration.  
+### Directory Structure
+### `apps`
+The apps folder contains the main application modules. Each module is structured as follows:
 
-**Component Interaction:**  
-- The **UI** communicates with the **server** to transfer input data and fetch or upload party analysis results.  
-- The **server** interacts with the **database** to securely fetch, store, or delete data using authentication and hashing.  
+#### Module Structure
+* `controllers/`: Contains logic for handling application requests.
+  * `api/`: Controllers for API endpoints.
+  * `views/`: Controllers for rendering views.
+* `lib/`: Utility libraries specific to the module.
+* `public/`: Public-facing assets such as JavaScript, CSS, EJS templates, and images.
+* `routes/`: Defines the routing logic.
+  * `api/`: API route definitions.
+  * `views/`: Route definitions for view rendering.
+* `scripts/`: Scripts related to the module.
+* `services/`: Business logic and helper functions.
 
-**Design Rationale:**  
-PartyHub integrates analysis tools for accurate party recommendations, enhancing social experiences through intuitive apps tailored for patrons, hosts, and administrators. Its user-friendly design, coupled with a focus on data security and legal compliance, ensures reliability and addresses dynamic networking needs effectively.
+#### Modules in apps:
+* `host/`: Handles host-specific functionality, including public asset management and APIs.
+* `login/`: Manages authentication, including login, logout, and signup.
+* `main/`: Core functionality for the main application page.
+* `party/`: Features related to user parties, including feeds, friends, RSVP, and more.
+* `settings/`: User profile management, password settings, and privacy controls.
+
+### `config`
+The config folder contains configuration files for various environments:
+
+* `development.json`: Configuration for development.
+* `production.json`: Configuration for production.
+
+### `middleware`
+The middleware folder contains middleware logic used to process API and view requests:
+
+* `api/`: Middleware for API requests.
+* `views/`: Middleware for rendering views.
+
+### `utils`
+The utils folder includes utility scripts shared across the project:
+
+* `capitalizer.js`: A helper function for capitalizing text.
+* `database.js`: Handles database interactions.
+
+### Notable Files
+
+#### Root-Level Files
+* `package.json`: Contains metadata about the project, dependencies, and scripts.
+* `package-lock.json`: Auto-generated file that locks dependency versions.
+
+#### Public Assets (Example Locations)
+* `apps/main/public/img/`: Images used in the main module.
+* `apps/main/public/svg/`: Scalable vector graphics for icons.
+* `apps/party/public/`: Assets related to party module views.
+
+### How the Application Works
+1. Routing: Each module in apps has its own routes, divided into api and views. These routes map URLs to the appropriate controllers.
+2. Controllers: Controllers handle the logic for requests, interacting with services and models as necessary.
+3. Public Assets: Organized within each module under the public/ directory. These include templates (EJS), stylesheets (CSS), and JavaScript files.
+4. Services: Encapsulate business logic and act as intermediaries between controllers and data sources.
+
+### Key Features
+* Modular Design: Clear separation of concerns by module and functionality.
+* Scalability: New modules can be added with minimal impact on existing code.
+* Ease of Maintenance: Consistent structure allows developers to quickly locate and modify code.
