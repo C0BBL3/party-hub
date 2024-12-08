@@ -4,34 +4,43 @@ Author Jack Davy, Colby Roberts
 */
 class RSVP {
     constructor() {
-        document.body.onload = this.init.bind(this)
+        // Initializing the class when the body is loaded
+        document.body.onload = this.init.bind(this);
     }
 
     async init() {
+        // Get the user ID and container for the parties
         this.userId = parseInt($('userId').value);
         this.container = $('container');
 
+        // Fetch upcoming and past parties data asynchronously
         this.upcomingParties = await this.getUpcomingParties();
         this.pastParties = await this.getPastParties();
 
+        // Delay to ensure data is fetched before rendering
         await this.delay(250);
 
+        // Render the parties on the screen
         this.loadParties();
     }
 
     loadParties() {
+        // Clear the container before loading new parties
         this.container.innerHTML = '';
 
+        // If there are upcoming parties, create their section
         if (this.upcomingParties.length > 0) {
             this.upcomingPartiesHeader = Core.createDiv(this.container, '', 'parties-header', 'Upcoming Parties');
             this.upcomingPartiesContainer = Core.createDiv(this.container, '', 'parties-container');
 
+            // Loop through each upcoming party and create a party div
             for (let party of this.upcomingParties) {
                 const partyDiv = this.createPartyDiv(party, true);
                 this.upcomingPartiesContainer.appendChild(partyDiv);
             }
         }
 
+        // If there are past parties, create their section
         if (this.pastParties.length > 0) {
             this.pastPartiesHeader = Core.createDiv(this.container, '', 'parties-header', 'Past Parties');
             if (this.upcomingParties.length > 0) {
@@ -40,6 +49,7 @@ class RSVP {
             }
             this.pastPartiesContainer = Core.createDiv(this.container, '', 'parties-container');
 
+            // Loop through each past party and create a party div
             for (let party of this.pastParties) {
                 const partyDiv = this.createPartyDiv(party);
                 this.pastPartiesContainer.appendChild(partyDiv);
@@ -48,17 +58,20 @@ class RSVP {
     }
 
     createPartyDiv(party, upcoming = false) {
+        // Create the party div and its elements (image, title, description, etc.)
         const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
         const shadow = Core.createDiv(partyDiv, `party-${party.id}-shadow`, 'party-shadow');
         const container = Core.createDiv(partyDiv, `party-${party.id}-container`, 'party-container');
 
         let image;
+        // If the party has a picture, use it; otherwise, use the host's picture
         if (party.pictureBase64) {
             image = Core.createImg(container, `party-${party.id}-image`, 'party-image', party.pictureBase64);
         } else {
             image = Core.createImg(container, `party-${party.id}-image`, 'party-image', party.host.pictureBase64);
         }
         
+        // Create text container for the party details
         const textContainer = Core.createDiv(container, `party-${party.id}-textContainer`, 'party-textContainer');
         const title = Core.createSpan(textContainer, `party-${party.id}-title`, 'party-title', party.title);
         const subtitleContainer = Core.createDiv(textContainer, `party-${party.id}-subtitleContainer`, 'party-subtitleContainer');
@@ -75,10 +88,12 @@ class RSVP {
         
         let vibes = this.capitalize(party.vibes.trim());
         
+        // Create a div for each vibe if available
         for (let vibe of vibes) {
             if (vibe.trim().length == 0) { continue; }
             const vibeDiv = Core.createDiv(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
             
+            // Make the party div clickable if it's an upcoming party
             if (upcoming) {
                 vibeDiv.onclick = this.onClickPartyDiv.bind(this); 
             }
@@ -86,6 +101,7 @@ class RSVP {
 
         const description = Core.createSpan(textContainer, `party-${party.id}-description`, 'party-description', party.description);
         
+        // Make the entire party div clickable if it's upcoming
         if (upcoming) {
             partyDiv.style.cursor = 'pointer';
             partyDiv.onclick = this.onClickPartyDiv.bind(this); 
@@ -106,13 +122,15 @@ class RSVP {
     }
 
     async onClickPartyDiv(evt) {
-        evt.stopPropagation()
+        // Handle the click event on the party div, showing RSVP options
+        evt.stopPropagation();
         let target = evt.target;
         let parts = target.id.split('-');
         let partyId = parseInt(parts[1]);
 
         let partyDiv = $(`party-${partyId}`);
 
+        // Find the clicked party from the upcoming parties
         let party;
         for (let party_ of this.upcomingParties) {
             if (party_.id == partyId) {
@@ -129,12 +147,14 @@ class RSVP {
         let title = 'RSVP';
         let message = `You're RSVP'ed for ${party.title}. Would you like to cancel?`;
 
+        // Show context menu to confirm RSVP cancellation
         let contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'CANCEL');
         $('context-menu').style.height = '160px';
 
         const choice = await contextMenu.showSync();
 
         if (choice) {
+            // Cancel the RSVP and show the result
             let cancel = await api.rsvp.cancelRSVP(partyId, userId);
 
             await this.delay(500);
@@ -152,12 +172,14 @@ class RSVP {
 
             await contextMenu.showSync();
 
+            // Reload the upcoming parties list
             this.upcomingParties = await this.getUpcomingParties();
-            this.loadParties()
+            this.loadParties();
         }
     }
 
     async onClickHost(evt) {
+        // Handle the click event on the host name, showing host details
         evt.stopPropagation();
         evt.preventDefault();
 
@@ -168,6 +190,7 @@ class RSVP {
         let partyDiv = $(`party-${partyId}`);
 
         let party;
+        // Check if the clicked party is an upcoming or past party
         for (let party_ of this.upcomingParties) {
             if (party_.id == partyId) {
                 party = party_;
@@ -186,6 +209,7 @@ class RSVP {
             return;
         }   
 
+        // Create the context menu to show host details
         const title = 'View Host';
 
         const hostDiv = Core.createDiv(null, `host-${party.host.id}`, 'host-div');
@@ -196,8 +220,9 @@ class RSVP {
 
         const vibesContainer = Core.createDiv(mainInfo, `party-${party.id}-vibes`, 'host-vibes');
 
+        // Display host vibes or show a default message
         if (party.host.vibes == null) {
-            vibesContainer.innerHTML = 'This host not entered the vibes they give off.'
+            vibesContainer.innerHTML = 'This host has not entered their vibes.';
         } else {
             let vibes = this.capitalize(party.host.vibes);
             
@@ -206,9 +231,11 @@ class RSVP {
             }
         }
 
-        let descriptionInnerHTML = party.host.description != null ? party.host.description : 'This host has not entered a description.'
+        // Display host description or show a default message
+        let descriptionInnerHTML = party.host.description != null ? party.host.description : 'This host has not entered a description.';
         const description = Core.createSpan(hostDiv, `host-${party.host.id}-description`, 'host-description', descriptionInnerHTML);
 
+        // Show context menu with host details
         const contextMenu = new ContextMenu(title, '', null, 'OK');
         contextMenu.createElement(hostDiv);
         contextMenu.div.style.height = party.host.description != null ? '415px' : '320px';
@@ -217,18 +244,21 @@ class RSVP {
     }
 
     async getUpcomingParties() {
+        // Fetch the list of upcoming parties
         const parties = await api.rsvp.getUpcomingParties(this.userId);
         if (!parties.result) { return []; }
         return this.parsePartyAPIResult(parties.upcoming);
     }
 
     async getPastParties() {
+        // Fetch the list of past parties
         const parties = await api.rsvp.getPastParties(this.userId);
         if (!parties.result) { return []; }
         return this.parsePartyAPIResult(parties.past);
     }
 
     parsePartyAPIResult(upcomingParties) {
+        // Parse the API response to a usable format
         let parties = [];
 
         for (let party_ of upcomingParties) {
@@ -251,8 +281,8 @@ class RSVP {
         return parties;
     }
 
-
     capitalize(vibes) {
+        // Capitalize the vibes (first letter of each word)
         const parts = vibes.split(',');
         
         const capitalizedItems = [];
@@ -281,171 +311,3 @@ class RSVP {
         });
     }
 }
-
-const rsvp = new RSVP();
-
-// class FeedScreen {
-
-//     constructor() {
-//         document.body.onload = this.init.bind(this);
-//     }
-
-//     async init() {
-//         this.upcomingPartyListDiv = $('upcomingParties');
-//         this.pastPartyListDiv = $('pastParties');
-
-//         // Placeholder for dynamically loaded parties
-//         this.parties = await this.getRSVPedParties();
-
-//         await this.delay(250);
-
-//         this.loadParties(this.parties);
-//     }
-
-//     async getRSVPedParties() {
-//         let userId = parseInt($('userId').value)
-//         const result = await api.rsvp.getRSVPedParties(userId);
-
-//         if (result) {
-//             let parties = [];
-
-//             for (let party_ of result.parties) {
-//                 let party = {
-//                     id: party_.id,
-//                     title: party_.title,
-//                     startTime: party_.startTime,
-//                     description: party_.description,
-//                     vibes: this.capitalize(party_.vibes)
-//                 };
-
-//                 parties.push(party);
-//             }
-
-//             return parties;
-//         }
-//     }
-
-//     async delay(timeMS) {
-//         return new Promise((resolve, reject) => {
-//             setTimeout((evt) => {
-//                 resolve(null);
-//             }, timeMS);
-//         });
-//     }
-
-//     capitalize(vibes) {
-//         const parts = vibes.split(',');
-        
-//         const capitalizedItems = [];
-        
-//         for(let vibe of parts) {
-//             const lowerCase = vibe.toLowerCase();
-//             const fLetter = lowerCase.slice(0, 1).toUpperCase();
-//             const rletters = lowerCase.slice(1, lowerCase.length);
-//             const finalVibe = fLetter + rletters;
-            
-//             capitalizedItems.push(finalVibe);
-//         }
-        
-//         const capitalized = capitalizedItems.join(',');
-        
-//         return capitalized;
-//     }
-
-//     async loadParties(parties) {
-//         this.upcomingPartyListDiv.innerHTML = ""; // Clear list
-//         this.pastPartyListDiv.innerHTML = ""; // Clear list
-//         $('pastParties-container').style.display = 'block';
-
-
-//         for (let party of parties) {
-//             let partyStartTimeUnix = new Date(party.startTime).getTime();
-//             let now = new Date().getTime();
-
-//             let partyDiv;
-//             if (partyStartTimeUnix < now) {
-//                 partyDiv = Core.createDiv(this.pastPartyListDiv, `party-${party.id}`, 'party-item');
-//             } else {
-//                 partyDiv = Core.createDiv(this.upcomingPartyListDiv, `party-${party.id}`, 'party-item');
-//             }
-
-//             const title = Core.createElement(partyDiv, 'h3', '', 'party-title', party.title);
-//             const vibes = Core.createElement(partyDiv, 'p', '', 'party-vibes', party.vibes);
-//             const startTime = Core.createElement(partyDiv, 'p', '', 'party-startTime', moment(party.startTime).format("MMM Do Y, h:mm A"));
-//             const description = Core.createElement(partyDiv, 'p', '', 'party-description', party.description);
-
-//             if (partyStartTimeUnix > now) {
-//                 partyDiv.onclick = this.onClickPartyDiv.bind(this);
-//                 partyDiv.style.cursor = 'pointer';
-//             }
-//         }
-
-//         if (this.upcomingPartyListDiv.innerHTML == '') {
-//             Core.createElement(this.upcomingPartyListDiv, 'p', '', '', "You haven't RSVP'ed for any upcoming parties! head to the <a href='/party/feed' id='upcomingParty-empty-home-anchor'>Home</a> page to find a party!");
-//         }
-
-//         if (this.pastPartyListDiv.innerHTML == '') {
-//             $('pastParties-container').style.display = 'none';
-//         }
-//     }
-
-//     async onClickPartyDiv(evt) {
-//         let target = evt.target;
-//         let partyDiv;
-
-//         if (target.className == 'party-title' || target.className == 'party-vibes' || target.className == 'party-startTime' || target.className == 'party-description') {
-//             partyDiv = target.parentElement;
-//         } else {
-//             partyDiv = target;
-//         }
-
-//         let parts = partyDiv.id.split('-')
-//         let partyId = parseInt(parts[1]);
-//         let party;
-//         for (let party_ of this.parties) {
-//             if (party_.id == partyId) {
-//                 party = party_;
-//                 break;
-//             }
-//         }
-
-//         if (party == null) {
-//             return;
-//         }
-
-//         await this.delay(250);
-
-//         let userId = parseInt($('userId').value);
-//         let title = 'RSVP';
-//         let message = `You've already RSVP'ed for ${party.title}. Would you like to cancel?`;
-
-//         let contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'CANCEL');
-//         $('context-menu').style.height = '160px';
-
-//         const choice = await contextMenu.showSync();
-
-//         if (choice) {
-//             let cancel = await api.rsvp.cancelRSVP(partyId, userId);
-
-//             await this.delay(500);
-
-//             title = cancel.result ? 'RSVP' : 'OOPS...';
-
-//             if (cancel.result) {
-//                 message = `You have canceled your RSVP at ${party.title}.`;
-//             } else {
-//                 message = `There seems to be an error please try again at another time...`;
-//             }
-
-//             contextMenu = new ContextMenu(title, message, null, 'OK');
-//             $('context-menu').style.height = cancel.result ? '150px' : '160px';
-
-//             await contextMenu.showSync();
-
-//             this.parties = await this.getRSVPedParties();
-//             this.loadParties(this.parties)
-//         }
-//     }
-// }
-
-// let feedScreen = new FeedScreen();

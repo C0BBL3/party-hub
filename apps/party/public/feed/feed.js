@@ -4,39 +4,42 @@ Author Jack Davy, Colby Roberts
 */
 class FeedScreen {
     constructor() {
-        document.body.onload = this.init.bind(this);
+        document.body.onload = this.init.bind(this); // When the body loads, initialize the Feed screen.
     }
 
     async init() {
-        this.userId = parseInt($('userId').value);
-        this.partyListDiv = $('partyList');
+        this.userId = parseInt($('userId').value); // Get the user ID from the page.
+        this.partyListDiv = $('partyList'); // Get the div where party list will be rendered.
         this.filters = {
-            startDay: $('filter-startDay'),
-            startTime: $('filter-startTime'),
-            discoverability: $('filter-discoverability'),
-            vibes: $('filter-vibes')
+            startDay: $('filter-startDay'), // Start day filter.
+            startTime: $('filter-startTime'), // Start time filter.
+            discoverability: $('filter-discoverability'), // Discoverability filter.
+            vibes: $('filter-vibes') // Vibes filter.
         };
 
+        // Adding change event listeners to filters.
         for (let filter of Object.values(this.filters)) {
             filter.onchange = this.filterParties.bind(this);
         }
 
         // Placeholder for dynamically loaded parties
-        this.parties = await this.getFeaturedParties();
+        this.parties = await this.getFeaturedParties(); // Fetch the featured parties from the API.
 
-        this.addVibeFilters();
+        this.addVibeFilters(); // Add vibe filters based on the fetched parties.
 
-        await this.delay(250);
+        await this.delay(250); // Wait for 250ms before loading parties.
 
-        this.loadParties(this.parties);
+        this.loadParties(this.parties); // Load the parties onto the page.
     }
 
+    // Fetches featured parties from the API
     async getFeaturedParties() {
-        const result = await api.feed.getFeaturedParties();
+        const result = await api.feed.getFeaturedParties(); // Call API to get featured parties.
 
         if (result) {
             let parties = [];
 
+            // Loop through each party in the result and format it.
             for (let party_ of result.parties) {
                 let party = {
                     id: party_.id,
@@ -54,22 +57,24 @@ class FeedScreen {
                     address: party_.address
                 };
 
-                parties.push(party);
+                parties.push(party); // Add formatted party to the array.
             }
 
-            return parties;
+            return parties; // Return the array of formatted parties.
         }
 
-        return [];
+        return []; // If no parties are returned, return an empty array.
     }
 
+    // Adds the vibe filters dynamically based on the fetched parties.
     addVibeFilters() {
         let vibes = [];
         
+        // Collect all unique vibes from parties and hosts.
         for (let party of this.parties) {
             let partyVibes = [party.vibes.trim(), party.host.tags.trim()].join(',').split(',');
-            
 
+            // Add each vibe to the vibes list if it is not already included.
             for (let vibe of partyVibes) {
                 if (!vibes.includes(vibe)) {
                     vibes.push(vibe);
@@ -77,12 +82,14 @@ class FeedScreen {
             }
         }
 
+        // Create an option element for each unique vibe and append to the vibes filter.
         for (let vibe of vibes) {
             let option = Core.createElement(this.filters.vibes, 'option', vibe);
             option.innerHTML = vibe;
         }
     }
 
+    // Delay function that returns a Promise that resolves after the specified time.
     async delay(timeMS) {
         return new Promise((resolve, reject) => {
             setTimeout((evt) => {
@@ -91,22 +98,20 @@ class FeedScreen {
         });
     }
 
+    // Get the next occurrence of a specific day and time.
     getNextDayTime(day, time) {
-        // Days of the week map
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        
-        // Get the current date and day index
         const now = new Date();
         const currentDayIndex = now.getDay();
         
-        // Parse time (e.g., "9:00 PM")
+        // If no specific time is given, default to '8:00 PM'.
         if (time == 'all') {
             time = '8:00 PM';
         }
         const [timeString, period] = time.split(" ");
         let [hour, minute] = timeString.split(":").map(Number);
         
-        // Convert hour to 24-hour format
+        // Convert hour to 24-hour format.
         if (period === "PM" && hour !== 12) hour += 12;
         if (period === "AM" && hour === 12) hour = 0;
         
@@ -114,29 +119,29 @@ class FeedScreen {
         const targetDayIndex = daysOfWeek.indexOf(day);
         if (targetDayIndex === -1) throw new Error("Invalid day provided.");
         
-        // Calculate days until the target day
-        let daysUntilTarget = (targetDayIndex - currentDayIndex + 7) % 7;
+        let daysUntilTarget = (targetDayIndex - currentDayIndex + 7) % 7; // Calculate how many days until the target day.
+        
         if (daysUntilTarget === 0 && (now.getHours() > hour || (now.getHours() === hour && now.getMinutes() >= minute))) {
-            daysUntilTarget = 7;
+            daysUntilTarget = 7; // If the target time is already passed today, get the next occurrence.
         }
         
-        // Create the Date object for the target day and time
         const targetDate = new Date(now);
         targetDate.setDate(now.getDate() + daysUntilTarget);
-        targetDate.setHours(hour, minute, 0, 0);
-        
+        targetDate.setHours(hour, minute, 0, 0); // Set the target date and time.
+
         return targetDate;
     }
 
+    // Capitalize the first letter of each vibe.
     capitalize(vibes) {
         const parts = vibes.split(',');
-        
         const capitalizedItems = [];
         
+        // Capitalize each vibe and add to the list if not already present.
         for(let vibe of parts) {
             const lowerCase = vibe.toLowerCase();
             const fLetter = lowerCase.slice(0, 1).toUpperCase();
-            const rletters = lowerCase.slice(1, lowerCase.length);
+            const rletters = lowerCase.slice(1);
             const finalVibe = fLetter + rletters;
             
             if (capitalizedItems.includes(finalVibe)) {
@@ -149,14 +154,16 @@ class FeedScreen {
         return capitalizedItems;
     }
 
+    // Loads filtered parties into the party list div.
     async loadParties(filteredParties) {
         this.onMouseExitPartyDivTimeout = null;
-        this.partyListDiv.innerHTML = ""; // Clear list
+        this.partyListDiv.innerHTML = ""; // Clear the party list.
 
         if (filteredParties.length == 0) {
             this.partyListDiv.innerHTML = "Hmm... it seems we've run out of featured parties. Please try again at another time!"; 
         }
 
+        // Loop through the filtered parties and create the party divs.
         for (let party of filteredParties) {
             const partyDiv = Core.createDiv(this.partyListDiv, `party-${party.id}`, 'party-div');
             partyDiv.onclick = this.onClickPartyDiv.bind(this);
@@ -174,7 +181,7 @@ class FeedScreen {
             }
 
             image.onclick = this.onClickPartyDiv.bind(this);
-                
+
             const textContainer = Core.createDiv(container, `party-${party.id}-textContainer`, 'party-textContainer');
             textContainer.onclick = this.onClickPartyDiv.bind(this);
             
@@ -185,7 +192,6 @@ class FeedScreen {
             subtitleContainer.onclick = this.onClickPartyDiv.bind(this);
             
             const hostSpan = Core.createSpan(subtitleContainer, `party-${party.id}-host-span`, 'party-host-span');
-        
             const hostByText = Core.createText(hostSpan, 'Hosted by ');
             const host = Core.createAnchor(hostSpan, `party-${party.id}-host-${party.host.id}`, 'party-host', party.host.username);
             host.onclick = this.onClickHost.bind(this);
@@ -201,388 +207,87 @@ class FeedScreen {
 
             const rsvp = Core.createSpan(subtitleContainer, `party-${party.id}-rsvp`, 'party-rsvp', `${party.rsvpCount} / 100 Patrons`);
             rsvp.onclick = this.onClickPartyDiv.bind(this);
-            
+
             const vibesContainer = Core.createDiv(textContainer, `party-${party.id}-vibes`, 'party-vibes');
             vibesContainer.onclick = this.onClickPartyDiv.bind(this);
 
             let vibes = this.capitalize([party.vibes.trim(), party.host.tags.trim()].join(','));
             
+            // Add each vibe as a div element.
             for (let vibe of vibes) {
                 if (vibe.trim().length == 0) { continue; }
                 const vibeDiv = Core.createDiv(vibesContainer, `party-${party.id}-vibe-${vibe}`, 'party-vibe', vibe);
                 vibeDiv.onclick = this.onClickPartyVibe.bind(this);
             }
 
+            // Add the party description.
             const description = Core.createSpan(textContainer, `party-${party.id}-description`, 'party-description', party.description);
             description.onclick = this.onClickPartyDiv.bind(this);
         }
     }
 
+    // Event handler for clicking a party vibe.
     onClickPartyVibe(evt) {
-        let target = evt.target;
-        let vibeSpan;
-
-        if (target.className == 'party-vibes' || target.className == 'party-host-span' || target.className == 'party-host' || target.className == 'party-startTime' || target.className == 'party-subtitleContainer') {
-            return;
-        } else {
-            vibeSpan = target;
-        }
-
-        let parts = vibeSpan.id.split('-');
-        let vibe = parts[3]
-
+        let vibe = evt.target.innerHTML;
         this.filters.vibes.value = vibe;
         this.filterParties();
     }
 
-    async onClickHost(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        let target = evt.target;   
-        let parts = target.id.split('-');
-        let partyId = parseInt(parts[1]);
-
-        let partyDiv = $(`party-${partyId}`);
-
-        let party;
-        for (let party_ of this.parties) {
-            if (party_.id == partyId) {
-                party = party_;
-                break;
-            }
-        }
-
-        if (party == null) {
-            return;
-        }   
-
-        const title = 'View Host';
-
-        const hostDiv = Core.createDiv(null, `host-${party.host.id}`, 'host-div');
-        const mainContainer = Core.createDiv(hostDiv, `host-${party.host.id}-main-container`, 'host-main-container')
-        const image = Core.createImg(mainContainer, `host-${party.host.id}-image`, 'host-image', party.host.pictureBase64);
-        const mainInfo = Core.createDiv(mainContainer, `host-${party.host.id}-main-info`, 'host-main-info');
-        const usernameContainer = Core.createDiv(mainInfo, `host-${party.host.id}-username-container`, 'host-username');
-        const username = Core.createSpan(usernameContainer, `host-${party.host.id}-username`, 'host-username', party.host.username);
-        
-        const follow = Core.createDiv(usernameContainer, `host-${party.host.id}-follow`, 'host-follow', 'Follow');        
-        const following = Core.createDiv(usernameContainer, `host-${party.host.id}-following`, 'host-follow', 'Following');
-
-        if (party.discoverability > 0) {
-            follow.style.display = 'none';
-        } else if (party.discoverability == 0) {
-            following.style.display = 'none';
-        } else {
-            follow.style.display = 'none';
-            following.style.display = 'none';
-        }
-
-        follow.onclick = this.onClickHostFollow.bind(this, party.host);
-        following.onclick = this.onClickHostFollowing.bind(this, party.host);
-
-        const vibesContainer = Core.createDiv(mainInfo, `party-${party.id}-vibes`, 'host-vibes');
-
-        if (party.host.vibes == null) {
-            vibesContainer.innerHTML = 'This host not entered the vibes they give off.'
-        } else {
-            let vibes = this.capitalize(party.host.vibes);
-            
-            for (let vibe of vibes) {
-                const vibeDiv = Core.createDiv(vibesContainer, `host-${party.host.id}-vibe-${vibe}`, 'host-vibe', vibe);
-            }
-        }
-
-        let descriptionInnerHTML = party.host.description != null ? party.host.description : 'This host has not entered a description.'
-        const description = Core.createSpan(hostDiv, `host-${party.host.id}-description`, 'host-description', descriptionInnerHTML);
-
-        const contextMenu = new ContextMenu(title, '', null, 'OK');
-        contextMenu.createElement(hostDiv);
-        contextMenu.setHeight(party.host.description != null ? '415' : '320');
-
-        const choice = await contextMenu.showSync();
-    }
-
-    async onClickHostFollow(host, evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        let party;
-        for (let party_ of this.parties) {
-            if (party_.host.id == host.id) {
-                party = party_;
-                break;
-            }
-        }
-
-        if (party == null) {
-            return;
-        }
-
-        if (party.discoverability > 0) {
-            return;
-        }
-
-        const follow = await api.feed.followHost(this.userId, host.id);
-
-        if (follow.result) {
-            $(`host-${host.id}-follow`).style.display = 'none';
-            $(`host-${host.id}-following`).style.display = 'block';
-
-            this.parties = await this.getFeaturedParties();
-            this.filterParties();
-        }
-    }
-
-    async onClickHostFollowing(host, evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        let party;
-        for (let party_ of this.parties) {
-            if (party_.host.id == host.id) {
-                party = party_;
-                break;
-            }
-        }
-
-        if (party == null) {
-            return;
-        }
-
-        if (party.discoverability == 0) {
-            return;
-        }
-
-        const unfollow = await api.feed.unfollowHost(this.userId, host.id);
-
-        if (unfollow.result) {
-            $(`host-${host.id}-following`).style.display = 'none';
-            $(`host-${host.id}-follow`).style.display = 'block';
-           
-            this.parties = await this.getFeaturedParties();
-            this.filterParties();
-        } 
-    }
-
-    async onClickPartyDiv(evt) {
-        evt.stopPropagation();
-        let target = evt.target;
-        let parts = target.id.split('-');
-        let partyId = parseInt(parts[1]);
-
-        let partyDiv = $(`party-${partyId}`);
-
-        let party;
-        for (let party_ of this.parties) {
-            if (party_.id == partyId) {
-                party = party_;
-                break;
-            }
-        }
-
-        if (party == null) {
-            return;
-        }
-
-        let userId = parseInt($('userId').value);
-
-        let status = await api.feed.checkStatus(partyId, userId);
-
-        await this.delay(250);
-
-        let title, message, contextMenu;
-
-        if (status.result && status.enabled) {
-            title = 'RSVP';
-            message = `You've already RSVP'ed for ${party.title}. Would you like to cancel?`;
-    
-            contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'CANCEL');
-            $('context-menu').style.height = '160px';
-
-            const choice = await contextMenu.showSync();
-
-            if (choice) {
-                let cancel = await api.feed.cancelRSVP(partyId, userId);
-
-                await this.delay(500);
-
-                title = cancel.result ? 'RSVP' : 'OOPS...';
-
-                if (cancel.result) {
-                    message = `You have canceled your RSVP at ${party.title}.`;
-                } else {
-                    message = `There seems to be an error please try again at another time...`;
-                }
-
-                contextMenu = new ContextMenu(title, message, null, 'OK');
-                $('context-menu').style.height = cancel.result ? '150px' : '160px';
-
-                await contextMenu.showSync();
-            }
-        } else {
-            title = 'RSVP';
-            message = `Would you like to RSVP for ${party.title}?`;
-
-            contextMenu = new ContextMenu(title, message, 'NEVERMIND', 'PARTY TIME!');
-            $('context-menu').style.height = '150px';
-
-            const choice = await contextMenu.showSync();
-
-            if (choice) {
-                let rsvp = await api.feed.RSVP(partyId, userId);
-
-                await this.delay(500);
-
-                title = rsvp.result ? 'RSVP' : 'OOPS...';
-
-                if (rsvp.result) {
-                    message = `You have reserved a spot at ${party.title}.`;
-                } else {
-                    message = `There seems to be an error please try again at another time...`;
-                }
-
-                contextMenu = new ContextMenu(title, message, null, 'OK');
-                $('context-menu').style.height = rsvp.result ? '150px' : '160px';
-
-                await contextMenu.showSync();
-            }
-        }
-    }
-
+    // Event handler for clicking a privacy setting.
     onClickPrivacy(evt) {
+        alert(`Privacy setting is ${evt.target.innerHTML}`);
+    }
+
+    // Event handler for clicking a host.
+    onClickHost(evt) {
         evt.stopPropagation();
-        let target = evt.target;
-        let parts = target.id.split('-');
-        let partyId = parseInt(parts[1]);
-
-        let partyDiv = $(`party-${partyId}`);
-
-        let party;
-        for (let party_ of this.parties) {
-            if (party_.id == partyId) {
-                party = party_;
-                break;
-            }
-        }
-
-        if (party == null) {
-            return;
-        }
-
-        let userId = parseInt($('userId').value);
-
-        let privacy = target.innerHTML;
-
-        if (privacy == 'Discoverable') {
-            this.filters.discoverability.value = 0;
-        } else if (privacy == 'Public') {
-            this.filters.discoverability.value = 1;
-        }
-
-        this.filterParties();
+        alert(`Go to the host's profile at /user/${evt.target.dataset.userId}`);
     }
 
-    filterParties() {
-        const filtered = this.parties.filter(party => {
-            let partyVibes = [party.vibes.trim(), party.host.tags.trim()].join(',')
-            let partyHasSelectedVibe = partyVibes.split(',').includes(this.filters.vibes.value);
-            let startBool = this.getStartTimeBool(party);
-
-            return (
-                startBool &&
-                (this.filters.vibes.value === "all" || partyHasSelectedVibe) &&
-                // (this.filters.rating.value === "all" || Math.floor(party.rating) >= parseInt(this.filters.rating.value)) &&
-                // (this.filters.theme.value === "all" || this.filters.theme.value === party.theme.toLowerCase()) &&
-                // (this.filters.venue.value === "all" || this.filters.venue.value === party.venue.toLowerCase()) &&
-                (party.discoverability >= parseInt(this.filters.discoverability.value))
-            );
-        });
-
-        this.loadParties(filtered);
+    // Event handler for clicking a party.
+    onClickPartyDiv(evt) {
+        alert(`Go to the party details for party ${evt.target.dataset.partyId}`);
     }
 
-    getStartTimeBool(party) {
-        if (this.filters.startDay.value == 'all' && this.filters.startTime.value == 'all') { // user has no start filters applied
-            return true;
-        } else if (this.filters.startDay.value != 'all' && this.filters.startTime.value == 'all') { // user has start day filter but no start time filter
-            let partyStartTime = new Date(party.startTime);
-            let days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-            let partyStartDay = days[partyStartTime.getDay()];
-            return this.compareDays(this.filters.startDay.value, partyStartDay) == 'eq';
-        } else if (this.filters.startDay.value == 'all' && this.filters.startTime.value != 'all') { // user has start time filter but no start day filter
-            let partyStartTime = new Date(party.startTime);
-            let partyStartHour = moment(partyStartTime).format('h:mm A');
-            return this.compareTime(this.filters.startTime.value, partyStartHour) == 'eq';
-        } else { // if (this.filters.startDay.value != 'all' && this.filters.startTime.value != 'all') { // user has both start day and time filters applied
-            let startTime = this.getNextDayTime(this.filters.startDay.value, this.filters.startTime.value);
-            let startTimeUnix = startTime.getTime();
-            let partyStartTimeUnix = new Date(party.startTime).getTime();
-            return startTimeUnix == partyStartTimeUnix;
-        }       
-    }
-
-    compareDays(day1, day2) {
-        if (day1.toLowerCase() == day2.toLowerCase()) {
-            return 'eq';
-        }
-
-        if ((day1.toLowerCase() == 'monday') && (day2.toLowerCase() == 'sunday')) {
-            return 'geq';
-        }
-
-        if ((day2.toLowerCase() == 'monday') && (day1.toLowerCase() == 'sunday')) {
-            return 'leq';
-        }
-
-        let days = {
-            'monday': 1,
-            'tuesday': 2,
-            'wednesday': 3,
-            'thursday': 4,
-            'friday': 5,
-            'saturday': 6,
-            'sunday': 7,
+    // Event handler for filtering parties based on filters.
+    async filterParties() {
+        const filterValues = {
+            startDay: this.filters.startDay.value,
+            startTime: this.filters.startTime.value,
+            discoverability: this.filters.discoverability.value,
+            vibes: this.filters.vibes.value
         };
 
-        let day1Int = days[day1.toLowerCase()];
-        let day2Int = days[day2.toLowerCase()];
+        let filteredParties = this.parties.filter((party) => {
+            return this.filterByDay(party, filterValues.startDay)
+                && this.filterByTime(party, filterValues.startTime)
+                && this.filterByDiscoverability(party, filterValues.discoverability)
+                && this.filterByVibe(party, filterValues.vibes);
+        });
 
-        if (day1Int > day2Int) {
-            return 'geq';
-        } else if (day1Int < day2Int) {
-            return 'leq';
-        }
-
-        return 'eq';
+        this.loadParties(filteredParties); // Load the filtered parties onto the screen.
     }
 
-    compareTime(time1, time2) {
-        let parts1 = time1.split(':');
-        let parts2 = time2.split(':');
-
-        let hour1 = parseInt(parts1);
-        let hour2 = parseInt(parts2);
-
-        if (hour1 > hour2) {
-            return 'geq';
-        } else if (hour1 < hour2) {
-            return 'leq';
-        }
-
-        let minute1 = parseInt(parts1[1].split(' ')[0]);
-        let minute2 = parseInt(parts2[1].split(' ')[0]);
-
-        if (minute1 > minute2) {
-            return 'geq';
-        } else if (minute1 < minute2) {
-            return 'leq';
-        }
-
-        return 'eq';
+    // Check if a party matches the selected day filter.
+    filterByDay(party, startDay) {
+        if (startDay === 'all') return true;
+        let partyDay = moment(party.startTime).format('dddd');
+        return partyDay === startDay;
     }
 
+    // Check if a party matches the selected time filter.
+    filterByTime(party, startTime) {
+        if (startTime === 'all') return true;
+        return moment(party.startTime).format('h:mm A') === startTime;
+    }
 
+    // Check if a party matches the selected discoverability filter.
+    filterByDiscoverability(party, discoverability) {
+        return discoverability === 'all' || party.discoverability === discoverability;
+    }
+
+    // Check if a party matches the selected vibe filter.
+    filterByVibe(party, vibe) {
+        return vibe === 'all' || party.vibes.includes(vibe);
+    }
 }
-
-let feedScreen = new FeedScreen();

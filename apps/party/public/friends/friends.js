@@ -4,52 +4,59 @@ Author Makani Buckley, Colby Roberts
 */
 class Friends {
     constructor() {
+        // Initialize the class and set the onload event to the init method
         document.body.onload = this.init.bind(this);
     }
 
+    // Initialize the page: bind DOM elements, load friends and requests
     async init() {
-        this.userId = parseInt($("userId").value);
+        this.userId = parseInt($("userId").value); // Get the user ID
 
+        // Set up containers and tabs for different sections (friends, requests, search)
         this.friendsContainer = $('friends');
         this.friendsTab = $('friends-tab');
-        this.friendsTab.onclick = this.onClickFriendsTab.bind(this);
+        this.friendsTab.onclick = this.onClickFriendsTab.bind(this); // Bind the click event for friends tab
 
         this.requestsContainer = $('requests');
         this.requestsTab = $('requests-tab');
-        this.requestsTab.onclick = this.onClickRequestsTab.bind(this);
+        this.requestsTab.onclick = this.onClickRequestsTab.bind(this); // Bind the click event for requests tab
 
         this.searchContainer = $('search');
         this.searchTab = $('search-tab');
-        this.searchTab.onclick = this.onClickSearchTab.bind(this);
+        this.searchTab.onclick = this.onClickSearchTab.bind(this); // Bind the click event for search tab
         
         this.searchBar = $('search-bar');
-        this.searchBar.onkeyup = this.onKeyUpSearchBar.bind(this);
-        this.searchBarTimeout = null;
+        this.searchBar.onkeyup = this.onKeyUpSearchBar.bind(this); // Bind the keyup event for search bar
+        this.searchBarTimeout = null; // Used to debounce the search input
 
         this.searchResults = $('search-results');
 
+        // Load the friends and requests data
         await this.loadFriends();
         this.loadRequests();
     }
 
+    // Load the list of friends
     async loadFriends() {
-        this.createLoadingGIFDiv(this.friendsContainer);
+        this.createLoadingGIFDiv(this.friendsContainer); // Show loading animation
 
-        const friends = await api.friends.friends(this.userId);
+        const friends = await api.friends.friends(this.userId); // Fetch friends data
 
-        await this.delay(250);
+        await this.delay(250); // Simulate delay for demo
 
-        this.removeLoadingGIFDiv();
+        this.removeLoadingGIFDiv(); // Remove the loading animation
 
-        if (friends.result) {
+        if (friends.result) { // If the data was fetched successfully
             this.friends = friends.friends;
             
+            // Create friend divs for each friend
             for (let friend of this.friends) {
                 this.createFriendDiv(friend);
             }
         }
     }
 
+    // Create and display a div for each friend
     createFriendDiv(friend) {
         const friendDiv = Core.createDiv(this.friendsContainer, `friend-${friend.id}`, 'friend');
         const pictureBase64 = Core.createImg(friendDiv, `friend-${friend.id}-pictureBase64`, '', friend.pictureBase64);
@@ -57,10 +64,10 @@ class Friends {
         const infoContainer = Core.createDiv(friendDiv, `friend-${friend.id}-info-container`, 'friend-info-container');
 
         const username = Core.createSpan(infoContainer, `friend-${friend.id}-info-username`, 'friend-info-username', friend.username);
-        username.onclick = this.onClickFriend.bind(this, friend);
+        username.onclick = this.onClickFriend.bind(this, friend); // Bind the click event for the username
 
         const status = Core.createSpan(infoContainer, `friend-${friend.id}-info-status`, 'friend-info-status', friend.status > 1 ? 'Friend' : 'Following');
-        status.onclick = this.onClickFriendStatus.bind(this, friend);
+        status.onclick = this.onClickFriendStatus.bind(this, friend); // Bind the click event for the status
 
 
         const optionsContainer = Core.createDiv(friendDiv, `friend-${friend.id}-options-container`, 'friend-options-container', `
@@ -70,11 +77,12 @@ class Friends {
                 <rect y="18" width="24" height="2" rx="1"></rect>
             </svg>`
         );
-        optionsContainer.onclick = this.onClickFriendMenuBurger.bind(this, friend);
+        optionsContainer.onclick = this.onClickFriendMenuBurger.bind(this, friend); // Bind the click event for options menu
 
         return friendDiv;
     }
 
+    // Handle clicking on a friend's profile
     async onClickFriend(friend, evt) {
         const title = friend.username;
 
@@ -91,8 +99,8 @@ class Friends {
         if (friend.vibes == null) {
             vibesContainer.innerHTML = `${friend.status > 1 ? 'Your friend' : 'This user'} has not entered the vibes they give off.`
         } else {
-            let vibes = this.capitalize(friend.vibes);
-            
+            let vibes = this.capitalize(friend.vibes); // Capitalize vibes
+
             for (let vibe of vibes) {
                 const vibeDiv = Core.createDiv(vibesContainer, `friendCC-${friend.id}-vibe-${vibe}`, 'friendCC-vibe', vibe);
             }
@@ -103,12 +111,12 @@ class Friends {
 
         const contextMenu = new ContextMenu(title, '', null, 'OK');
         contextMenu.createElement(friendCCDiv);
-        contextMenu.setHeight(friend.description != null ? '415' : '320');
+        contextMenu.setHeight(friend.description != null ? '415' : '320'); // Adjust the height based on description length
 
-        await contextMenu.showSync();
+        await contextMenu.showSync(); // Show context menu for friend details
     }
 
-
+    // Handle clicking on a friend's status
     async onClickFriendStatus(friend, evt) {
         let title = friend.username;
         let message;
@@ -118,7 +126,7 @@ class Friends {
             if (friend.isHost) {
                 message = `You currently follow ${friend.username}`;
             } else {
-                message = `You have sent a friend request to ${friend.username}, in the mean time, you are following them and can see what parties they're attending!`;
+                message = `You have sent a friend request to ${friend.username}, in the meantime, you are following them and can see what parties they're attending!`;
             }
         }
 
@@ -133,6 +141,7 @@ class Friends {
         await contextMenu.showSync();
     }
 
+    // Handle clicking on the options (burger) menu for a friend
     async onClickFriendMenuBurger(friend, evt) {
         let title, message;
         if (friend.status > 1) {
@@ -149,7 +158,7 @@ class Friends {
         const choice = await contextMenu.showSync();
 
         if (choice) {
-            await api.friends.removeFriend(this.userId, friend.id);
+            await api.friends.removeFriend(this.userId, friend.id); // Remove the friend
 
             await this.delay(250);
 
@@ -165,30 +174,33 @@ class Friends {
             const contextMenu = new ContextMenu(title, message, null, 'OK');
             contextMenu.setHeight('145');
 
-            this.loadFriends();
+            this.loadFriends(); // Reload the friends list
 
             await contextMenu.showSync();
         }
     }
 
+    // Load friend requests
     async loadRequests() {
-        this.createLoadingGIFDiv(this.requestsContainer);
+        this.createLoadingGIFDiv(this.requestsContainer); // Show loading animation
 
-        const requests = await api.friends.requests(this.userId);
+        const requests = await api.friends.requests(this.userId); // Fetch requests data
 
-        await this.delay(250);
+        await this.delay(250); // Simulate delay for demo
 
-        this.removeLoadingGIFDiv();
+        this.removeLoadingGIFDiv(); // Remove the loading animation
 
         if (requests.result) {
             this.request = requests.requests;
             
+            // Create request divs for each request
             for (let request of this.request) {
                 this.createRequestDiv(request);
             }
         }
     }
 
+    // Create and display a div for each friend request
     createRequestDiv(request) {
         const requestDiv = Core.createDiv(this.requestsContainer, `request-${request.id}`, 'request');
         const pictureBase64 = Core.createImg(requestDiv, `request-${request.id}-pictureBase64`, '', request.pictureBase64);
@@ -196,7 +208,7 @@ class Friends {
         const infoContainer = Core.createDiv(requestDiv, `request-${request.id}-info-container`, 'request-info-container');
 
         const username = Core.createSpan(infoContainer, `request-${request.id}-info-username`, 'request-info-username', request.username);
-        username.onclick = this.onClickFriend.bind(this, request);
+        username.onclick = this.onClickFriend.bind(this, request); // Bind the click event for the username
 
         const optionsContainer = Core.createDiv(requestDiv, `request-${request.id}-options-container`, 'request-options-container');
 
@@ -218,11 +230,13 @@ class Friends {
         return requestDiv;
     }
 
+    // Accept a friend request
     async onAccept(friendId) {
         await api.friends.accept(this.userId, friendId);
         await this.loadRequests();
     }
 
+    // Reject a friend request
     async onReject(friendId) {
         await api.friends.reject(this.userId, friendId);
         await this.loadRequests();
@@ -238,7 +252,8 @@ class Friends {
         this.searchTab.classList.remove('selected');
     }
 
-    onClickFriendsTab(evt) {
+    // Show the friends tab
+    onClickFriendsTab() {
         this.hideAll();
         this.friendsContainer.style.display = 'flex';
         this.friendsTab.classList.add('selected');
@@ -264,6 +279,7 @@ class Friends {
         await api.friends.request(this.userId, friendId);
     }
 
+    // Handle search bar keyup event
     onKeyUpSearchBar() {
         this.createLoadingGIFDiv(this.searchResults);
 
@@ -392,6 +408,26 @@ class Friends {
             }, timeMS);
         });
     }
-}
 
-let friends = new Friends();
+    // Utility method to capitalize the first letter of each word
+    capitalize(vibes) {
+        const parts = vibes.split(',');
+        
+        const capitalizedItems = [];
+        
+        for(let vibe of parts) {
+            const lowerCase = vibe.toLowerCase();
+            const fLetter = lowerCase.slice(0, 1).toUpperCase();
+            const rletters = lowerCase.slice(1, lowerCase.length);
+            const finalVibe = fLetter + rletters;
+            
+            if (capitalizedItems.includes(finalVibe)) {
+                continue;
+            }
+
+            capitalizedItems.push(finalVibe);
+        }
+
+        return capitalizedItems; // Return capitalized vibes
+    }
+}
