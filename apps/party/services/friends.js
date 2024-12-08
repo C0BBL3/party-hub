@@ -2,9 +2,11 @@
 Defines the services required by the Friends screen
 Author Colby Roberts
 */
+
 const db = require('../../../utils/database');
 
 class FriendsService {
+    // Retrieves all friends for a user by userId
     static async getFriendsByUserId(userId) {
         let result = await db.execute(`
             SELECT 
@@ -21,16 +23,12 @@ class FriendsService {
                 userTwo.pictureBase64,
                 userTwo.isHost,
                 friend.status
-                
             FROM 
                 friend 
-
-                INNER JOIN user userOne ON
-                    userOne.id = friend.userOneId
-
-                INNER JOIN user userTwo ON
-                    userTwo.id = friend.userTwoId
-            
+            INNER JOIN user userOne ON
+                userOne.id = friend.userOneId
+            INNER JOIN user userTwo ON
+                userTwo.id = friend.userTwoId
             WHERE 
                 (
                     friend.userOneId = [userId] OR
@@ -43,12 +41,14 @@ class FriendsService {
         );
 
         if (!result.rows.length) {
-            return [];
+            return []; // Return empty array if no friends are found
         }
 
         let friends = [];
+        // Iterate through the results and determine which user is the friend
         for (let row of result.rows) {
             let friend = row.userTwo.id != userId ? row.userTwo : row.userOne;
+            // Set the friend status based on the stored status
             if (row.userOne.id == userId) {
                 friend.status = row.friend.status == 'accepted' ? 2 : 1;
             } else {
@@ -56,12 +56,13 @@ class FriendsService {
                 friend.status = 2;
             }
 
-            friends.push(friend);
+            friends.push(friend); // Add the friend to the list
         }
 
         return friends;
     }
 
+    // Retrieves all pending friend requests for a user by userId
     static async getFriendRequestsByUserId(userId) {
         let result = await db.execute(`
             SELECT
@@ -71,47 +72,43 @@ class FriendsService {
                 userOne.description,
                 userOne.pictureBase64,
                 userOne.isHost
-                
             FROM 
                 friend 
-
-                INNER JOIN user userOne ON
-                    userOne.id = friend.userOneId
-            
+            INNER JOIN user userOne ON
+                userOne.id = friend.userOneId
             WHERE 
                 friend.userTwoId = [userId] AND
                 friend.status = 'pending';`,
-                
             {
                 userId
             }
         );
 
         if (!result.rows.length) {
-            return [];
+            return []; // Return empty array if no requests are found
         }
 
         let requests = [];
-
         for (let row of result.rows) {
-            let request = row.userOne;
-            requests.push(request)
+            let request = row.userOne; // Add the user that sent the friend request
+            requests.push(request);
         }
 
         return requests;
     }
 
+    // Adds a new friend relationship between two users
     static async addFriend(userOneId, userTwoId) {
-        let result =  await db.insert('friend',  { userOneId, userTwoId }); // data = {userOneId, userTwoId}
+        let result = await db.insert('friend', { userOneId, userTwoId }); // Insert a new friend record
 
-        return !result.error;
+        return !result.error; // Return true if no error occurred, else false
     }
 
+    // Removes a friend relationship between two users
     static async removeFriend(userOneId, userTwoId) {
         const result = await db.execute(`
             DELETE FROM 
                 friend 
-                
             WHERE
                 (
                     userOneId = [userOneId] AND
@@ -121,24 +118,23 @@ class FriendsService {
                 (
                     userTwoId = [userOneId] AND
                     userOneId = [userTwoId]
-                )`,
+                );`,
             {
                 userOneId,
                 userTwoId
             }
         );
 
-        return !result.error;
+        return !result.error; // Return true if no error occurred, else false
     }
 
-    static async updateStatus(userOneId, userTwoId, status) { // works even if user id's are backwards (probably idk i didnt test it :P )
+    // Updates the status of the friendship between two users
+    static async updateStatus(userOneId, userTwoId, status) {
         let result = await db.execute(`
             UPDATE 
                 friend
-
             SET 
                 status = [status]
-
             WHERE
                 (
                     userOneId = [userOneId] AND
@@ -156,17 +152,16 @@ class FriendsService {
             }
         );
 
-        return !result.error;
+        return !result.error; // Return true if no error occurred, else false
     }
 
+    // Checks if a friend request is pending between two users
     static async checkIfPending(userOneId, userTwoId) {
         const result = await db.execute(`
             SELECT
                 friend.status
-                
             FROM
                 friend
-                
             WHERE
                 friend.userOneId = [userOneId] AND
                 friend.userTwoId = [userTwoId] AND
@@ -177,32 +172,21 @@ class FriendsService {
             }
         );
 
-        if (!result.error) {
-            return result.rows.length == 1;
-        } else {
-            return false;
-        }
+        return !result.error && result.rows.length == 1; // Return true if pending request exists
     }
 
+    // Checks if two users are friends (status 'accepted')
     static async checkIfFriend(userOneId, userTwoId) {
         const result = await db.execute(`
             SELECT
                 friend.status
-                
             FROM
                 friend
-                
             WHERE
                 (
-                    (
-                        friend.userOneId = [userOneId] AND
-                        friend.userTwoId = [userTwoId] 
-                    ) 
+                    (friend.userOneId = [userOneId] AND friend.userTwoId = [userTwoId]) 
                     OR
-                    (
-                        friend.userOneId = [userTwoId] AND
-                        friend.userTwoId = [userOneId]
-                    )
+                    (friend.userOneId = [userTwoId] AND friend.userTwoId = [userOneId])
                 ) AND
                 friend.status = 'accepted';`,
             {
@@ -211,15 +195,11 @@ class FriendsService {
             }
         );
 
-        if (!result.error) {
-            return result.rows.length == 1;
-        } else {
-            return false;
-        }
+        return !result.error && result.rows.length == 1; // Return true if they are friends
     }
 
+    // Searches for potential friends based on the search query
     static async searchForFriend(userId, search) {
-        userId = 0;
         let result = await db.execute(`
             SELECT 
                 patron.id,
@@ -228,16 +208,14 @@ class FriendsService {
                 patron.description,
                 patron.pictureBase64,
                 patron.isHost
-                
             FROM 
                 user as patron
-            
             WHERE 
                 patron.id != [userId] AND
                 (
-                    patron.username like [search] OR
-                    patron.description like [search] OR
-                    patron.tags like [search]
+                    patron.username LIKE [search] OR
+                    patron.description LIKE [search] OR
+                    patron.tags LIKE [search]
                 );`,
             {
                 userId,
@@ -246,23 +224,24 @@ class FriendsService {
         );
 
         if (result.error || result.rows.length == 0) {
-            return [];
+            return []; // Return empty array if no matches found
         }
 
         let patrons = [];
-
         for (let row of result.rows) {
             let patron = row.patron;
 
+            // Check if the user is already a friend or has a pending request
             let status1 = await FriendsService.checkIfFriend(userId, patron.id);
             let status2 = await FriendsService.checkIfPending(userId, patron.id);
 
+            // If they are already friends or have a pending request, skip this patron
             if (status1 || status2) { continue; }
 
-            patrons.push(patron);
+            patrons.push(patron); // Add the potential friend to the list
         }
 
-        return patrons;
+        return patrons; // Return the list of potential friends
     }
 }
 

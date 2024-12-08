@@ -2,9 +2,11 @@
 Defines the services required by the Feed screen
 Author Colby Roberts
 */
+
 const db = require('../../../utils/database');
 
 class FeedService {
+    // Fetches the first 10 parties from the database
     static async getFirst10Parties() {
         let result = await db.execute(`
             SELECT
@@ -13,27 +15,29 @@ class FeedService {
                 title,
                 vibes,
                 description
-       
             FROM
                 party
-    
             LIMIT 
                 10;`
         );
 
+        // If no parties are found, return an empty array
         if (result.rows.length == 0) {
             return [];
         } else {
             let parties = [];
 
+            // Map over the rows and extract the party data
             for (let row of result.rows) {
                 let party = row.party;
-
                 parties.push(party);
             }
+
+            return parties; // Return the parties
         }
     }
 
+    // Fetches featured parties based on the userId
     static async getFeaturedParties(userId) {
         let result = await db.execute(`
             SELECT
@@ -50,7 +54,6 @@ class FeedService {
                 host.description,
                 host.tags,
                 address.*
-                
             FROM
                 party
 
@@ -72,36 +75,35 @@ class FeedService {
             WHERE
                 party.startTime >= NOW() AND
                 party.privacy = 'Discoverable'
-                
             LIMIT 
                 10;`
-            );
+        );
 
+        // If no featured parties are found, return an empty array
         if (result.rows.length == 0) {
             return [];
         } else {
             let parties = [];
 
+            // Map over the rows and build the party data, including host and address information
             for (let row of result.rows) {
                 if (row.party.id == null) { continue;}
-                
                 let party = row.party;
                 party.host = row.host;
                 party.address = row.address;
-
                 parties.push(party);
             }
 
-            return parties;
+            return parties; // Return the featured parties
         }
     }
 
+    // Fetches patrons for a specific party by its partyId
     static async getPatronsByParty(partyId) {
         const result = await db.execute(`
             SELECT
                 patron.id,
                 patron.username
-
             FROM
                 user as patron
 
@@ -118,26 +120,27 @@ class FeedService {
             }
         );
 
+        // If no patrons are found, return an empty array
         if (result.rows.length == 0) {
             return [];
         } else {
             let patrons = [];
 
+            // Map over the rows and extract patron data
             for (let row of result.rows) {
                 let patron = row.patron;
-
                 patrons.push(patron);
             }
 
-            return patrons;
+            return patrons; // Return the list of patrons
         }
     }
 
+    // Fetches the RSVP count for a specific party by its partyId
     static async getRSVPCountByPartyId(partyId) {
         const result = await db.execute(`
             SELECT
                 count(patron.id) as rsvpCount
-                
             FROM
                 user AS patron
                 
@@ -152,21 +155,22 @@ class FeedService {
             }
         );
 
+        // If no RSVP records are found, return 0
         if (result.rows.length == 0) {
             return 0;
         }
 
-        return result.rows[0][''].rsvpCount;
+        // Return the RSVP count
+        return result.rows[0]['rsvpCount'];
     }
 
+    // Fetches the friendship status between two users
     static async getFriendStatus(userOneId, userTwoId) {
         const result = await db.execute(`
             SELECT
                 status
-                
             FROM
                 friend
-                
             WHERE
                 (
                     (
@@ -184,13 +188,16 @@ class FeedService {
             }
         );
 
+        // If no friendship is found, return false
         if (result.rows.length == 0) {
             return false;
         } else {
+            // Return the friendship status (active/inactive, etc.)
             return result.rows[0].friend.status;
         }
     }
 
+    // Fetches a specific party by its partyId
     static async getParty(partyId) {
         let result = await db.execute(`
             SELECT
@@ -199,20 +206,20 @@ class FeedService {
                 title,
                 vibes,
                 description
-                
             FROM
                 party
-
             WHERE
                 id = [partyId];`,
             {
                 partyId
             }
-            );
+        );
 
+        // If no party is found, return null
         if (result.rows.length == 0) {
             return null;
         } else {
+            // Return the party data
             return result.rows[0].party;
         }
     }

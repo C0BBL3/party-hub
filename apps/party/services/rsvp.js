@@ -1,10 +1,12 @@
 /*
-Defines the services required by the Friends screen
+Defines the services required by the RSVP screen
 Author Colby Roberts
 */
+
 const db = require('../../../utils/database');
 
 class RSVPService {
+    // Retrieves upcoming parties for a patron
     static async getUpcomingParties(patronId) {
         let result = await db.execute(`
             SELECT
@@ -21,7 +23,6 @@ class RSVPService {
                 host.description,
                 host.tags,
                 address.*
-                
             FROM
                 party
 
@@ -50,7 +51,6 @@ class RSVPService {
 
             WHERE
                 party.startTime > NOW()
-                
             ORDER BY
                 startTime DESC;`,
             {
@@ -62,19 +62,17 @@ class RSVPService {
             return [];
         } else {
             let parties = [];
-
             for (let row of result.rows) {
                 let party = row.party;
                 party.host = row.host;
                 party.address = row.address;
-
                 parties.push(party);
             }
-
             return parties;
         }
     }
 
+    // Retrieves past parties for a patron
     static async getPastParties(patronId) {
         let result = await db.execute(`
             SELECT
@@ -91,7 +89,6 @@ class RSVPService {
                 host.description,
                 host.tags,
                 address.*
-                
             FROM
                 party
 
@@ -120,7 +117,6 @@ class RSVPService {
 
             WHERE
                 party.startTime <= NOW()
-                
             ORDER BY
                 startTime DESC;`,
             {
@@ -132,24 +128,21 @@ class RSVPService {
             return [];
         } else {
             let parties = [];
-
             for (let row of result.rows) {                
                 let party = row.party;
                 party.host = row.host;
                 party.address = row.address;
-
                 parties.push(party);
             }
-
             return parties;
         }
     }
 
+    // Retrieves the count of RSVPs for a party
     static async getRSVPCountByPartyId(partyId) {
         const result = await db.execute(`
             SELECT
                 count(patron.id) as rsvpCount
-                
             FROM
                 user AS patron
                 
@@ -171,6 +164,7 @@ class RSVPService {
         return result.rows[0][''].rsvpCount;
     }
 
+    // Adds an RSVP for a party by a patron
     static async rsvp(partyId, patronId, secretKey) {
         const check = await db.execute(`SELECT id FROM partypatronlink WHERE partyId = [partyId] AND patronId = [patronId];`, { partyId, patronId });
 
@@ -181,10 +175,10 @@ class RSVPService {
         }
 
         const result = await db.insert('partypatronlink', { partyId, patronId, enabled: 1, secretKey });
-
         return result.rows.insertId;
     }
 
+    // Cancels an RSVP for a party by a patron
     static async cancel(partyId, patronId) {
         const check = await db.execute(`SELECT id FROM partypatronlink WHERE partyId = [partyId] AND patronId = [patronId];`, { partyId, patronId });
 
@@ -197,19 +191,17 @@ class RSVPService {
         return true;
     }
 
+    // Checks the RSVP status of a patron for a party
     static async checkStatus(partyId, patronId) {
         const result = await db.execute(`
             SELECT 
                 id, 
                 enabled
-                
             FROM 
                 partypatronlink 
-                
             WHERE 
                 partyId = [partyId] AND 
                 patronId = [patronId]
-                
             ORDER BY
                 created DESC;`, 
             {
@@ -221,10 +213,11 @@ class RSVPService {
         if (result.rows.length == 0) {
             return false;
         }
-            
+
         return result.rows[0].partypatronlink;
     }
 
+    // Retrieves a list of parties a patron has RSVPed to
     static async getRSVPedParties(patronId) {
         const result = await db.execute(`
             SELECT
@@ -233,7 +226,6 @@ class RSVPService {
                 party.title,
                 party.vibes,
                 party.description
-
             FROM
                 partypatronlink
                 
@@ -250,13 +242,11 @@ class RSVPService {
             return [];
         } else {
             let parties = [];
-
             for (let row of result.rows) {
                 if (row.party.id == null) { continue; }
                 let party = row.party;
                 parties.push(party);
             }
-
             return parties;
         }
     }
