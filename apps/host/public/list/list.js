@@ -250,11 +250,11 @@ class List {
     }
 
     async delay(timeMS) {
-        return new Promise((resolve) => {
-            setTimeout((resolve) => {
-                
+        return new Promise((resolve, reject) => {
+            setTimeout((evt) => {
+
                 resolve(null);
-            }, timeMS); // Delay for a specified time in milliseconds
+            }, timeMS);
         });
     }
 }

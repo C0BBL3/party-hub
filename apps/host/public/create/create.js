@@ -314,12 +314,12 @@ class CreateParty {
 
     onChangeStartDate(evt) {
         // Update party start date
-        this.partySettings.startDate = this.startDate.value;
+        this.partySettings.start.date = this.startDate.value;
     }
 
     onChangeStartTime(evt) {
         // Update party start time
-        this.partySettings.startTime = this.startTime.value;
+        this.partySettings.start.time = this.startTime.value;
     }
 
     toggleAdditionalExplanation(type, show, evt) {
