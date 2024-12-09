@@ -10,8 +10,8 @@ const APIMiddleware = require('../../../../middleware/api/main');
 const BASE_PATH = '/api/party/rsvp';
 
 // GET
-router.get(`${BASE_PATH}/get-upcoming-parties/:patronId`, APIMiddleware.checkIsHost, Controller.getUpcomingParties);
-router.get(`${BASE_PATH}/get-past-parties/:patronId`, APIMiddleware.checkIsHost, Controller.getPastParties);
+router.get(`${BASE_PATH}/get-upcoming-parties/:patronId`, APIMiddleware.checkIsHostOrPatron, Controller.getUpcomingParties);
+router.get(`${BASE_PATH}/get-past-parties/:patronId`, APIMiddleware.checkIsHostOrPatron, Controller.getPastParties);
 router.get(`${BASE_PATH}/:partyId/check/:patronId`, APIMiddleware.checkIsHostOrPatron, Controller.checkStatus);
 router.get(`${BASE_PATH}/get-RSVPed-parties/:patronId`, APIMiddleware.checkIsHostOrPatron, Controller.getRSVPedParties);
 

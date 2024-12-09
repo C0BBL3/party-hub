@@ -155,7 +155,7 @@ class ListService {
             return 0;  // Return 0 if no RSVPs are found
         }
 
-        return result.rows[0]['rsvpCount'];  // Return the RSVP count for the given party
+        return result.rows[0][''].rsvpCount;  // Return the RSVP count for the given party
     }
 
     // Method to get the secret key for a party, used for accessing private parties

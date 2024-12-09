@@ -126,7 +126,7 @@ class Friends {
             if (friend.isHost) {
                 message = `You currently follow ${friend.username}`;
             } else {
-                message = `You have sent a friend request to ${friend.username}, in the meantime, you are following them and can see what parties they're attending!`;
+                message = `You have sent a friend request to ${friend.username}, in the mean time, you are following them and can see what parties they're attending!`;
             }
         }
 
@@ -431,3 +431,5 @@ class Friends {
         return capitalizedItems; // Return capitalized vibes
     }
 }
+
+const friends = new Friends();

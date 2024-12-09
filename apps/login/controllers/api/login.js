@@ -16,7 +16,8 @@ class LoginAPIController {
 
         // Check if user is found and password matches the temp password (for new accounts or resets)
         if (user && user.password === password) {
-            req.session.user = user;  // Store the user in session
+            const user_ = await LoginService.getUserById(user.id);  // Fetch the newly created host user
+            req.session.user = user_;  // Store the user in the session
 
             // If the user is an admin, set the supervisor mode flag
             if (req.session.user.isAdmin) {
@@ -34,13 +35,14 @@ class LoginAPIController {
             return res.send({
                 result: true
             });
-        } else if (user) { // User exists but password is not the temp one
+        } else if (user && user.salt && user.hash) { // User exists but password is not the temp one
             // Verify the password using the stored hash and salt
             const result = await LoginService.verifyPassword(password, user.salt, user.hash);
 
             // If the password is correct, log the user in
             if (result) {
-                req.session.user = user;  // Store the user in session
+                const user_ = await LoginService.getUserById(user.id);  // Fetch the newly created host user
+                req.session.user = user_;  // Store the user in the session
 
                 // If the user is an admin, set the supervisor mode flag
                 if (req.session.user.isAdmin) {

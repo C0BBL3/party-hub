@@ -111,6 +111,7 @@ class SignUpProcess {
             const unique = await this.checkIfUniqueUsername(this.eai_usernameInput.value);
 
             if (unique) {
+                this.data.username = this.eai_usernameInput.value.trim();
                 this.showUsernameUniqueRequirement();
                 this.updateEAINextButton();
             } else {
@@ -141,6 +142,7 @@ class SignUpProcess {
             const valid = this.checkPasswordContainsNonAlpha(this.eai_passwordInput.value);
 
             if (valid) {
+                this.data.password = this.eai_passwordInput.value.trim()
                 this.showPasswordAlphaGoodRequirement();
                 this.updateEAINextButton();
             } else {
@@ -183,6 +185,7 @@ class SignUpProcess {
             const unique = await this.checkIfUniqueEmail(this.way_emailInput.value);
 
             if (unique) {
+                this.data.email = this.way_emailInput.value.trim();
                 this.showEmailUniqueRequirement();
                 this.enableWAYNextButton();
             } else {
@@ -351,6 +354,228 @@ class SignUpProcess {
         }
     }
 
+    onClickWAYNextButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.resetWAY();
+
+        this.data.firstName = this.way_firstNameInput.value;
+        this.data.lastName = this.way_lastNameInput.value;
+        this.data.email = this.way_emailInput.value;
+
+        if (this.data.email.length == 0) {
+            this.errorMessage.innerHTML = 'Oops.. it looks like you didnt enter an email! Please enter an email!';
+
+            this.way_emailInput.classList.add('inputBox-error');
+            return;
+        } 
+
+        this.screen = 'TUAY';
+
+        this.tuay.classList.add('enterRight');
+        this.tuay.style.display = 'block';
+
+        this.way.classList.add('leaveLeft');
+        
+        let timeout1;
+        timeout1 = setTimeout(this.hideWAY.bind(this, timeout1), transitionTime);
+
+        let timeout2;
+        timeout2 = setTimeout(this.showTUAY.bind(this, timeout2), 0);// needs to be async via timeout idk why silly js and css interation ig
+    }
+
+    onClickWAYBackButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.screen = 'EAI';
+
+        this.eai.classList.add('enterLeft');
+        this.eai.style.display = 'block';
+
+        this.way.classList.add('leaveRight');
+        
+        let timeout1;
+        timeout1 = setTimeout(this.hideWAY.bind(this, timeout1), transitionTime);
+
+        let timeout2;
+        timeout2 = setTimeout(this.showEAI.bind(this, timeout2), 0);// needs to be async via timeout idk why silly js and css interation ig
+    }
+
+    onClickTUAYBackButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.screen = 'WAY';
+
+        this.way.classList.add('enterLeft');
+        this.way.style.display = 'block';
+
+        this.tuay.classList.add('leaveRight');
+        
+        let timeout1;
+        timeout1 = setTimeout(this.hideTUAY.bind(this, timeout1), transitionTime);
+
+        let timeout2;
+        timeout2 = setTimeout(this.showWAY.bind(this, timeout2), 0);// needs to be async via timeout idk why silly js and css interation ig
+    }
+
+    async onClickTUAYFinishButton(event) {
+        this.errorMessage.innerHTML = '';
+
+        this.resetTUAY();
+
+        this.data.tags = this.tuay_vibesInput.value;
+        this.data.description = this.tuay_descriptionInput.value;
+
+        let data = this.trimData();
+
+        $('wrap').style.cursor = 'progress';
+        
+        let process = await api.signup.process(data);
+
+        if (process.result) {
+            setTimeout(() => { $('wrap').style.cursor = 'auto'; window.location.href = '/party/feed'; }, 750);
+        } else {
+            this.errorMessage.innerHTML = 'Oops... there seems to be an error signing you up, please try again later!';
+        }
+       
+    }
+
+    trimData() {
+        let data = {};
+
+        for (let key in this.data) {
+            try {
+                data[key] = this.data[key].trim();
+            } catch {
+                data[key] = this.data[key];
+            }
+        }
+
+        return data;
+    }
+
+    showCAT(timeout) {
+        clearTimeout(timeout);
+        this.cat.style.display = 'block';
+        this.cat.className = 'screen enter';
+        setTimeout(this.resetCAT.bind(this), transitionTime);
+    }
+
+    hideCAT(timeout) {
+        clearTimeout(timeout);
+        this.cat.style.display = 'none';
+        this.resetEAI();
+    }
+
+    resetCAT() {
+        this.cat.className = 'screen';
+    }
+
+    showEAI(timeout) {
+        clearTimeout(timeout);
+        this.eai.style.display = 'block';
+        this.eai.className = 'screen enter';
+        setTimeout(this.resetEAI.bind(this), transitionTime);
+    }
+
+    hideEAI(timeout) {
+        clearTimeout(timeout);
+        this.eai.style.display = 'none';
+        this.resetEAI();
+    }
+
+    resetEAI() {
+        this.eai.className = 'screen';
+
+        this.eai_usernameInput.classList.remove('inputBox-error');
+        this.eai_passwordInput.classList.remove('inputBox-error');
+    }
+
+    showWAY(timeout) {
+        clearTimeout(timeout);
+        this.way.style.display = 'block';
+        this.way.className = 'screen enter';
+        setTimeout(this.resetWAY.bind(this), transitionTime);
+    }
+
+    hideWAY(timeout) {
+        clearTimeout(timeout);
+        this.way.style.display = 'none';
+        this.resetWAY();
+    }
+
+    resetWAY() {
+        this.way.className = 'screen';
+        this.way_emailInput.classList.remove('inputBox-error');
+    }
+
+    showTUAY(timeout) {
+        clearTimeout(timeout);
+        this.tuay.style.display = 'block';
+        this.tuay.className = 'screen enter';
+        setTimeout(this.resetTUAY.bind(this), transitionTime);
+    }
+
+    hideTUAY(timeout) {
+        clearTimeout(timeout);
+        this.tuay.style.display = 'none';
+        this.resetTUAY();
+    }
+
+    resetTUAY() {
+        this.tuay.className = 'screen';
+    }
+
+    async delay(timeMS) {
+        return new Promise((resolve, reject) => {
+            setTimeout((evt) => {
+                resolve(null);
+            }, timeMS);
+        });
+    }
+
+    async updateEAINextButton() {
+        let validUsername = await api.signup.checkIfUniqueUsername(this.eai_usernameInput.value.trim());
+
+        if (this.eai_usernameInput.value.trim().length < 3 || !validUsername) {
+            this.disableEAINextButton();
+            return;
+        }
+
+        let validPassword = this.checkPasswordContainsNonAlpha(this.eai_passwordInput.value.trim())
+
+        if (this.eai_passwordInput.value.trim().length < 6 || !validPassword) {
+            this.disableEAINextButton();
+            return;
+        }
+
+        this.enableEAINextButton();
+    }
+
+    disableEAINextButton() {
+        this.eai_nextButton.classList.add('disabled');
+        this.eai_nextButton.onmousedown = null;
+    }
+
+    enableEAINextButton() {
+        this.eai_nextButton.classList.remove('disabled');
+        this.eai_nextButton.onmousedown = this.onClickEAINextButton.bind(this);
+    }
+
+    disableWAYNextButton() {
+        this.way_nextButton.classList.add('disabled');
+        this.way_nextButton.onmousedown = null;
+    }
+
+    enableWAYNextButton() {
+        this.way_nextButton.classList.remove('disabled');
+        this.way_nextButton.onmousedown = this.onClickWAYNextButton.bind(this);
+    }
+
+    hideEmailBadRequirement() {
+        this.emailBad.style.display = 'none';
+    }
+
     // Navigate to the account type selection screen
     navigateToCAT() {
         this.cat.style.display = 'block';
@@ -391,3 +616,5 @@ class SignUpProcess {
         this.navigateToEAI();
     }
 }
+
+const signup = new SignUpProcess();

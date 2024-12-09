@@ -222,7 +222,7 @@ class RSVP {
 
         // Display host vibes or show a default message
         if (party.host.vibes == null) {
-            vibesContainer.innerHTML = 'This host has not entered their vibes.';
+            vibesContainer.innerHTML = 'This host not entered the vibes they give off.'
         } else {
             let vibes = this.capitalize(party.host.vibes);
             
@@ -311,3 +311,5 @@ class RSVP {
         });
     }
 }
+
+const rsvp = new RSVP();

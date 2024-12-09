@@ -161,7 +161,7 @@ class FeedService {
         }
 
         // Return the RSVP count
-        return result.rows[0]['rsvpCount'];
+        return result.rows[0][''].rsvpCount;
     }
 
     // Fetches the friendship status between two users

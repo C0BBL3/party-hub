@@ -2,7 +2,7 @@
 Dynamically manages the List screen and its behaviors
 Author: Colby Roberts
 */
-class RSVP {
+class List {
     constructor() {
         document.body.onload = this.init.bind(this); // Initializes the class when the page loads
     }
@@ -259,4 +259,4 @@ class RSVP {
     }
 }
 
-const list = new RSVP(); // Instantiate the RSVP class
+const list = new List();

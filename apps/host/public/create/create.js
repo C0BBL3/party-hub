@@ -191,7 +191,7 @@ class CreateParty {
                 state: ''
             };
             this.disableCreateButton(); // Disable button if any address field is empty
-        } else {
+        } else if (this.streetAddress.value.trim().length > 0 && this.postalCode.value.trim().length > 0 && this.city.value.trim().length > 0 && this.state.value.trim().length > 0) {
             this.partySettings.address = {
                 streetAddress: this.streetAddress.value.trim(),
                 postalCode: parseInt(this.postalCode.value.trim()),
@@ -407,53 +407,64 @@ class CreateParty {
         await contextMenu.showSync(); // Display dialog
     }
 
-    async showErrorDialog(response) {
-        // Show error dialog if party creation fails
-        let title = 'OOPS...';
-        let message = response.message || 'Unknown error occurred. Please try again.';
-        
+    async showErrorDialog(data) {
+        console.log(data);
+
+        let title = `Oops`;
+        let message = data && data.error ? data.error : `Oops there seems to be an error, please try again at another time.`;
+
         let contextMenu = new ContextMenu(title, message, null, 'OK');
-        $('context-menu').style.height = '150px';
+        $('context-menu').style.height = '160px';
 
         await contextMenu.showSync(); // Display dialog
     }
 
-    showTitleNotUniqueRequirement() {
-        // Show message if title is not unique
-        this.titleNotUnique.style.display = 'block';
+    hideTitleUniqueRequirement() {
+        this.titleRequirements.style.display = 'none';
         this.titleUnique.style.display = 'none';
+        this.titleNotUnique.style.display = 'none';
+        this.titleNotUniqueLoading.style.display = 'none';
     }
 
-    hideTitleUniqueRequirement() {
-        // Hide title requirement message
+    showTitleUniqueRequirementLoading() {
+        this.titleRequirements.style.display = 'block';
+        this.titleUnique.style.display = 'none';
         this.titleNotUnique.style.display = 'none';
-        this.titleUnique.style.display = 'block';
+        this.titleNotUniqueLoading.style.display = 'list-item';
     }
 
     showTitleUniqueRequirement() {
-        // Show message if title is unique
+        this.titleRequirements.style.display = 'block';
+        this.titleUnique.style.display = 'list-item';
         this.titleNotUnique.style.display = 'none';
-        this.titleUnique.style.display = 'block';
+        this.titleNotUniqueLoading.style.display = 'none';
     }
 
-    showVibesRequirement() {
-        // Show vibes requirement
-        this.vibesBad.style.display = 'block';
+    showTitleNotUniqueRequirement() {
+        this.titleRequirements.style.display = 'block';
+        this.titleUnique.style.display = 'none';
+        this.titleNotUnique.style.display = 'list-item';
+        this.titleNotUniqueLoading.style.display = 'none';
     }
 
     hideVibesRequirement() {
-        // Hide vibes requirement
+        this.vibesRequirement.style.display = 'none';
         this.vibesBad.style.display = 'none';
     }
 
-    showDescriptionRequirement() {
-        // Show description requirement
-        this.descriptionBad.style.display = 'block';
+    showVibesRequirement() {
+        this.vibesRequirement.style.display = 'block';
+        this.vibesBad.style.display = 'list-item';
     }
 
     hideDescriptionRequirement() {
-        // Hide description requirement
+        this.descriptionRequirements.style.display = 'none';
         this.descriptionBad.style.display = 'none';
+    }
+
+    showDescriptionRequirement() {
+        this.descriptionRequirements.style.display = 'block';
+        this.descriptionBad.style.display = 'list-item';
     }
 }
 
