@@ -53,7 +53,7 @@ class APIPostParty extends APIEndPoint {
 
                 const title = capitalizer.fixCapitalization(security.sanitizeInput(body.title));
 
-                const party = await CreateService.getPartyByTitle(partyTitle);
+                const party = await CreateService.getPartyByTitle(title);
 
                 if (party) {
                     return this.sendResponse(req, res, { result: false, message: 'Bad Request.'  }, 400);

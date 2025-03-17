@@ -29,7 +29,8 @@ class APIEndPoint {
         if (code === 200) {
             await anomaly.write(apiPublicKey, request);
         } else {
-            await anomaly.write(apiPublicKey, request, 1, json.error.message, code);
+            const message = json.message ? json.message : json.error.message;
+            await anomaly.write(apiPublicKey, request, 1, message, code);
         }
 
         res.setHeader('Access-Control-Allow-Credentials', 'omit');

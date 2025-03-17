@@ -76,7 +76,7 @@ class APIGetHost extends APIEndPoint {
 
                 const authentication = await authenticator.authenticatePatron(publicKey, userId);
                 if (!authentication.isAuthenticated) {
-                    this.sendResponse(req, res, {
+                    return this.sendResponse(req, res, {
                         result: false,
                         error: authentication.error
                     }, authentication.error.code);

@@ -13,8 +13,9 @@ const APIValidator = require('./lib/api-validator');
 class APIController {
     static async inspectRequest(req, res, next) {
         if (global.nodeEnv !== 'development' && req.protocol !== 'https') { // Never accepting non-HTTPS requests on live server
+            console.log(req.protocol);
             const endpoint = new APIEndPoint();
-            return endpoint.sendResponse(req, res, 'Forbidden', 403);
+            return endpoint.sendResponse(req, res, { code: 403, message: 'Forbidden' }, 403);
         }
 
         const security = new APISecurity();
