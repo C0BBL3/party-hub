@@ -15,5 +15,10 @@
     },
     "logging": {
         "dir": "/svr/logs"
+    },
+    "api": {
+        "cooldownPeriod": 250,
+        "strikes": 3,
+        "allowedMethods": ["GET", "POST"]
     }
 }

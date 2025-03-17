@@ -140,6 +140,7 @@ class FeedService {
     static async getRSVPCountByPartyId(partyId) {
         const result = await db.execute(`
             SELECT
+                partypatronlink.partyId,
                 count(patron.id) as rsvpCount
             FROM
                 user AS patron

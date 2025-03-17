@@ -7,10 +7,15 @@
     "database": {
         "host": "localhost",
         "user": "root",
-        "password": "",
+        "password": "Val0rantisbadgame!",
         "database": "partyhub",
         "connectionLimit": 100,
         "waitForConnections": true,
         "queueLimit": 0
+    },
+    "api": {
+        "cooldownPeriod": 1,
+        "strikes": 30000,
+        "allowedMethods": ["GET", "POST"]
     }
 }

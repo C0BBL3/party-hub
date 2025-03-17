@@ -102,6 +102,8 @@ function initApp(app) {
 
     app.set('view engine', 'ejs');
 
+    const apiRoutes = require(`./api/routes.js`);
+    app.use(apiRoutes);
 
     let screens = ['main', 'host', 'login', 'map', 'party', 'settings'];
 

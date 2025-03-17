@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="../api/api.css">
+<script type="text/javascript" src="../api/api.js"></script>
+<script type="text/javascript" src="../api/api-api.js"></script>
+
+<%- include('../sidebar/sidebar.ejs') %>
+
+<input id="userId" type="hidden" value="<%= user.id %>"/>
+
+<div id="container">
+    <div class="api-container">
+        <form style="width: 450px;">
+            <div id="formFrame">
+                <h2>API</h2>
+                <div class="form-group">
+                    <div id="inputBoxes-text">Public Key</div>
+                    <input id="publicKey" title="Public API Key" value="" readonly>
+                </div>
+                <div class="form-group">
+                    <div id="inputBoxes-text">Secret Key</div>
+                    <input id="secretKey" title="Secret API Key" value="" readonly>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="revealButton" class="reveal-button">Reveal Keys</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
