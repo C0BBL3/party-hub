@@ -52,6 +52,13 @@ class APIPostParty extends APIEndPoint {
                 const security = new APISecurity();
 
                 const title = capitalizer.fixCapitalization(security.sanitizeInput(body.title));
+
+                const party = await CreateService.getPartyByTitle(partyTitle);
+
+                if (party) {
+                    return this.sendResponse(req, res, { result: false, message: 'Bad Request.'  }, 400);
+                }
+
                 const address = body.address ? {
                     streetAddress: capitalizer.fixCapitalization(security.sanitizeInput(body.address.streetAddress)),
                     postalCode: parseInt(security.sanitizeInput(body.address.postalCode)),
