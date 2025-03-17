@@ -107,13 +107,15 @@ const generateSignature = (secretKey, verb, contentMD5, contentType, timestamp, 
     return signature;
 }
 
-const postParty = async (publicKey, secretKey, body) => {
+const postParty = async (publicKey, secretKey, body_) => {
     try {
+        const body = JSON.stringify(body_);
+
         const verb = 'POST'
         const contentMD5 = CryptoJS.MD5(body).toString(CryptoJS.enc.Hex);
         const contentType = 'application/json';
         const timestamp = Math.floor(Date.now() / 1000);
-        const requestURI = `${BASE_URL}/party`;
+        const requestURI = `/api/party`;
         const nonce = crypto.randomBytes(16).toString('base64');
 
         const signature = generateSignature(secretKey, verb, contentMD5, contentType, timestamp, requestURI, nonce);
@@ -128,8 +130,6 @@ const postParty = async (publicKey, secretKey, body) => {
             'X-TXC-Timestamp': timestamp
         };
 
-        logObject(headers);
-        logObject(body);
 
         const res = await fetch(`${BASE_URL}/party`,  { 
             method: 'POST',
@@ -145,16 +145,19 @@ const postParty = async (publicKey, secretKey, body) => {
     }
 };
 
-const updateParty = async (publicKey, secretKey, body) => {
+const updateParty = async (publicKey, secretKey, body_) => {
     try {
+        const body = JSON.stringify(body_);
+
         const verb = 'POST'
         const contentMD5 = CryptoJS.MD5(body).toString(CryptoJS.enc.Hex);
         const contentType = 'application/json';
         const timestamp = Math.floor(Date.now() / 1000);
-        const requestURI = `${BASE_URL}/party/update`;
+        const requestURI = `/api/party/update`;
         const nonce = crypto.randomBytes(16).toString('base64');
 
         const signature = generateSignature(secretKey, verb, contentMD5, contentType, timestamp, requestURI, nonce);
+
 
         const headers = {
             'Accept': 'application/json',
@@ -193,22 +196,19 @@ async function main() {
     // let secretKey = 'sk_test_abcdefghijklmnopqrstuvwxyz12345678'; // dummy key
     let secretKey = 'sk_live_C0ayNGKYcp.mqm451jQI3n.xM5Ku3Uncti';
 
-    // let patron = await getPatron(publicKey, 1);
-    // logObject(patron);
+    let patron = await getPatron(publicKey, 1);
+    logObject(patron);
 
-    // let host = await getHost(publicKey, 1);
-    // logObject(host);
+    let host = await getHost(publicKey, 1);
+    logObject(host);
 
-    // let party = await getParty(publicKey, 1);
-    // logObject(party);
-
-    // let featuredParties = await getFeaturedParties(publicKey);
-    // logObject(featuredParties);
+    let featuredParties = await getFeaturedParties(publicKey);
+    logObject(featuredParties);
 
     let data = {
         hostId: 1,
         start: {
-            day: "Friday",
+            date: "Friday",
             time: "7:30 PM"
         },
         title: "Pi-tacular pi-arty!",
@@ -220,27 +220,30 @@ async function main() {
             state: "OR",
             city: "Eugene",
             postalCode: 97401,
-            streetAddess: "710 E 18th Ave",
+            streetAddress: "710 E 18th Ave",
         }
     };
 
     let partyPost = await postParty(publicKey, secretKey, data);
     logObject(partyPost);
 
+    let party = await getParty(publicKey, partyPost.party.id);
+    logObject(party);
+
     let update = {
-        partyId: 420,
+        partyId: partyPost.party.id,
         start: {
             day: "Friday",
-            time: "7:30 PM"
+            time: "9:30 PM"
         },
-        vibes: "pi-day,314,pi,pie",
-        description: "A Pi-tacular pi-arty on pi-day!",
-        privacy: "Discoverable",
-        pictureBase64: "I am not writing out a base 64 string for an image but just imagine this is a very long text of base 64 that would be parsed into an image via html.",
+        vibes: "pi-day,314,pi,pie,small",
+        description: "A Pi-tacular pi-arty on pi-dayyyy!",
+        privacy: "Private",
+        pictureBase64: "a much shorter picture base 64",
     };
 
-    // let partyUpdate = await updateParty(publicKey, secretKey, update);
-    // logObject(partyUpdate);
+    let partyUpdate = await updateParty(publicKey, secretKey, update);
+    logObject(partyUpdate);
 
     process.exit();
 }

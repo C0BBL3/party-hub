@@ -105,15 +105,15 @@ class CustomerService {
                 LEFT JOIN customer as customer1 on
                     host.customerId = customer1.id AND
                     (
-                        customer.clearance = 'host' OR
-                        customer.clearance = 'admin'
+                        customer1.clearance = 'host' OR
+                        customer1.clearance = 'admin'
                     )
 
                 LEFT JOIN partypatronlink ON
                     party.id = partypatronlink.partyId
 
                 LEFT JOIN user as patron ON
-                    partypatronlink.hostId = patron.id
+                    partypatronlink.patronId = patron.id
 
                 LEFT JOIN customer as customer2 on
                     patron.customerId = customer2.id
@@ -133,7 +133,7 @@ class CustomerService {
         if (result.rows.length === 1) {
             let row = result.rows[0];
 
-            return row.org;
+            return row.party;
         } else {
             return null;
         }
@@ -166,7 +166,7 @@ class CustomerService {
         if (result.rows.length === 1) {
             let row = result.rows[0];
 
-            return row.patron;
+            return row.host;
         } else {
             return null;
         }

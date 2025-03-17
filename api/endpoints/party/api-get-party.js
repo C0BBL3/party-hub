@@ -2,6 +2,7 @@ const APIEndPoint = require("../api-endpoint");
 const APIAuthenticator = require("../../lib/api-authenticator");
 const PartyService = require("../../services/party-service");
 const APIValidator = require("../../lib/api-validator");
+const HostService = require("../../services/host-service");
 
 class APIGetParty extends APIEndPoint {
     async processRequest(req, res) {
@@ -38,6 +39,8 @@ class APIGetParty extends APIEndPoint {
                 }
 
                 party = await PartyService.getPartyById(partyId);
+                party.host = await HostService.getHostInfo(party.hostId);
+                party.address = await PartyService.getPartyAddress(partyId);
             }
 
             this.sendResponse(req, res, {

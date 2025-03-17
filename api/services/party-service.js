@@ -191,6 +191,73 @@ class PartyService {
             return null;
         }
     }
+
+    static async getPartyById(partyId) {
+        const result = await db.execute(`
+            SELECT
+                party.id,
+                party.startTime,
+                party.title,
+                party.vibes,
+                party.description,
+                party.privacy,
+                party.pictureBase64,
+                partyhostlink.hostId
+                
+            FROM
+                party
+
+                INNER JOIN partyhostlink ON
+                    party.id = partyhostlink.partyId
+                
+            WHERE
+                party.id = [partyId];`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length === 1) {
+            const party = result.rows[0].party;
+            party.hostId = result.rows[0].partyhostlink.hostId;
+            
+            return party;
+        } else {
+            return null;
+        }
+    }
+
+    static async getPartyAddress(partyId) {
+        const result = await db.execute(`
+            SELECT 
+                address.state,
+                address.city,
+                address.postalCode,
+                address.streetAddress,
+                address.apt
+
+            FROM
+                address
+
+                INNER JOIN partyaddresslink ON
+                    partyaddresslink.addressId = address.id
+
+            WHERE
+                partyaddresslink.partyId = partyId
+                
+            ORDER BY address.id DESC
+            LIMIT 1;`,
+            {
+                partyId
+            }
+        );
+
+        if (result.rows.length === 1) {
+            return result.rows[0].address;
+        } else {
+            return null;
+        }
+    }
 }
 
 module.exports = PartyService;

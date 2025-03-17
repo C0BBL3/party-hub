@@ -6,6 +6,8 @@ const capitalizer = require("../../../utils/capitilzer");
 const CustomerService = require("../../services/customer-service");
 const CreateService = require("../../services/create-service");
 const APISecurity = require("../../lib/api-security");
+const PartyService = require("../../services/party-service");
+const HostService = require("../../services/host-service");
 
 class APIPostParty extends APIEndPoint {
     async processRequest(req, res) {
@@ -22,7 +24,7 @@ class APIPostParty extends APIEndPoint {
                 const result = validationResult(req);
 
                 if (result.errors.length > 0) {
-                    return this.sendResponse(res, {
+                    return this.sendResponse(req, res, {
                         result: false,
                         error: result.errors[0].msg
                     }, 406);
@@ -41,7 +43,7 @@ class APIPostParty extends APIEndPoint {
 
                 const authorization = await authenticator.authenticateHost(publicKey, hostId);
                 if (!authorization.isAuthenticated) {
-                    return this.sendResponse(res, {
+                    return this.sendResponse(req, res, {
                         result: true,
                         error: authorization.error
                     }, authorization.error.code);
@@ -64,8 +66,8 @@ class APIPostParty extends APIEndPoint {
                 const privacy = body.privacy ? security.sanitizeInput(body.privacy) : 'Discoverable'; 
                 const start = body.start ? 
                 { 
-                    date: security.sanitizeInput(body.state.date),
-                    time: security.sanitizeInput(body.state.time) 
+                    date: security.sanitizeInput(body.start.date),
+                    time: security.sanitizeInput(body.start.time) 
                 }
                 : 
                 { 
@@ -101,7 +103,7 @@ class APIPostParty extends APIEndPoint {
                     return this.sendResponse(req, res, { result: false }, 500);
                 }
 
-                const partyOwnerlinkId = await CreateService.linkOwner(partyId, owner.id);
+                const partyOwnerlinkId = await CreateService.linkOwner(partyId, hostId);
 
                 if (!partyOwnerlinkId) {
                     await CreateService.deleteParty(partyId);
@@ -109,19 +111,23 @@ class APIPostParty extends APIEndPoint {
                     await CreateService.deletePartyAddressLink(partyAddressLinkId);
                     return this.sendResponse(req, res, { result: false }, 500);
                 }
+
+                resultData = await PartyService.getPartyById(partyId);
+                resultData.host = await HostService.getHostInfo(hostId);
+                resultData.address = await PartyService.getPartyAddress(partyId);
             }
 
-            this.sendResponse(res, {
+            this.sendResponse(req, res, {
                 result: true,
-                body: resultData
+                party: resultData
             });
         } catch(e) {
             console.log(e);
-            this.sendResponse(res, this.internalServerErrorReturn, 500);
+            this.sendResponse(req, res, this.internalServerErrorReturn, 500);
         }
     }
     
-    static async checkIfUniquePartyTitle(req, res) {
+    async checkIfUniquePartyTitle(req, res) {
         const partyTitle = capitalizer.fixCapitalization(req.params.partyTitle);
 
         const party = await CreateService.getPartyByTitle(partyTitle); 
@@ -131,7 +137,7 @@ class APIPostParty extends APIEndPoint {
         });
     }
 
-    static generateSecretKey(length = 32) {
+    generateSecretKey(length = 32) {
         const chars = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
         let secretKey = '';
 
@@ -142,7 +148,7 @@ class APIPostParty extends APIEndPoint {
         return secretKey; 
     }
 
-    static getNextDayTime(day, time) {
+    getNextDayTime(day, time) {
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         
         const now = new Date();
@@ -169,7 +175,7 @@ class APIPostParty extends APIEndPoint {
         return targetDate;
     }
 
-    static parseAddress(address) {
+    parseAddress(address) {
         const match = address.match(/^(\d+)\s+(.*)$/); 
         
         if (!match) {
@@ -220,7 +226,7 @@ class APIPostParty extends APIEndPoint {
         return {
             hostId: 420,
             start: {
-                day: "Friday",
+                date: "Friday",
                 time: "7:30 PM"
             },
             title: "Pi-tacular pi-arty!",

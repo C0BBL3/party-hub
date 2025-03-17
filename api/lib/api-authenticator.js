@@ -45,7 +45,7 @@ class APIAuthenticator {
                 const secretKey = await CustomerService.getSecretKey(customer.customerId, publicKey);
 
                 const verb = req.method;
-                const body = req.body;
+                const body = JSON.stringify(req.body);
                 const contentType = req.header("Content-Type");
                 const timestamp = req.header("X-TXC-Timestamp");
                 const requestURI = req.url;

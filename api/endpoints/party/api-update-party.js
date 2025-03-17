@@ -5,6 +5,8 @@ const { validationResult } = require("express-validator");
 const capitalizer = require("../../../utils/capitilzer");
 const APISecurity = require("../../lib/api-security");
 const EditService = require("../../services/edit-service");
+const APIValidator = require("../../lib/api-validator");
+const PartyService = require("../../services/party-service");
 
 class APIUpdateParty extends APIEndPoint {
     async processRequest(req, res) {
@@ -21,10 +23,21 @@ class APIUpdateParty extends APIEndPoint {
                 const result = validationResult(req);
 
                 if (result.errors.length > 0) {
-                    return this.sendResponse(res, {
+                    return this.sendResponse(req, res, {
                         result: false,
                         error: result.errors[0].msg
                     }, 406);
+                }
+
+                const validator = new APIValidator();
+                const validateResult = await validator.validatePartyId(body.partyId);
+
+                // validation logic
+                if (!validateResult.valid) {
+                    return this.sendResponse(req, res, {
+                        result: false,
+                        error: validateResult.error
+                    }, validateResult.error.code);
                 }
             }
 
@@ -40,7 +53,7 @@ class APIUpdateParty extends APIEndPoint {
         
                 const authentication = await authenticator.authenticateParty(publicKey, partyId);
                 if (!authentication.isAuthenticated) {
-                    this.sendResponse(req, res, {
+                    return this.sendResponse(req, res, {
                         result: false,
                         error: authentication.error
                     }, authentication.error.code);
@@ -51,28 +64,34 @@ class APIUpdateParty extends APIEndPoint {
                 const security = new APISecurity();
 
                 const privacy = body.privacy ? security.sanitizeInput(body.privacy) : 'Discoverable';
-                const startTime = security.sanitizeInput(body.startTime); 
+                const startTime = security.sanitizeInput(body.start.time); 
                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; 
-                const startDay = days[party.startTime.getDay()]; 
+                const startDay = days[party.startDate.getDay()]; 
                 const startDate = this.getNextDayTime(startDay, startTime); 
                 const vibes = capitalizer.fixCapitalization(security.sanitizeInput(body.vibes));
                 const description = security.sanitizeInput(body.description); 
                 const pictureBase64 = security.sanitizeInput(body.pictureBase64);
 
                 const update = await EditService.updateParty(partyId, privacy, startDate, vibes, description, pictureBase64);
+
+                if (!update) {
+                    throw new Error(); 
+                }
+
+                resultData = await PartyService.getPartyById(partyId);
             }
 
-            this.sendResponse(res, {
+            this.sendResponse(req, res, {
                 result: true,
                 body: resultData
             });
         } catch(e) {
             console.log(e);
-            this.sendResponse(res, this.internalServerErrorReturn, 500);
+            this.sendResponse(req, res, this.internalServerErrorReturn, 500);
         }
     }
 
-    static getNextDayTime(day, time) {
+    getNextDayTime(day, time) {
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         
         const now = new Date();
